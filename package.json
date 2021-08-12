@@ -1,0 +1,50 @@
+{
+  "name": "events254",
+  "version": "1.0.0",
+  "description": "Events254 client side application",
+  "main": "index.js",
+  "author": "Opensource254",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nuxt",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+  },
+  "keywords": [
+    "Events254",
+    "eventsKe"
+  ],
+  "dependencies": {
+    "@nuxt/http": "^0.6.4",
+    "@nuxtjs/auth-next": "^5.0.0-1624817847.21691f1",
+    "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "@nuxtjs/pwa": "^3.3.5",
+    "@nuxtjs/sitemap": "^2.4.0",
+    "@nuxtjs/stylelint-module": "^4.0.0",
+    "@nuxtjs/vuetify": "^1.12.1",
+    "@tiptap/core": "^2.0.0-beta.95",
+    "@tiptap/extension-blockquote": "^2.0.0-beta.15",
+    "@tiptap/extension-bold": "^2.0.0-beta.15",
+    "@tiptap/extension-bullet-list": "^2.0.0-beta.15",
+    "@tiptap/extension-document": "^2.0.0-beta.13",
+    "@tiptap/extension-heading": "^2.0.0-beta.15",
+    "@tiptap/extension-italic": "^2.0.0-beta.15",
+    "@tiptap/extension-link": "^2.0.0-beta.19",
+    "@tiptap/extension-list-item": "^2.0.0-beta.14",
+    "@tiptap/extension-ordered-list": "^2.0.0-beta.15",
+    "@tiptap/extension-paragraph": "^2.0.0-beta.17",
+    "@tiptap/extension-strike": "^2.0.0-beta.17",
+    "@tiptap/extension-text": "^2.0.0-beta.13",
+    "@tiptap/vue-2": "^2.0.0-beta.43",
+    "eslint": "^7.32.0",
+    "moment-timezone": "^0.5.33",
+    "nuxt": "^2.15.8",
+    "vee-validate": "^3.4.11"
+  },
+  "devDependencies": {
+    "stylelint": "^13.13.1"
+  }
+}
