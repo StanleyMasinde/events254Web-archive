@@ -3,3 +3,5 @@ node_modules
 .env
 yarn-error.log
 error.log
+dist
+.DS_Store
