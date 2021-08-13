@@ -59,6 +59,7 @@ export default {
       const res = await this.$http.get(`/users/${this.$route.params.id}`)
       this.user = await res.json()
     } catch (error) {
+      this.$sentry.captureException(error)
       throw new Error(error)
     }
   },

@@ -358,6 +358,7 @@ export default {
       const data = await this.$http.get('/events?paginate=6')
       this.eventsObject = await data.json()
     } catch (error) {
+      this.$sentry.captureException(error)
       throw new Error(error)
     }
   },

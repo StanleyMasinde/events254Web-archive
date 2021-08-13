@@ -103,7 +103,9 @@ module.exports = {
     // Site maps module
     '@nuxtjs/sitemap',
     // HTTP module
-    '@nuxt/http'
+    '@nuxt/http',
+    // Sentry https://sentry.nuxtjs.org/
+    '@nuxtjs/sentry'
   ],
   // Vuetify config
   vuetify: {
@@ -130,6 +132,17 @@ module.exports = {
       icons: 'mdi'
     }
   },
+
+  /*
+  * Sentry config
+  */
+  sentry: {
+    dsn: 'https://6aaa64b176a0433da7cb306409587b56@o954334.ingest.sentry.io/5903368',
+    release: 'v1.0.0',
+    environment: 'production',
+    ignoreErrors: [],
+  },
+
 
   /**
    * PWA options
