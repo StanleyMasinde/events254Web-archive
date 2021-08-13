@@ -1,4 +1,5 @@
-[![Node.js CI](https://github.com/opensource254/events254/actions/workflows/nodejs.yml/badge.svg)](https://github.com/opensource254/events254/actions/workflows/nodejs.yml)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8d7e59ae-b72f-47d4-8499-4df27f9d7f45/deploy-status)](https://app.netlify.com/sites/events254/deploys)(https://github.com/opensource254/events254/actions/workflows/nodejs.yml)
+
 # Events254
 > Events application for Kenya
 
