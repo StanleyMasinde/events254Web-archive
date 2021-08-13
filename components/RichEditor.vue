@@ -168,10 +168,26 @@ export default {
     EditorContent,
     BubbleMenu
   },
+  props: {
+    value: {
+      type: String,
+      default: ''
+    }
+  },
 
   data () {
     return {
       editor: null
+    }
+  },
+  watch: {
+    value: {
+      immediate: true,
+      handler () {
+        if (this.editor) {
+          this.editor.setHTML(this.value)
+        }
+      }
     }
   },
   mounted () {

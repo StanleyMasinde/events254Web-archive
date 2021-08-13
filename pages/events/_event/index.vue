@@ -9,90 +9,91 @@
       </v-toolbar-title>
     </v-app-bar>
     <v-container fluid>
-      <client-only>
-        <!-- Still loading the group information -->
-        <FetchLoading v-if="$fetchState.pending" event-page />
+      <!-- Still loading the group information -->
+      <FetchLoading v-if="$fetchState.pending" event-page />
 
-        <!-- Something went wrong! 😭 -->
-        <FetchError v-else-if="$fetchState.error" />
+      <!-- Something went wrong! 😭 -->
+      <FetchError v-else-if="$fetchState.error" />
 
-        <!-- Event body -->
-        <v-row v-else justify="center">
-          <v-col cols="12" md="10">
-            <p>
-              <span v-if="currentEvent.allDay" class="text--secondary">
-                All-Day event
-              </span>
-              <span v-else class="text--secondary">{{
-                $moment(currentEvent.startDate).format(
-                  "MMMM Do YYYY [at] h:mm a"
-                )
-              }}</span>
-              <br>
-              <span class="text-h5 font-weight-bold">
-                {{ currentEvent.about }}
-              </span>
-            </p>
-          </v-col>
-          <v-col cols="12" md="10">
-            <v-row>
-              <v-col cols="12" md="8">
-                <v-card flat>
-                  <v-img height="300" :src="currentEvent.image" />
-                </v-card>
-              </v-col>
-              <v-col class="sticky-top" cols="12" md="4">
-                <v-card outlined>
-                  <v-card-text class="body-1">
-                    <span v-if="currentEvent.allDay" class="red--text">
-                      All-Day Event
-                    </span>
-                    <span
-                      v-else
-                      class="red--text"
-                    >From
-                      {{ $moment(currentEvent.startDate).format("LT") }} to
-                      {{ $moment(currentEvent.endDate).format("LT") }}
-                    </span>
-                    <br>
-                    Event by:
-                    <router-link :to="organiserLink">
-                      {{
-                        currentEvent.organiser
-                          ? currentEvent.organiser.name
-                          : "N/A"
-                      }}
-                    </router-link>
-                    <br>
-                    Location: {{ currentEvent.location || "Online" }}
+      <!-- Event body -->
+      <v-row v-else justify="center">
+        <v-col cols="12" md="10">
+          <p>
+            <span v-if="currentEvent.allDay" class="text--secondary">
+              All-Day event
+            </span>
+            <span v-else class="text--secondary">{{
+              $moment(currentEvent.startDate).format("MMMM Do YYYY [at] h:mm a")
+            }}</span>
+            <br>
+            <span class="text-h5 font-weight-bold">
+              {{ currentEvent.about }}
+            </span>
+          </p>
+        </v-col>
+        <v-col cols="12" md="10">
+          <v-row>
+            <v-col cols="12" md="8">
+              <v-card flat>
+                <v-img height="300" :src="currentEvent.image" />
+              </v-card>
+            </v-col>
+            <v-col class="sticky-top" cols="12" md="4">
+              <v-card outlined>
+                <v-card-text class="body-1">
+                  <span v-if="currentEvent.allDay" class="red--text">
+                    All-Day Event
+                  </span>
+                  <span
+                    v-else
+                    class="red--text"
+                  >From {{ $moment(currentEvent.startDate).format("LT") }} to
+                    {{ $moment(currentEvent.endDate).format("LT") }}
+                  </span>
+                  <br>
+                  Event by:
+                  <router-link :to="organiserLink">
+                    {{
+                      currentEvent.organiser
+                        ? currentEvent.organiser.name
+                        : "N/A"
+                    }}
+                  </router-link>
+                  <br>
+                  Location: {{ currentEvent.location || "Online" }}
+                </v-card-text>
+                <template v-if="currentEvent.attendees">
+                  <v-card-text
+                    v-if="currentEvent.attendees.length > 0"
+                    class="body-1"
+                  >
+                    <h5>Attendees</h5>
+                    <div class="stacked-av">
+                      <v-avatar
+                        v-for="(a, i) in currentEvent.attendees"
+                        :key="i"
+                        :title="a.name"
+                        color="brown"
+                      >
+                        <span>{{ innitials(a.name) }}</span>
+                      </v-avatar>
+                    </div>
                   </v-card-text>
-                  <template v-if="currentEvent.attendees">
-                    <v-card-text
-                      v-if="currentEvent.attendees.length > 0"
-                      class="body-1"
-                    >
-                      <h5>Attendees</h5>
-                      <div class="stacked-av">
-                        <v-avatar
-                          v-for="(a, i) in currentEvent.attendees"
-                          :key="i"
-                          :title="a.name"
-                          color="brown"
-                        >
-                          <span>{{ innitials(a.name) }}</span>
-                        </v-avatar>
-                      </div>
-                    </v-card-text>
-                  </template>
+                </template>
+                <client-only>
                   <v-card-actions>
                     <v-btn
-                      v-if="currentEvent.can_edit"
+                      v-if="canEdit"
                       text
                       :to="`/events/${currentEvent.id}/manage`"
                     >
                       Manage event
                     </v-btn>
-                    <social-share :url="`/events/${currentEvent.id}`" :title="currentEvent.about" :description="currentEvent.description" />
+                    <social-share
+                      :url="`/events/${currentEvent.id}`"
+                      :title="currentEvent.about"
+                      :description="currentEvent.description"
+                    />
                     <template v-if="!currentEvent.currentUserTicket">
                       <BuyTicket
                         v-if="!currentEvent.can_edit"
@@ -113,22 +114,19 @@
                       </v-btn>
                     </template>
                   </v-card-actions>
-                </v-card>
-              </v-col>
-              <v-col cols="12" md="8">
-                <v-card flat>
-                  <!-- eslint-disable-next-line vue/no-v-html -->
-                  <v-card-text
-                    class="body-1"
-                    v-html="currentEvent.description"
-                  />
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-        <!-- End of event body -->
-      </client-only>
+                </client-only>
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="8">
+              <v-card flat>
+                <!-- eslint-disable-next-line vue/no-v-html -->
+                <v-card-text class="body-1" v-html="currentEvent.description" />
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+      <!-- End of event body -->
     </v-container>
   </div>
 </template>
@@ -152,14 +150,11 @@ export default {
     }
   },
   async fetch () {
-    if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL)
-    }
     try {
-      const data = await this.$http.get(
+      const { data } = await this.$axios.get(
         `/events/${this.$route.params.event}`
       )
-      this.currentEvent = await data.json()
+      this.currentEvent = data
     } catch (error) {
       throw new Error(error)
     }
@@ -245,6 +240,16 @@ export default {
     }
   },
   computed: {
+    canEdit () {
+      const user = this.$store.state.auth.user
+      const event = this.currentEvent
+      if (!user) { return false }
+      if (event.organiser.type === 'user') {
+        return event.organiser.id === user.id
+      }
+      const ids = event.organiser.adminIds.map(r => r.user_id)
+      return ids.includes(user.id)
+    },
     organiserLink () {
       const organiser = this.currentEvent.organiser
       if (organiser.type === 'user') {
@@ -266,13 +271,10 @@ export default {
         const { data } = await this.$axios.get(
           `/payments/verify/${transactionID}`
         )
-        await this.$axios.post(
-          `/events/${this.$route.params.event}/register`,
-          {
-            ticket_id: data.data.meta.ticketId,
-            rsvp_count: data.data.meta.ticketCount
-          }
-        )
+        await this.$axios.post(`/events/${this.$route.params.event}/register`, {
+          ticket_id: data.data.meta.ticketId,
+          rsvp_count: data.data.meta.ticketCount
+        })
         this.$router.push('/home/tickets')
       } catch (error) {
         throw new Error(error)

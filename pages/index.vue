@@ -38,7 +38,7 @@
                   <v-avatar
                     color="brown"
                   >
-                    <span class="white--text headline">{{ innitials }}</span>
+                    <span class="white--text headline">{{ $store.getters.initials }}</span>
                   </v-avatar>
                   <h3>{{ $auth.user.name }}</h3>
                   <p class="caption mt-1">

@@ -6,3 +6,4 @@ error.log
 dist
 .DS_Store
 sw.js
+.eslintcache
