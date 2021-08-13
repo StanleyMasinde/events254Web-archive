@@ -8,6 +8,10 @@ module.exports = {
     timing: false
   },
 
+  generate: {
+    fallback: true
+  },
+
   // disable ssr
   // ssr: false,
 
