@@ -2,9 +2,7 @@
   <div>
     <v-app-bar flat>
       <v-toolbar-title>
-        <v-btn icon to="/">
-          <v-icon> mdi-arrow-left </v-icon>
-        </v-btn>
+        <back-button />
         {{ currentEvent.about || "Events 254" }}
       </v-toolbar-title>
     </v-app-bar>
@@ -131,9 +129,10 @@
   </div>
 </template>
 <script>
+import BackButton from '~/components/BackButton.vue'
 import SocialShare from '~/components/SocialShare.vue'
 export default {
-  components: { SocialShare },
+  components: { SocialShare, BackButton },
   data () {
     return {
       availableTickets: [],
