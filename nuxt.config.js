@@ -140,9 +140,8 @@ module.exports = {
     dsn: 'https://6aaa64b176a0433da7cb306409587b56@o954334.ingest.sentry.io/5903368',
     release: 'v1.0.0',
     environment: 'production',
-    ignoreErrors: [],
+    ignoreErrors: []
   },
-
 
   /**
    * PWA options
@@ -219,7 +218,7 @@ module.exports = {
      ** Build configuration
      */
   build: {
-    transpile: ['vee-validate']
+    transpile: ['vee-validate', 'moment-timezone']
     /*
        ** You can extend webpack config here
        */

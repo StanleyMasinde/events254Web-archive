@@ -151,7 +151,9 @@ export default {
       if (!organisers[0]) {
         return 'N/A'
       }
-      // const remaining = organisers.pop()
+      if (organisers.length === 1) {
+        return organisers[0].name
+      }
       return `${organisers[0].name} and ${organisers.length - 1} others`
     }
   }
