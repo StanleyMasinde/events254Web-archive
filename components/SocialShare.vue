@@ -100,7 +100,7 @@ export default {
     manualShare (network) {
       switch (network) {
         case 'email':
-          window.open(`mailto:?subject=${this.title}&body=${this.description}'&to=${this.to}`)
+          window.open(`mailto:?subject=${this.title}&body=${this.description.replace(/<\/?[^>]+(>|$)/g, '')}'&to=${this.to}`)
           break
         case 'facebook':
           window.open(`https://www.facebook.com/sharer/sharer.php?u=${this.fullUrl}`)
@@ -112,7 +112,7 @@ export default {
         //   window.open('https://pinterest.com/pin/create/button/?url=' + this.url + '&media=' + this.image + '&description=' + this.description + '&description=' + this.description)
         //   break
         case 'linkedin':
-          window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${this.fullUrl}&title=${this.title}&summary=${this.description}&source=${this.via}`)
+          window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${this.fullUrl}&title=${this.title}&summary=${this.description.replace(/<\/?[^>]+(>|$)/g, '')}&source=${this.via}`)
           break
         case 'whatsapp':
           window.open(`https://api.whatsapp.com/send?text=${this.title}%20${this.fullUrl}`)
@@ -130,9 +130,11 @@ export default {
         return
       }
       try {
+        // Strip html tags from this.description
+        const description = this.description.replace(/<\/?[^>]+(>|$)/g, '')
         await navigator.share({
           title: this.title,
-          text: this.description,
+          text: description,
           url: `${process.env.APP_URL}/events/${this.fullUrl}`
         })
       } catch (error) {
