@@ -6,8 +6,8 @@
         {{ group.name || "Events 254" }} - Events
       </v-toolbar-title>
     </v-app-bar>
-    <v-container>
-      <v-row justify="center">
+    <v-container fluid>
+      <v-row>
         <v-col cols="12" md="10">
           <v-tabs grow>
             <v-tab :to="`/${$route.params.company}/events/all`">
@@ -19,7 +19,10 @@
             <v-tab :to="`/${$route.params.company}/events/past`">
               Past
             </v-tab>
-            <v-tab v-if="group.isManager" :to="`/${$route.params.company}/events/create`">
+            <v-tab
+              v-if="group.isManager"
+              :to="`/${$route.params.company}/events/create`"
+            >
               Create
             </v-tab>
           </v-tabs>
@@ -41,9 +44,7 @@ export default {
     if (process.client) {
       this.$http.setBaseURL(process.env.API_URL)
     }
-    const res = await this.$http.get(
-      `/groups/${this.$route.params.company}`
-    )
+    const res = await this.$http.get(`/groups/${this.$route.params.company}`)
     this.group = await res.json()
   },
   head () {
