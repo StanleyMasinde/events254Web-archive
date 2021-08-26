@@ -2,9 +2,7 @@
   <div>
     <v-app-bar flat>
       <v-toolbar-title>
-        <v-btn icon to="/">
-          <v-icon> mdi-arrow-left </v-icon>
-        </v-btn>
+        <back-button />
         {{ currentEvent.about || "Events 254" }}
       </v-toolbar-title>
     </v-app-bar>
@@ -131,9 +129,10 @@
   </div>
 </template>
 <script>
+import BackButton from '~/components/BackButton.vue'
 import SocialShare from '~/components/SocialShare.vue'
 export default {
-  components: { SocialShare },
+  components: { SocialShare, BackButton },
   data () {
     return {
       availableTickets: [],
@@ -191,7 +190,7 @@ export default {
             //   url: 'https://operaonline.stream5.com/'
             // },
             image: [`${this.currentEvent ? this.currentEvent.image : ''}`],
-            description: this.currentEvent ? this.currentEvent.description : '',
+            description: this.currentEvent ? this.strippedDescription : '',
             offers: {
               '@type': 'Offer',
               url: `https://www.example.com/${
@@ -206,10 +205,10 @@ export default {
                 this.currentEvent ? this.currentEvent.created_at : ''
               }`
             },
-            // performer: {
-            //   '@type': 'PerformingGroup',
-            //   name: 'Kira and Morrison'
-            // },
+            performer: {
+              '@type': 'PerformingGroup',
+              name: this.currentEvent ? this.currentEvent.organiser.name : ''
+            },
             organizer: {
               '@type': 'Organization',
               name: this.currentEvent ? this.currentEvent.organiser.name : '',
@@ -221,7 +220,7 @@ export default {
       meta: [
         {
           name: 'description',
-          content: this.currentEvent.description || 'Loading group'
+          content: this.strippedDescription
         },
         {
           property: 'og:title',
@@ -229,7 +228,7 @@ export default {
         },
         {
           property: 'og:description',
-          content: this.currentEvent.description
+          content: this.strippedDescription
         },
         {
           hid: 'og:image',
@@ -240,6 +239,12 @@ export default {
     }
   },
   computed: {
+    strippedDescription () {
+      if (this.currentEvent.description) {
+        return this.currentEvent.description.replace(/<\/?[^>]+(>|$)/g, '')
+      }
+      return ''
+    },
     canEdit () {
       const user = this.$store.state.auth.user
       const event = this.currentEvent
@@ -279,13 +284,6 @@ export default {
       } catch (error) {
         throw new Error(error)
       }
-    },
-    innitials (name) {
-      const [firstName, lastName] = name.split(' ')
-      if (!lastName) {
-        return `${firstName.split('')[0]}`
-      }
-      return `${firstName.split('')[0]}${lastName.split('')[0]}`
     }
   }
 }
