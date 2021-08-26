@@ -93,7 +93,7 @@ export default {
   data () {
     return {
       customShare: false,
-      fullUrl: `${process.env.API_URL}${this.url}`
+      fullUrl: `${process.env.APP_URL}${this.url}`
     }
   },
   methods: {
@@ -135,7 +135,7 @@ export default {
         await navigator.share({
           title: this.title,
           text: description,
-          url: `${process.env.APP_URL}/events/${this.fullUrl}`
+          url: this.fullUrl
         })
       } catch (error) {
         throw new Error(error)
