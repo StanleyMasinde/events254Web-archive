@@ -133,7 +133,7 @@ export default {
         await navigator.share({
           title: this.title,
           text: this.description,
-          url: `${process.env.API_URL}/events/${this.fullUrl}`
+          url: `${process.env.APP_URL}/events/${this.fullUrl}`
         })
       } catch (error) {
         throw new Error(error)

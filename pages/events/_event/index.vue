@@ -6,9 +6,6 @@
         {{ currentEvent.about || "Events 254" }}
       </v-toolbar-title>
     </v-app-bar>
-    <h3 slot="test">
-      Hhahahahh
-    </h3>
     <v-container fluid>
       <!-- Still loading the group information -->
       <FetchLoading v-if="$fetchState.pending" event-page />
