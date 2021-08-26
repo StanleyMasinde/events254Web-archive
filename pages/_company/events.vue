@@ -2,7 +2,7 @@
   <div>
     <v-app-bar flat>
       <v-toolbar-title>
-        <back-button />
+        <back-button :path="`/${$route.params.company}`" />
         {{ group.name || "Events 254" }} - Events
       </v-toolbar-title>
     </v-app-bar>
