@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: 'Events254',
+    name: 'Events254 client',
     script: 'npm',
     args: '-- run start',
     watch: false,
