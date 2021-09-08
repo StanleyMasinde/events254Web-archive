@@ -185,7 +185,7 @@ export default {
       immediate: true,
       handler () {
         if (this.editor) {
-          this.editor.setHTML(this.value)
+          // this.editor.setContent(this.value)
         }
       }
     }
