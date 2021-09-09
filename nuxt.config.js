@@ -19,7 +19,7 @@ module.exports = {
 
   // Vue router
   router: {
-    middleware: ['auth']
+    middleware: ['auth', 'matomo']
   },
 
   /**
