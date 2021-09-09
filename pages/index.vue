@@ -144,7 +144,7 @@
               :key="i"
               sm="6"
               md="4"
-              cols="12"
+              cols="6"
             >
               <v-card flat>
                 <v-img
@@ -279,12 +279,12 @@
 
       <v-col cols="12">
         <v-btn
+          v-if="!$vuetify.breakpoint.smAndDown"
           to="/events/create"
           color="accent"
           fab
           fixed
           right
-          bottom
         >
           <v-icon>mdi-plus</v-icon>
         </v-btn>

@@ -1,48 +1,83 @@
 <template>
-  <v-container>
-    <v-row v-if="$fetchState.pending" justify="center">
-      <h1>Loading</h1>
-    </v-row>
+  <div>
+    <v-app-bar flat>
+      <v-toolbar-title>
+        <back-button />
+        {{ user.name || "Events 254" }}
+      </v-toolbar-title>
+    </v-app-bar>
 
-    <!-- Something went wrong! 😭 -->
-    <v-row v-else-if="$fetchState.error">
-      <div class="full-height">
-        <v-img height="300" contain src="/not_found.svg">
-          <v-container>
-            <v-row justify="center">
-              <v-col cols="12" md="8">
-                <h1 class="display-1 gray--text">
-                  Sorry 😢 There's nothing here
-                </h1>
-                <v-btn text x-large color="primary" to="/">
-                  Go home
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-img>
-      </div>
-    </v-row>
-    <v-row justify="center">
-      <v-col cols="12" md="8" class="text-center">
-        <v-avatar
-          height="200"
-          width="200"
-          color="brown"
-        >
-          <span class="white--text display-4">{{ innitials }}</span>
-        </v-avatar>
-      </v-col>
-      <v-col cols="12" md="8">
-        <v-card rounded flat>
-          <v-card-text class="text-center">
-            <h1>{{ user.name }}</h1>
-            {{ user.bio }}
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+    <v-container>
+      <v-row v-if="$fetchState.pending" justify="center">
+        <h1>Loading</h1>
+      </v-row>
+
+      <!-- Something went wrong! 😭 -->
+      <v-row v-else-if="$fetchState.error">
+        <div class="full-height">
+          <v-img height="300" contain src="/not_found.svg">
+            <v-container>
+              <v-row justify="center">
+                <v-col cols="12" md="8">
+                  <h1 class="display-1 gray--text">
+                    Sorry 😢 There's nothing here
+                  </h1>
+                  <v-btn text x-large color="primary" to="/">
+                    Go home
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-img>
+        </div>
+      </v-row>
+      <!-- End of error -->
+
+      <!-- Success! -->
+      <!-- User public info with avatar and list of events organized -->
+      <v-row v-else>
+        <v-col cols="12" md="8">
+          <v-card outlined>
+            <v-card-title>
+              <v-row>
+                <v-col cols="12" sm="4">
+                  <v-avatar
+                    height="100"
+                    width="100"
+                    color="brown"
+                  >
+                    <span class="white--text display-3">{{ innitials }}</span>
+                  </v-avatar>
+                </v-col>
+                <v-col cols="12" sm="8">
+                  <h1 class="display-1">
+                    {{ user.name }}
+                  </h1>
+                  <h2 class="subheading">
+                    {{ user.username }}
+                  </h2>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <v-card-text>
+              <v-list>
+                <v-list-item v-for="event in user.events" :key="event.id">
+                  <v-list-item-content
+                    :to="'/events/' + event.id"
+                  >
+                    <v-list-item-title>
+                      {{ event.about }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    <!-- End of success -->
+    </v-container>
+  </div>
 </template>
 <script>
 export default {
@@ -74,6 +109,19 @@ export default {
         {
           property: 'og:description',
           content: this.user.bio || this.user.name
+        }
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          json: {
+            '@context': 'http://schema.org',
+            '@type': 'Person',
+            name: this.user.name,
+            url: `https://events254.co.ke/u/${this.user.id}`,
+            image: this.user.avatar,
+            description: this.user.bio || this.user.name
+          }
         }
       ]
     }

@@ -22,6 +22,17 @@
       >
         <v-icon>mdi-calendar-outline</v-icon>
       </v-btn>
+      <!-- Event creation button
+      Sligtly different from the other buttons, as it is not a link, but a button
+      -->
+      <v-btn
+        icon
+        x-large
+        to="/events/create"
+      >
+        <v-icon>mdi-plus-circle-outline</v-icon>
+      </v-btn>
+
       <v-btn
         icon
         to="/home"
