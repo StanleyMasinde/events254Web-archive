@@ -60,16 +60,17 @@
               </v-row>
             </v-card-title>
             <v-card-text>
+              <h3>Events by {{ user.name }}</h3>
               <v-list>
-                <v-list-item v-for="event in user.events" :key="event.id">
-                  <v-list-item-content
-                    :to="'/events/' + event.id"
-                  >
-                    <v-list-item-title>
-                      {{ event.about }}
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
+                <v-card v-for="event in user.events" :key="event.id" class="mb-2" outlined :to="'/events/' + event.id">
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        {{ event.about }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-card>
               </v-list>
             </v-card-text>
           </v-card>
