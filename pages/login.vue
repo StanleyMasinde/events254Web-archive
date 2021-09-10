@@ -72,18 +72,20 @@ export default {
     async login () {
       try {
         await this.$auth.loginWith('cookie', { data: this.cred })
+        const lastPath = this.$auth.$storage.getCookie('redirect') || '/'
+        this.$router.push(lastPath)
         this.$router.push()
       } catch (error) {
         if (error.response) {
           if (error.response.status === 500) {
             throw new Error(error)
           }
-
           this.err = error.response.data.message
           setTimeout(() => {
             this.err = null
           }, 5000)
         }
+        this.$sentry.captureException(error)
       }
     }
   }
