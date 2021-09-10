@@ -39,9 +39,6 @@
           <v-list-item-title> Search </v-list-item-title>
         </v-list-item>
 
-        <!-- Divider -->
-        <v-divider />
-
         <!-- Spacer -->
         <v-spacer />
 
