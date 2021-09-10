@@ -74,13 +74,16 @@ export default {
         await this.$auth.loginWith('cookie', { data: this.cred })
         this.$router.push()
       } catch (error) {
-        if (error.response.status === 500) {
-          throw new Error(error)
+        if (error.response) {
+          if (error.response.status === 500) {
+            throw new Error(error)
+          }
+
+          this.err = error.response.data.message
+          setTimeout(() => {
+            this.err = null
+          }, 5000)
         }
-        this.err = error.response.data.message
-        setTimeout(() => {
-          this.err = null
-        }, 5000)
       }
     }
   }
