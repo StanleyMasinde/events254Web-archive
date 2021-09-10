@@ -18,7 +18,7 @@
         <v-col cols="12" md="10">
           <p>
             <span v-if="currentEvent.allDay" class="text--secondary">
-              All-Day event
+              {{ $moment(currentEvent.start).format("dddd, MMMM Do YYYY") }}
             </span>
             <span v-else class="text--secondary">{{
               $moment(currentEvent.startDate).format("MMMM Do YYYY [at] h:mm a")

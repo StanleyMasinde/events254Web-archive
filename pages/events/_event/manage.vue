@@ -20,8 +20,8 @@
       <template v-else>
         <v-row justify="center">
           <v-col cols="12" md="8">
-            <v-btn depressed color="primary" rounded>
-              Publish your event
+            <v-btn depressed :color="currentEvent.published === 1 ? 'green': 'primary'" rounded @click="togglePublishing">
+              {{ currentEvent.published === 1 ? 'Published': 'Draft' }}
             </v-btn>
             <v-btn color="error" depressed rounded>
               Delete event
@@ -64,6 +64,18 @@ export default {
       `/events/${this.$route.params.event}`
     )
     this.currentEvent = data
+  },
+  methods: {
+    async togglePublishing () {
+      try {
+        const { data } = await this.$axios.put(`/events/${this.$route.params.event}/publish`, {
+          published: this.currentEvent.published === 1 ? 0 : 1
+        })
+        this.currentEvent.published = data.published
+      } catch (error) {
+        this.$sentry.captureException(error)
+      }
+    }
   }
 }
 </script>
