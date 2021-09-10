@@ -5,7 +5,7 @@
     <v-container v-else fluid>
       <div class="mt-5">
         <client-only>
-          <edit-event :event="currentEvent" />
+          <edit-event :update-url="`/events/${currentEvent.id}`" :event="currentEvent" @success="$fetch()" />
         </client-only>
       </div>
     </v-container>

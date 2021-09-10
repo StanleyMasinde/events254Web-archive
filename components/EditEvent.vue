@@ -2,34 +2,34 @@
   <div>
     <v-card flat>
       <v-card-text>
-        <v-form>
-          <v-text-field label="About" outlined />
+        <v-form id="eventForm" @submit.prevent="updateEvent">
+          <v-text-field v-model="eventForm.about" label="About" outlined />
 
           <v-row>
             <v-col>
-              <v-text-field outlined type="date" label="Start date" />
+              <v-text-field v-model="eventForm.startDate" outlined type="date" label="Start date" />
             </v-col>
             <v-col>
-              <v-text-field outlined label="Time" type="time" />
+              <v-text-field v-model="eventForm.startTime" outlined label="Time" type="time" />
             </v-col>
           </v-row>
 
           <v-row>
             <v-col>
-              <v-text-field outlined type="date" label="End date" />
+              <v-text-field v-model="eventForm.endDate" outlined type="date" label="End date" />
             </v-col>
             <v-col>
-              <v-text-field outlined label="End time" type="time" />
+              <v-text-field v-model="eventForm.endTime" outlined label="End time" type="time" />
             </v-col>
           </v-row>
 
-          <v-text-field label="Location" outlined />
+          <v-text-field v-model="eventForm.location" label="Location" outlined />
 
-          <v-text-field label="Online link" outlined />
+          <v-text-field v-model="eventForm.online_link" label="Online link" outlined />
 
-          <v-textarea label="Description" auto-grow rows="2" outlined />
+          <v-textarea v-model="eventForm.description" label="Description" auto-grow rows="2" outlined />
 
-          <v-btn depressed large rounded color="primary">
+          <v-btn depressed type="submit" large rounded color="primary">
             Update event
           </v-btn>
         </v-form>
@@ -46,7 +46,7 @@ export default {
     },
     updateUrl: {
       type: String,
-      default: '/events'
+      required: true
     }
   },
   data () {
@@ -98,27 +98,29 @@ export default {
       URL.createObjectURL(e)
       this.eventFrom.image = url
     },
-    async createEvent () {
+    async updateEvent () {
       const form = document.querySelector('#eventForm')
       const formData = new FormData(form)
-      formData.append('about', this.event.about)
-      formData.append('description', this.event.description || this.event.about)
-      formData.append('startDate', this.event.startDate)
-      formData.append('startTime', this.event.startTime)
-      formData.append('endDate', this.event.endDate || this.startDate)
-      formData.append('endTime', this.event.endTime || '00:00')
-      formData.append('location', this.event.location || 'N/A')
-      formData.append('online_link', this.event.online_link || 'N/A')
+      formData.append('about', this.eventForm.about)
+      formData.append('description', this.eventForm.description || this.event.about)
+      formData.append('startDate', this.eventForm.startDate)
+      formData.append('startTime', this.eventForm.startTime)
+      formData.append('endDate', this.eventForm.endDate || this.startDate)
+      formData.append('endTime', this.eventForm.endTime || '00:00')
+      formData.append('location', this.eventForm.location || 'N/A')
+      formData.append('online_link', this.eventForm.online_link || 'N/A')
       try {
-        const { data } = await this.$axios.post(this.createUrl, formData)
+        await this.$axios.put(this.updateUrl, formData)
         this.message.success = true
-        this.$router.push(`/events/${data.id}/manage`)
+        this.$emit('success')
       } catch (error) {
-        if (error.response.status === 422) {
-          this.$refs.observer.setErrors(error.response.data.errors)
-          return
+        if (error.response) {
+          if (error.response.status === 422) {
+            this.$refs.observer.setErrors(error.response.data.errors)
+            return
+          }
         }
-        // TODO add proper handling
+        this.$sentry.captureException(error)
         throw new Error(error)
       }
     }
