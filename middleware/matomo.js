@@ -1,10 +1,10 @@
-export default async function ({ $axios, $store, $route }) {
+export default async function ({ $axios, store, route }) {
   if (process.server) {
-    const u = `https://analytics.opensource254.co.ke/matomo.php?action_name=Events254&idsite=1&url=https://${process.env.APP_URL}${$route.fullPath}`
+    const u = `https://analytics.opensource254.co.ke/matomo.php?action_name=Events254&idsite=1&url=https://${process.env.APP_URL}${route.fullPath}`
     await $axios.post(u)
     return
   }
-  const user = $store.state.auth.user
+  const user = store.state.auth.user
   const _paq = window._paq = window._paq || []
   if (user) {
     _paq.push(['setUserId', user.id])
