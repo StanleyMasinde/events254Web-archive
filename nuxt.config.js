@@ -55,13 +55,15 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:site', content: '@events254ke' },
       {
         hid: 'og:image',
         property: 'og:image',
         content: 'https://res.cloudinary.com/streetcoder/image/upload/v1622115318/events254/icon_v52vzr.png'
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [{ src: 'https://analytics.opensource254.co.ke/matomo.js' }]
   },
   /*
    ** Customize the progress-bar color
