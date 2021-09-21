@@ -7,7 +7,7 @@ export default ({ app, store }) => {
   if (user) {
     email = user.email
   } else {
-    email = 'anonymous'
+    email = undefined
   }
   Vue.use(Matomo, {
     router: app.router,
