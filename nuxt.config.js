@@ -19,7 +19,7 @@ module.exports = {
 
   // Vue router
   router: {
-    middleware: ['auth', 'matomo']
+    middleware: ['auth']
   },
 
   /**
@@ -62,8 +62,7 @@ module.exports = {
         content: 'https://res.cloudinary.com/streetcoder/image/upload/v1622115318/events254/icon_v52vzr.png'
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
-    script: [{ src: 'https://analytics.opensource254.co.ke/matomo.js' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   /*
    ** Customize the progress-bar color
@@ -79,7 +78,8 @@ module.exports = {
   plugins: [
     '~/plugins/axios',
     '~/plugins/veevalidate.js',
-    '~/plugins/moment.js'
+    '~/plugins/moment.js',
+    { src: '~/plugins/matomo.js', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules
