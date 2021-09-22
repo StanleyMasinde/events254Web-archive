@@ -1591,10 +1591,10 @@
     remark "^13.0.0"
     unist-util-find-all-after "^3.0.2"
 
-"@tiptap/core@^2.0.0-beta.108":
-  version "2.0.0-beta.108"
-  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.0.0-beta.108.tgz#fdab0b549c6915d2e1710ecc915d219857c21eef"
-  integrity sha512-cUMAkiCHVQk7EYyge+ChFDLBl9SktVOrFogHnjUJxQw+r1iesXf8A6u8bqi/TCMoWQetyP7ELpscMpxNaIE/rg==
+"@tiptap/core@^2.0.0-beta.110":
+  version "2.0.0-beta.110"
+  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.0.0-beta.110.tgz#a03413056f484b875c85b26aa2eff8b3022e014f"
+  integrity sha512-QWfgDxommAzv1Ed9vA1KAAvBTkdWkkZmNiQIlqlyhe/5M1YffkMfy1+P7KOA+lxN9Ft5TERGa0+Fg9mK3VX2QQ==
   dependencies:
     "@types/prosemirror-commands" "^1.0.4"
     "@types/prosemirror-inputrules" "^1.0.4"
@@ -1608,7 +1608,7 @@
     prosemirror-inputrules "^1.1.3"
     prosemirror-keymap "^1.1.3"
     prosemirror-model "^1.14.3"
-    prosemirror-schema-list "^1.1.5"
+    prosemirror-schema-list "^1.1.6"
     prosemirror-state "^1.3.4"
     prosemirror-transform "^1.3.2"
     prosemirror-view "^1.20.1"
@@ -8116,10 +8116,10 @@ prosemirror-model@^1.0.0, prosemirror-model@^1.14.3:
   dependencies:
     orderedmap "^1.1.0"
 
-prosemirror-schema-list@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/prosemirror-schema-list/-/prosemirror-schema-list-1.1.5.tgz#e7ad9e337ea3d77da6d6a4250f3d7bd51ae980a4"
-  integrity sha512-9gadhga/wySVfb/iZ2vOpndbG0XroeLw0HkkZN5demNbOea6U5oQtJmvyYWC7ZVf3WkhmVdVsOXrllM9JcC20A==
+prosemirror-schema-list@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/prosemirror-schema-list/-/prosemirror-schema-list-1.1.6.tgz#c3e13fe2f74750e4a53ff88d798dc0c4ccca6707"
+  integrity sha512-aFGEdaCWmJzouZ8DwedmvSsL50JpRkqhQ6tcpThwJONVVmCgI36LJHtoQ4VGZbusMavaBhXXr33zyD2IVsTlkw==
   dependencies:
     prosemirror-model "^1.0.0"
     prosemirror-transform "^1.0.0"
