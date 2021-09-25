@@ -18,7 +18,7 @@
           <v-list-item-title> Home </v-list-item-title>
         </v-list-item>
 
-        <v-list-item :to="`/calendar?date=${today}`">
+        <v-list-item to="/calendar">
           <v-list-item-icon>
             <v-icon>mdi-calendar-outline</v-icon>
           </v-list-item-icon>
