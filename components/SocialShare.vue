@@ -4,32 +4,32 @@
       <v-icon>mdi-share-variant</v-icon>
     </v-btn>
 
-    <v-bottom-sheet v-model="customShare" inset>
+    <v-dialog v-model="customShare" width="500">
       <v-card flat>
         <v-card-title> Share event </v-card-title>
         <v-card-text>
-          <v-btn color="#1da1f2" x-large icon @click="manualShare('twitter')">
+          <v-btn large color="#1da1f2" x-large icon @click="manualShare('twitter')">
             <v-icon> mdi-twitter </v-icon>
           </v-btn>
 
-          <v-btn color="#4267B2" x-large icon @click="manualShare('facebook')">
+          <v-btn large color="#4267B2" x-large icon @click="manualShare('facebook')">
             <v-icon> mdi-facebook </v-icon>
           </v-btn>
 
-          <v-btn color="#F9A825" x-large icon @click="manualShare('email')">
+          <v-btn large color="#F9A825" x-large icon @click="manualShare('email')">
             <v-icon> mdi-email </v-icon>
           </v-btn>
 
-          <v-btn color="#4ac959" x-large icon @click="manualShare('whatsapp')">
+          <v-btn large color="#4ac959" x-large icon @click="manualShare('whatsapp')">
             <v-icon> mdi-whatsapp </v-icon>
           </v-btn>
 
-          <v-btn color="#2867b2" x-large icon @click="manualShare('linkedin')">
+          <v-btn large color="#2867b2" x-large icon @click="manualShare('linkedin')">
             <v-icon> mdi-linkedin </v-icon>
           </v-btn>
         </v-card-text>
       </v-card>
-    </v-bottom-sheet>
+    </v-dialog>
   </div>
 </template>
 <script>
