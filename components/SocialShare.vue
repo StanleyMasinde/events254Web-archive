@@ -57,7 +57,7 @@ export default {
     },
     hashtags: {
       type: Array,
-      default: () => ['Events254', 'EventsKe']
+      default: () => ['Events254', 'EventsKe', 'TembeaKenya', 'Safaris254']
     },
     to: {
       type: String,
