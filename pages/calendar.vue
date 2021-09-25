@@ -52,11 +52,64 @@
               v-model="focus"
               :events="events"
               :type="calendarType"
+              @click:event="onClickEvent"
             />
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Dialog for event detail -->
+    <v-dialog v-model="dialog" persistent max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{ selectedEvent.name }}</span>
+        </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-subheader>Start</v-subheader>
+              <v-chip>
+                {{ selectedEvent.start }}
+              </v-chip>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-subheader>End</v-subheader>
+              <v-chip>
+                {{ selectedEvent.end }}
+              </v-chip>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-subheader>Location</v-subheader>
+              <v-chip>
+                {{ selectedEvent.location }}
+              </v-chip>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-subheader>Attendees</v-subheader>
+              <v-chip> 0 </v-chip>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="primary" depressed @click="dialog = false">
+            Close
+          </v-btn>
+          <v-btn
+            depressed
+            large
+            rounded
+            color="accent"
+            :to="`/events/${selectedEvent.id}`"
+          >
+            View
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -65,7 +118,9 @@ export default {
     return {
       events: [],
       calendarType: 'month',
-      focus: ''
+      focus: '',
+      dialog: false,
+      selectedEvent: {}
     }
   },
   async fetch () {
@@ -80,10 +135,12 @@ export default {
         const end = this.$moment(evt.endDate).format('YYYY-MM-DD HH:mm')
         const isAllDay = start === end
         return {
+          id: evt.id,
           name: evt.about,
           start,
           end,
-          timed: !isAllDay
+          timed: !isAllDay,
+          location: evt.location
         }
       })
     } catch (error) {
@@ -102,17 +159,21 @@ export default {
   methods: {
     async getCurrentMonth () {
       try {
-        const data = await this.$http.get(`/search/calendar/?date=${this.focus}`)
+        const data = await this.$http.get(
+          `/search/calendar/?date=${this.focus}`
+        )
         const evts = await data.json()
         this.events = evts.map((evt) => {
           const start = this.$moment(evt.startDate).format('YYYY-MM-DD HH:mm')
           const end = this.$moment(evt.endDate).format('YYYY-MM-DD HH:mm')
           const isAllDay = start === end
           return {
+            id: evt.id,
             name: evt.about,
             start,
             end,
-            timed: !isAllDay
+            timed: !isAllDay,
+            location: evt.location
           }
         })
       } catch (error) {
@@ -129,6 +190,10 @@ export default {
     next () {
       this.$refs.calendar.next()
       this.getCurrentMonth()
+    },
+    onClickEvent ({ event }) {
+      this.selectedEvent = event
+      this.dialog = true
     }
   },
   auth: false
