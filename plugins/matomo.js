@@ -2,8 +2,12 @@ import Vue from 'vue'
 import Matomo from 'vue-matomo'
 
 export default ({ app, store }) => {
+  // process is server side return
+  if (process.server) {
+    return
+  }
   let email
-  const user = store.state.auth.user
+  const user = store.getters.authUser
   if (user) {
     email = user.email
   } else {
