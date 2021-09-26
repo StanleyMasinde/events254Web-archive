@@ -1,9 +1,9 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col cols="11" sm="10">
-        <h1 class="display-2">
-          Hi {{ $auth.user.name }}
+      <v-col cols="12">
+        <h1 class="display-1">
+          {{ greeting }}
         </h1>
       </v-col>
       <v-col cols="12" lg="6">
@@ -35,6 +35,20 @@ export default {
   head () {
     return {
       title: this.$auth.user.name || ''
+    }
+  },
+  computed: {
+    greeting () {
+      const timeOfDay = this.$moment().hour()
+      const user = this.$auth.user.name.split(' ')[0]
+
+      if (timeOfDay < 12) {
+        return `Good Morning, ${user}`
+      } else if (timeOfDay < 18) {
+        return `Good Afternoon, ${user}`
+      } else {
+        return `Good Evening, ${user}`
+      }
     }
   }
 }
