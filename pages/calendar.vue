@@ -11,7 +11,13 @@
           <v-card-actions>
             <v-row>
               <v-col cols="12" sm="4">
-                <v-btn rounded block color="primary" dark @click="setToday">
+                <v-btn
+                  rounded
+                  depressed
+                  block
+                  color="primary"
+                  @click="setToday"
+                >
                   Today
                 </v-btn>
               </v-col>
@@ -182,6 +188,7 @@ export default {
     },
     setToday () {
       this.focus = ''
+      this.$fetch()
     },
     prev () {
       this.$refs.calendar.prev()
