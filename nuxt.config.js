@@ -56,6 +56,9 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:site', content: '@events254ke' },
+      { name: 'twitter:creator', content: '@events254ke' },
+      { name: 'twitter:title', content: 'Events254' },
+      { name: 'twitter:description', content: 'Events254 is a platform for people to share their events with the world' },
       {
         hid: 'og:image',
         property: 'og:image',
@@ -155,12 +158,19 @@ module.exports = {
       name: 'Events254',
       theme_color: '#49c5b6',
       ogDescription: 'Events254 is an application for event organisers and anyone who is looking for something to do',
-      ogHost: 'events.opensource254.co.ke',
+      ogHost: 'events254.co.ke',
       twitterCard: 'summary',
-      twitterSite: '@stanleymasinde_'
+      twitterSite: '@events254ke',
+      twitterCreator: '@events254ke'
     },
     manifest: {
-      name: 'Events254'
+      name: 'Events254',
+      short_name: 'Events254',
+      lang: 'en',
+      display: 'standalone',
+      start_url: '/',
+      background_color: '#ffffff',
+      theme_color: '#49c5b6'
     },
     workbox: {
       runtimeCaching: [
@@ -176,6 +186,32 @@ module.exports = {
               maxAgeSeconds: 300
             }
           }]
+        },
+        {
+          urlPattern: 'https://res.cloudinary.com/.*',
+          strategyOptions: {
+            cacheName: 'cloudinary-cache'
+          },
+          strategyPlugins: [{
+            use: 'Expiration',
+            config: {
+              maxEntries: 100,
+              maxAgeSeconds: 3600
+            }
+          }]
+        },
+        {
+          urlPattern: 'https://api.events254.co.ke/.*',
+          strategyOptions: {
+            cacheName: 'api-cache'
+          },
+          strategyPlugins: [{
+            use: 'Expiration',
+            config: {
+              maxEntries: 100,
+              maxAgeSeconds: 3600
+            }
+          }]
         }
       ]
     }
@@ -185,7 +221,18 @@ module.exports = {
    * https://sitemap.nuxtjs.org/guide/configuration
    */
   sitemap: {
-    hostname: 'https://events254.co.ke'
+    hostname: 'https://events254.co.ke',
+    gzip: true,
+    exclude: [],
+    routes: [
+      {
+        url: '/',
+        changefreq: 'hourly',
+        priority: 1,
+        lastmod: new Date(),
+        lastmodrealtime: true
+      }
+    ]
   },
   /*
      ** Axios module configuration
@@ -211,8 +258,8 @@ module.exports = {
         },
         endpoints: {
           login: { url: '/auth/login', method: 'POST' },
-          logout: { url: '/auth/logout', method: 'post' },
-          user: { url: '/auth/user', method: 'get' }
+          logout: { url: '/auth/logout', method: 'POST' },
+          user: { url: '/auth/user', method: 'GET' }
         }
       }
     }
