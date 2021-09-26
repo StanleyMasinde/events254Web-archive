@@ -10,16 +10,23 @@
     <ValidationObserver v-slot="{ invalid }">
       <v-form @submit.prevent="updatePassword">
         <ValidationProvider name="email" rules="required|email">
-          <v-text-field v-model="details.email" outlined label="Email" readonly />
+          <v-text-field v-model="details.email" rounded outlined label="Email" readonly />
         </ValidationProvider>
 
         <ValidationProvider name="password" rules="required">
-          <v-text-field v-model="details.password" outlined label="New Password" />
+          <v-text-field v-model="details.password" rounded outlined label="New Password" />
         </ValidationProvider>
-        <v-btn :disabled="invalid" type="submit" color="accent">
+        <v-btn
+          large
+          rounded
+          depressed
+          :disabled="invalid"
+          type="submit"
+          color="primary"
+        >
           Change Password
         </v-btn>
-        <v-btn text to="/login" color="primary">
+        <v-btn depressed rounded text to="/login" color="primary">
           Sign In
         </v-btn>
         <v-btn text to="/register" color="primary">

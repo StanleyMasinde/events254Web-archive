@@ -11,13 +11,20 @@
       <ValidationObserver v-slot="{ invalid }">
         <v-form @submit.prevent="login">
           <ValidationProvider name="email" rules="required">
-            <v-text-field v-model="cred.email" name="username" outlined label="Username or Email" />
+            <v-text-field v-model="cred.email" rounded name="username" outlined label="Username or Email" />
           </ValidationProvider>
 
           <ValidationProvider name="password" rules="required">
-            <v-text-field v-model="cred.password" name="password" type="password" outlined label="Password" />
+            <v-text-field
+              v-model="cred.password"
+              rounded
+              name="password"
+              type="password"
+              outlined
+              label="Password"
+            />
           </ValidationProvider>
-          <v-btn :disabled="invalid" type="submit" color="accent">
+          <v-btn rounded large :disabled="invalid" type="submit" color="primary">
             Sign in
           </v-btn>
           <v-btn text to="/register" color="primary">

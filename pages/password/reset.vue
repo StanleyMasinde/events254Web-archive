@@ -3,14 +3,18 @@
     <v-alert v-if="err" type="error">
       {{ err }}
     </v-alert>
+
+    <v-alert v-if="success" type="success">
+      {{ success }}
+    </v-alert>
     <h3 class="headline">
       Reset Password
     </h3>
     <br>
-    <ValidationObserver v-slot="{ invalid }">
-      <v-form @submit.prevent="resetPassword()">
+    <ValidationObserver ref="observer" v-slot="{ invalid }">
+      <v-form ref="form" @submit.prevent="resetPassword()">
         <ValidationProvider name="email" rules="required|email">
-          <v-text-field v-model="email" outlined label="Email" />
+          <v-text-field v-model="email" name="email" rounded outlined label="Email" />
         </ValidationProvider>
         <v-btn :disabled="invalid" type="submit" color="accent">
           Send Reset Email
@@ -32,7 +36,8 @@ export default {
   data () {
     return {
       err: null,
-      email: null
+      email: null,
+      success: null
     }
   },
   head: {
@@ -44,8 +49,12 @@ export default {
   methods: {
     async resetPassword () {
       try {
-        await this.$axios
+        const { data } = await this.$axios
           .post('/auth/password', { email: this.email })
+
+        this.$refs.form.reset()
+        this.$refs.observer.reset()
+        this.success = data
       } catch (error) {
         this.err = error.response.data
         setTimeout(() => {
