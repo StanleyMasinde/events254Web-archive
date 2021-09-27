@@ -45,7 +45,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col v-if="eventsObject.length === 0" cols="12">
+      <v-col v-if="eventsObject.length === 0" class="text-center" cols="12">
         <h1 class="display-1">
           No past events available
         </h1>

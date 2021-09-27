@@ -3,7 +3,7 @@
     <v-app-bar flat>
       <v-toolbar-title>
         <back-button />
-        {{ group.name || 'Events254' }}
+        {{ group.name || "Events254" }}
       </v-toolbar-title>
     </v-app-bar>
     <v-container>
@@ -30,7 +30,9 @@
                   <v-icon>mdi-map-marker</v-icon> {{ group.city }},
                   {{ group.country }}
                 </h3>
-                <h3><v-icon>mdi-account-group</v-icon> Members {{ group.memberCount }}</h3>
+                <h3>
+                  <v-icon>mdi-account-group</v-icon>{{ getGroupMembersString }}
+                </h3>
                 <h3>
                   <v-icon>mdi-account</v-icon> Managed by
                   {{ getGroupMangersString(group.organisers) }}
@@ -105,13 +107,10 @@ export default {
     }
   },
   async fetch () {
-    if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL)
-    }
-    const res = await this.$http.get(
+    const { data } = await this.$axios.get(
       `/groups/${this.$route.params.group}`
     )
-    this.group = await res.json()
+    this.group = data
   },
   head () {
     return {
@@ -140,6 +139,20 @@ export default {
           content: this.group.pictureUrl
         }
       ]
+    }
+  },
+  computed: {
+    getGroupMembersString () {
+      if (!this.group.members) {
+        return 'This group has no members'
+      }
+      if (this.group.members.length === 0) {
+        return 'This group has no members'
+      }
+      if (this.group.members.length === 1) {
+        return 'This group has 1 member'
+      }
+      return `${this.group.members.length} members`
     }
   },
   methods: {
