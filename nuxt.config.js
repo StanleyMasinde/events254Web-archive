@@ -58,7 +58,6 @@ module.exports = {
       { name: 'twitter:site', content: '@events254ke' },
       { name: 'twitter:creator', content: '@events254ke' },
       { name: 'twitter:title', content: 'Events254' },
-      { name: 'twitter:description', content: 'Events254 is a platform for people to share their events with the world' },
       {
         hid: 'og:image',
         property: 'og:image',
@@ -157,9 +156,7 @@ module.exports = {
     meta: {
       name: 'Events254',
       theme_color: '#49c5b6',
-      ogDescription: 'Events254 is an application for event organisers and anyone who is looking for something to do',
       ogHost: 'events254.co.ke',
-      twitterCard: 'summary',
       twitterSite: '@events254ke',
       twitterCreator: '@events254ke'
     },
