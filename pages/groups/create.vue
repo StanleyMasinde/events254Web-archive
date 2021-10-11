@@ -1,12 +1,7 @@
 <template>
   <div>
-    <v-app-bar flat>
-      <v-toolbar-title>
-        <back-button />
-        Start a new group
-      </v-toolbar-title>
-      <v-spacer />
-    </v-app-bar>
+    <AppBar title="Start a new group" />
+
     <v-container>
       <v-row justify="center">
         <v-col cols="12" md="7">
@@ -30,6 +25,9 @@
                       outlined
                       prepend-inner-icon="mdi-image"
                       prepend-icon=""
+                      rounded
+                      solo
+                      flat
                     />
                   </ValidationProvider>
 
@@ -46,6 +44,9 @@
                       outlined
                       hint="What do you want to call your group?"
                       prepend-inner-icon="mdi-account-group"
+                      rounded
+                      solo
+                      flat
                     />
                   </ValidationProvider>
 
@@ -63,6 +64,9 @@
                       hint="Give a detailed description of your group"
                       prepend-inner-icon="mdi-comment-text-outline"
                       auto-grow
+                      solo
+                      rounded
+                      flat
                       rows="3"
                     />
                   </ValidationProvider>
@@ -81,6 +85,9 @@
                       outlined
                       hint="Where is your group located?"
                       prepend-inner-icon="mdi-map-marker"
+                      solo
+                      rounded
+                      flat
                     />
                   </ValidationProvider>
 
@@ -97,9 +104,12 @@
                       label="City"
                       hint="What city is your group located in?"
                       prepend-inner-icon="mdi-city"
+                      solo
+                      rounded
+                      flat
                     />
                   </ValidationProvider>
-                  <v-btn type="submit" color="primary" :disabled="invalid">
+                  <v-btn rounded type="submit" color="primary" :disabled="invalid">
                     <v-icon left>
                       mdi-check
                     </v-icon>

@@ -1,13 +1,6 @@
 <template>
   <div>
-    <v-app-bar flat>
-      <v-app-bar-nav-icon>
-        <BackButton />
-      </v-app-bar-nav-icon>
-      <v-toolbar-title>
-        <span class="title">Calendar</span>
-      </v-toolbar-title>
-    </v-app-bar>
+    <AppBar title="Search for events" />
 
     <v-container>
       <v-row justify="center">

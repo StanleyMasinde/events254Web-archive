@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-app-bar flat>
-      <v-toolbar-title>
-        <back-button />
-        <span class="title">Create Event</span>
-      </v-toolbar-title>
-    </v-app-bar>
+    <AppBar title="Create event" />
 
     <v-container>
       <v-row justify="center">

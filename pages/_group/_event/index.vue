@@ -1,11 +1,7 @@
 <template>
   <div>
-    <v-app-bar flat>
-      <v-toolbar-title>
-        <back-button />
-        {{ currentEvent.about || "Events 254" }}
-      </v-toolbar-title>
-    </v-app-bar>
+    <AppBar :title="currentEvent.about" />
+
     <v-container fluid>
       <!-- Still loading the group information -->
       <FetchLoading v-if="$fetchState.pending" event-page />
@@ -129,10 +125,9 @@
   </div>
 </template>
 <script>
-import BackButton from '~/components/BackButton.vue'
 import SocialShare from '~/components/SocialShare.vue'
 export default {
-  components: { SocialShare, BackButton },
+  components: { SocialShare },
   data () {
     return {
       availableTickets: [],

@@ -1,25 +1,6 @@
 <template>
   <div>
-    <v-app-bar flat app hide-on-scroll>
-      <v-app-bar-nav-icon v-if="!$vuetify.breakpoint.smAndDown">
-        <v-img src="/icon.png" alt="Events254 logo" height="32" width="32" />
-      </v-app-bar-nav-icon>
-      <v-toolbar-title v-else>
-        Events254
-      </v-toolbar-title>
-      <v-spacer />
-      <v-toolbar-items>
-        <v-btn icon to="/search">
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-        <v-btn icon to="/notifications">
-          <v-icon>mdi-bell</v-icon>
-        </v-btn>
-        <v-btn icon to="/home">
-          <v-icon>mdi-account</v-icon>
-        </v-btn>
-      </v-toolbar-items>
-    </v-app-bar>
+    <AppBar title="Events254" :back="false" />
 
     <v-container fluid>
       <v-row>
@@ -27,7 +8,7 @@
 
         <v-col cols="12" lg="9" xl="10">
           <v-row justify="center">
-            <v-col cols="12" sm="6" md="4" class="pt-5">
+            <v-col cols="12" sm="6" md="6" class="pt-5">
               <h3 class="display-2">
                 There are a lot of things to do here.
               </h3>

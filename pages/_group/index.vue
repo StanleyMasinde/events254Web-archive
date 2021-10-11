@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-app-bar flat>
-      <v-toolbar-title>
-        <back-button />
-        {{ group.name || "Events254" }}
-      </v-toolbar-title>
-    </v-app-bar>
+    <AppBar :title="group.name" />
     <v-container>
       <client-only>
         <FetchLoading v-if="$fetchState.pending" event-page />
@@ -94,10 +89,9 @@
   </div>
 </template>
 <script>
-import BackButton from '~/components/BackButton.vue'
 import EditGroupDialog from '~/components/EditGroupDialog.vue'
 export default {
-  components: { EditGroupDialog, BackButton },
+  components: { EditGroupDialog },
   auth: false,
   data () {
     return {

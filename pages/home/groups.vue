@@ -6,8 +6,8 @@
           <p class="title">
             You have not created any groups
           </p>
-          <v-btn to="/groups/create" depressed rounded color="primary">
-            Create your first group
+          <v-btn to="/groups/create" depressed rounded color="primary" fab>
+            Create a group to get started
           </v-btn>
         </div>
       </v-col>
@@ -31,6 +31,24 @@
             {{ g.name }}
           </v-card-title>
         </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <v-btn
+          shaped
+          fab
+          right
+          to="/groups/create"
+          depressed
+          color="primary"
+          :bottom="$vuetify.breakpoint.lgAndUp"
+          :top="$vuetify.breakpoint.mdAndDown"
+          fixed
+        >
+          <v-icon>mdi-plus-circle</v-icon>
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>

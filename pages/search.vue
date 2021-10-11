@@ -1,20 +1,13 @@
 <template>
   <div>
-    <v-app-bar flat>
-      <v-app-bar-nav-icon>
-        <BackButton />
-      </v-app-bar-nav-icon>
-      <v-toolbar-title>
-        <span class="headline">Search</span>
-      </v-toolbar-title>
-    </v-app-bar>
+    <AppBar title="Search for events" />
 
     <v-container>
       <v-row justify="center">
         <SideNavigation />
 
         <v-col cols="12" lg="9" xl="10">
-          <v-col cols="12" md="7">
+          <v-col cols="12" md="10">
             <v-form method="POST" @submit.prevent="search">
               <v-text-field
                 v-model="searchQuery"
@@ -26,7 +19,7 @@
               />
             </v-form>
           </v-col>
-          <v-col v-if="searchQuery.length >= 3" cols="12" md="7">
+          <v-col v-if="searchQuery.length >= 3" cols="12" md="10">
             <v-tabs class="title" center-active centered>
               <v-tab>
                 <h3>Events {{ searchResults.events.length }} results</h3>
@@ -134,7 +127,7 @@
           </v-col>
 
           <!-- The search query is empty -->
-          <v-col v-if="!searchQuery" cols="12" md="7">
+          <v-col v-if="!searchQuery" cols="12" md="10">
             <v-card outlined>
               <v-card-text>
                 <h3>Search for events, groups, or users</h3>
@@ -188,6 +181,11 @@ export default {
       throw new Error(error)
     }
   },
+  head () {
+    return {
+      title: 'Search for events, groups, or users'
+    }
+  },
   auth: false,
   watch: {
     searchQuery () {
@@ -201,6 +199,9 @@ export default {
   },
   mounted () {
     this.searchQuery = this.$route.query.q || ''
+    if (this.searchQuery.length >= 3) {
+      this.$fetch()
+    }
   },
   methods: {
     search () {
