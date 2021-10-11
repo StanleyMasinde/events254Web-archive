@@ -1,10 +1,35 @@
 <template>
   <v-card flat>
     <v-card-text>
-      <v-text-field v-model="$auth.user.name" outlined label="Name" />
-      <v-text-field v-model="$auth.user.email" readonly outlined label="Email" />
-      <v-text-field v-model="$auth.user.username" outlined label="Username" />
-      <v-btn depressed large rounded color="accent">
+      <v-text-field
+        v-model="$auth.user.name"
+        solo
+        rounded
+        prepend-inner-icon="mdi-account-outline"
+        label="Name"
+        outlined
+        flat
+      />
+      <v-text-field
+        v-model="$auth.user.email"
+        prepend-inner-icon="mdi-email-outline"
+        readonly
+        outlined
+        solo
+        rounded
+        label="Email"
+        flat
+      />
+      <v-text-field
+        v-model="$auth.user.username"
+        prepend-inner-icon="mdi-account-outline"
+        outlined
+        label="Username"
+        rounded
+        flat
+        solo
+      />
+      <v-btn depressed large rounded color="primary">
         Update
       </v-btn>
     </v-card-text>

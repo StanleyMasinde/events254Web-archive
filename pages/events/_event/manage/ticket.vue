@@ -31,7 +31,7 @@
           rounded
           outlined
         >
-          <v-card-text class="display-1">
+          <v-card-text class="title">
             <p>
               Description: {{ t.type }} <br>
               Limit: {{ t.limit }} <br>

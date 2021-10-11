@@ -1,129 +1,143 @@
 <template>
-  <v-container>
-    <NavigatorBar title="Calendar" />
-    <v-row justify="center">
-      <v-col cols="12" md="10">
-        <v-card outlined>
-          <v-card-title v-if="$refs.calendar">
-            {{ $refs.calendar.title }}
-          </v-card-title>
+  <div>
+    <v-app-bar flat>
+      <v-app-bar-nav-icon>
+        <BackButton />
+      </v-app-bar-nav-icon>
+      <v-toolbar-title>
+        <span class="title">Calendar</span>
+      </v-toolbar-title>
+    </v-app-bar>
 
-          <v-card-actions>
-            <v-row>
-              <v-col cols="12" sm="4">
-                <v-btn
-                  rounded
-                  depressed
-                  block
-                  color="primary"
-                  @click="setToday"
-                >
-                  Today
-                </v-btn>
-              </v-col>
+    <v-container>
+      <v-row justify="center">
+        <SideNavigation />
 
-              <v-col cols="12" sm="1">
-                <v-btn icon block @click="prev">
-                  <v-icon>mdi-chevron-left</v-icon>
-                </v-btn>
-              </v-col>
+        <v-col cols="12" lg="9" xl="10">
+          <v-col cols="12" md="10">
+            <v-card outlined>
+              <v-card-title v-if="$refs.calendar">
+                {{ $refs.calendar.title }}
+              </v-card-title>
 
-              <v-col cols="12" sm="1">
-                <v-btn icon block @click="next">
-                  <v-icon>mdi-chevron-right</v-icon>
-                </v-btn>
-              </v-col>
+              <v-card-actions>
+                <v-row>
+                  <v-col cols="12" sm="4">
+                    <v-btn
+                      rounded
+                      depressed
+                      block
+                      color="primary"
+                      @click="setToday"
+                    >
+                      Today
+                    </v-btn>
+                  </v-col>
 
-              <v-col cols="12" sm="4">
-                <v-select
-                  v-model="calendarType"
-                  outlined
-                  :items="[
-                    { text: 'Week', value: 'week' },
-                    { text: 'Month', value: 'month' },
-                    { text: '4Day', value: '4day' },
-                    { text: 'Day', value: 'day' },
-                  ]"
-                  label="View"
+                  <v-col cols="12" sm="1">
+                    <v-btn icon block @click="prev">
+                      <v-icon>mdi-chevron-left</v-icon>
+                    </v-btn>
+                  </v-col>
+
+                  <v-col cols="12" sm="1">
+                    <v-btn icon block @click="next">
+                      <v-icon>mdi-chevron-right</v-icon>
+                    </v-btn>
+                  </v-col>
+
+                  <v-col cols="12" sm="4">
+                    <v-select
+                      v-model="calendarType"
+                      outlined
+                      :items="[
+                        { text: 'Week', value: 'week' },
+                        { text: 'Month', value: 'month' },
+                        { text: '4Day', value: '4day' },
+                        { text: 'Day', value: 'day' },
+                      ]"
+                      label="View"
+                    />
+                  </v-col>
+                </v-row>
+              </v-card-actions>
+              <v-card-title>
+                <span class="headline">Calendar</span>
+              </v-card-title>
+              <v-card-text>
+                <v-calendar
+                  ref="calendar"
+                  v-model="focus"
+                  :events="events"
+                  :type="calendarType"
+                  @click:event="onClickEvent"
                 />
-              </v-col>
-            </v-row>
-          </v-card-actions>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-col>
+      </v-row>
+
+      <!-- Dialog for event detail -->
+      <v-dialog v-model="dialog" persistent max-width="500px">
+        <v-card>
           <v-card-title>
-            <span class="headline">Calendar</span>
+            <span class="headline">{{ selectedEvent.name }}</span>
           </v-card-title>
           <v-card-text>
-            <v-calendar
-              ref="calendar"
-              v-model="focus"
-              :events="events"
-              :type="calendarType"
-              @click:event="onClickEvent"
-            />
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-subheader>Start</v-subheader>
+                <v-chip>
+                  {{ selectedEvent.start }}
+                </v-chip>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-subheader>End</v-subheader>
+                <v-chip>
+                  {{ selectedEvent.end }}
+                </v-chip>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-subheader>Location</v-subheader>
+                <v-chip>
+                  {{ selectedEvent.location }}
+                </v-chip>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-subheader>Attendees</v-subheader>
+                <v-chip> 0 </v-chip>
+              </v-col>
+            </v-row>
           </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn color="primary" depressed @click="dialog = false">
+              Close
+            </v-btn>
+            <v-btn
+              depressed
+              large
+              rounded
+              color="accent"
+              :to="`/events/${selectedEvent.id}`"
+            >
+              View
+            </v-btn>
+          </v-card-actions>
         </v-card>
-      </v-col>
-    </v-row>
-
-    <!-- Dialog for event detail -->
-    <v-dialog v-model="dialog" persistent max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">{{ selectedEvent.name }}</span>
-        </v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12" sm="6">
-              <v-subheader>Start</v-subheader>
-              <v-chip>
-                {{ selectedEvent.start }}
-              </v-chip>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-subheader>End</v-subheader>
-              <v-chip>
-                {{ selectedEvent.end }}
-              </v-chip>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" sm="6">
-              <v-subheader>Location</v-subheader>
-              <v-chip>
-                {{ selectedEvent.location }}
-              </v-chip>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-subheader>Attendees</v-subheader>
-              <v-chip> 0 </v-chip>
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" depressed @click="dialog = false">
-            Close
-          </v-btn>
-          <v-btn
-            depressed
-            large
-            rounded
-            color="accent"
-            :to="`/events/${selectedEvent.id}`"
-          >
-            View
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-container>
+      </v-dialog>
+    </v-container>
+  </div>
 </template>
 <script>
 export default {
   data () {
     return {
       events: [],
-      calendarType: 'month',
+      calendarType: '4day',
       focus: '',
       dialog: false,
       selectedEvent: {}
@@ -140,13 +154,15 @@ export default {
         const start = this.$moment(evt.startDate).format('YYYY-MM-DD HH:mm')
         const end = this.$moment(evt.endDate).format('YYYY-MM-DD HH:mm')
         const isAllDay = start === end
+        const color = isAllDay ? 'blue' : 'green'
         return {
           id: evt.id,
           name: evt.about,
           start,
           end,
           timed: !isAllDay,
-          location: evt.location
+          location: evt.location,
+          color
         }
       })
     } catch (error) {
@@ -155,7 +171,14 @@ export default {
   },
   head () {
     return {
-      title: 'Calendar'
+      title: this.$refs.calendar ? this.$refs.calendar.title : 'Calendar',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Find events and bookings from our calendar'
+        }
+      ]
     }
   },
 

@@ -1,7 +1,7 @@
 <template>
-  <v-btn icon large @click="goBack">
-    <v-icon> mdi-arrow-left </v-icon>
-  </v-btn>
+  <v-icon @click="goBack">
+    mdi-arrow-left
+  </v-icon>
 </template>
 <script>
 export default {

@@ -1,11 +1,12 @@
 <template>
   <div>
     <v-app-bar flat>
-      <v-toolbar-title>
-        <back-button />
-        {{ currentEvent.about || "Events 254" }}
-      </v-toolbar-title>
+      <v-app-bar-nav-icon>
+        <BackButton />
+      </v-app-bar-nav-icon>
+      <v-toolbar-title>{{ currentEvent.about || "Events254" }}</v-toolbar-title>
     </v-app-bar>
+
     <v-container fluid>
       <!-- Still loading the group information -->
       <FetchLoading v-if="$fetchState.pending" event-page />
@@ -14,114 +15,127 @@
       <FetchError v-else-if="$fetchState.error" />
 
       <!-- Event body -->
-      <v-row v-else justify="center">
-        <v-col cols="12" md="10">
-          <p>
-            <span v-if="currentEvent.allDay" class="text--secondary">
-              {{ $moment(currentEvent.startDate).format("dddd, MMMM Do YYYY") }}
-            </span>
-            <span v-else class="text--secondary">{{
-              $moment(currentEvent.startDate).format("MMMM Do YYYY [at] h:mm a")
-            }}</span>
-            <br>
-            <span class="text-h5 font-weight-bold">
-              {{ currentEvent.about }}
-            </span>
-          </p>
-        </v-col>
-        <v-col cols="12" md="10">
-          <v-row>
-            <v-col cols="12" md="8">
-              <v-card flat>
-                <v-img height="300" :src="currentEvent.image" />
-              </v-card>
-            </v-col>
-            <v-col class="sticky-top" cols="12" md="4">
-              <v-card outlined>
-                <v-card-text class="body-1">
-                  <span v-if="currentEvent.allDay" class="red--text">
-                    All-Day Event
-                  </span>
-                  <span
-                    v-else
-                    class="red--text"
-                  >From {{ $moment(currentEvent.startDate).format("LT") }} to
-                    {{ $moment(currentEvent.endDate).format("LT") }}
-                  </span>
-                  <br>
-                  Event by:
-                  <router-link :to="organiserLink">
-                    {{
-                      currentEvent.organiser
-                        ? currentEvent.organiser.name
-                        : "N/A"
-                    }}
-                  </router-link>
-                  <br>
-                  Location: {{ currentEvent.location || "Online" }}
-                </v-card-text>
-                <template v-if="currentEvent.attendees">
-                  <v-card-text
-                    v-if="currentEvent.attendees.length > 0"
-                    class="body-1"
-                  >
-                    <h5>Attendees</h5>
-                    <div class="stacked-av">
-                      <v-avatar
-                        v-for="(a, i) in currentEvent.attendees"
-                        :key="i"
-                        :title="a.name"
-                        color="brown"
-                      >
-                        <span>{{ innitials(a.name) }}</span>
-                      </v-avatar>
-                    </div>
+      <v-row v-else>
+        <SideNavigation />
+
+        <v-col cols="12" lg="9" xl="10">
+          <v-col cols="12" md="10">
+            <p>
+              <span v-if="currentEvent.allDay" class="text--secondary">
+                {{
+                  $moment(currentEvent.startDate).format("dddd, MMMM Do YYYY")
+                }}
+              </span>
+              <span v-else class="text--secondary">{{
+                $moment(currentEvent.startDate).format(
+                  "MMMM Do YYYY [at] h:mm a"
+                )
+              }}</span>
+              <br>
+              <span class="text-h5 font-weight-bold">
+                {{ currentEvent.about }}
+              </span>
+            </p>
+          </v-col>
+          <v-col cols="12" md="10">
+            <v-row>
+              <v-col cols="12" md="8">
+                <v-card flat>
+                  <v-img height="300" :src="currentEvent.image" />
+                </v-card>
+              </v-col>
+              <v-col class="sticky-top" cols="12" md="4">
+                <v-card outlined>
+                  <v-card-text class="body-1">
+                    <span v-if="currentEvent.allDay" class="red--text">
+                      All-Day Event
+                    </span>
+                    <span
+                      v-else
+                      class="red--text"
+                    >From
+                      {{ $moment(currentEvent.startDate).format("LT") }} to
+                      {{ $moment(currentEvent.endDate).format("LT") }}
+                    </span>
+                    <br>
+                    Event by:
+                    <router-link :to="organiserLink">
+                      {{
+                        currentEvent.organiser
+                          ? currentEvent.organiser.name
+                          : "N/A"
+                      }}
+                    </router-link>
+                    <br>
+                    Location: {{ currentEvent.location || "Online" }}
                   </v-card-text>
-                </template>
-                <client-only>
-                  <v-card-actions>
-                    <v-btn
-                      v-if="canEdit"
-                      text
-                      :to="`/events/${currentEvent.id}/manage`"
+                  <template v-if="currentEvent.attendees">
+                    <v-card-text
+                      v-if="currentEvent.attendees.length > 0"
+                      class="body-1"
                     >
-                      Manage event
-                    </v-btn>
-                    <social-share
-                      :url="`/events/${currentEvent.id}`"
-                      :title="currentEvent.about"
-                      :description="currentEvent.description"
-                    />
-                    <template v-if="!currentEvent.currentUserTicket">
-                      <BuyTicket
-                        v-if="!currentEvent.can_edit"
-                        :past="currentEvent.past"
-                        :tickets="currentEvent.tickets"
-                      />
-                    </template>
-                    <template v-else>
-                      {{ currentEvent.past ? "You went" : "You are going" }}
+                      <h5>Attendees</h5>
+                      <div class="stacked-av">
+                        <v-avatar
+                          v-for="(a, i) in currentEvent.attendees"
+                          :key="i"
+                          :title="a.name"
+                          color="brown"
+                        >
+                          {{ a.name.charAt(0) }}
+                          <!-- <span>{{ initials(a.name) }}</span> -->
+                        </v-avatar>
+                      </div>
+                    </v-card-text>
+                  </template>
+                  <client-only>
+                    <v-card-actions>
                       <v-btn
-                        color="primary"
-                        depressed
-                        large
-                        rounded
-                        to="/home/tickets"
+                        v-if="canEdit"
+                        text
+                        :to="`/events/${currentEvent.id}/manage`"
                       >
-                        View your tickets
+                        Manage event
                       </v-btn>
-                    </template>
-                  </v-card-actions>
-                </client-only>
-              </v-card>
-            </v-col>
-            <v-col cols="12" md="8">
-              <v-card flat>
-                <!-- eslint-disable-next-line vue/no-v-html -->
-                <v-card-text class="body-1" v-html="currentEvent.description" />
-              </v-card>
-            </v-col>
-          </v-row>
+                      <social-share
+                        :url="`/events/${currentEvent.id}`"
+                        :title="currentEvent.about"
+                        :description="currentEvent.description"
+                      />
+                      <template v-if="!currentEvent.currentUserTicket">
+                        <BuyTicket
+                          v-if="!currentEvent.can_edit"
+                          :past="currentEvent.past"
+                          :tickets="currentEvent.tickets"
+                        />
+                      </template>
+                      <template v-else>
+                        {{ currentEvent.past ? "You went" : "You are going" }}
+                        <v-btn
+                          color="primary"
+                          depressed
+                          large
+                          rounded
+                          to="/home/tickets"
+                        >
+                          View your tickets
+                        </v-btn>
+                      </template>
+                    </v-card-actions>
+                  </client-only>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="8">
+                <v-card flat>
+                  <!-- eslint-disable-next-line vue/no-v-html -->
+                  <v-card-text
+                    class="body-1"
+                    v-html="currentEvent.description"
+                  />
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
         </v-col>
       </v-row>
       <!-- End of event body -->
@@ -129,10 +143,9 @@
   </div>
 </template>
 <script>
-import BackButton from '~/components/BackButton.vue'
 import SocialShare from '~/components/SocialShare.vue'
 export default {
-  components: { SocialShare, BackButton },
+  components: { SocialShare },
   data () {
     return {
       availableTickets: [],
@@ -248,9 +261,14 @@ export default {
     canEdit () {
       const user = this.$store.state.auth.user
       const event = this.currentEvent
-      if (!user) { return false }
+      if (!user) {
+        return false
+      }
       if (event.organiser.type === 'user') {
         return event.organiser.id === user.id
+      }
+      if (!event.organiser.adminIds) {
+        return false
       }
       const ids = event.organiser.adminIds.map(r => r.user_id)
       return ids.includes(user.id)

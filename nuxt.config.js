@@ -58,6 +58,7 @@ module.exports = {
       { name: 'twitter:site', content: '@events254ke' },
       { name: 'twitter:creator', content: '@events254ke' },
       { name: 'twitter:title', content: 'Events254' },
+      { hid: 'description', name: 'description', content: 'Find activities, meetups, and more in your city. Sell your tickets, or buy them for free. Find a local event, or create a new one. Find people, or create a new event. The possibilities are endless!' },
       {
         hid: 'og:image',
         property: 'og:image',
@@ -121,8 +122,8 @@ module.exports = {
       themes: {
         light: {
           primary: '#ff8601',
-          accent: '#49c5b6',
-          secondary: colors.blue.accent1,
+          accent: '#01FF86',
+          secondary: '#8601FF',
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
@@ -132,7 +133,7 @@ module.exports = {
     },
     defaultAssets: {
       font: {
-        family: 'Poppins'
+        family: 'Montserrat'
       },
       icons: 'mdi'
     }

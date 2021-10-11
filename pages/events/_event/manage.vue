@@ -9,7 +9,7 @@
       </v-toolbar-title>
     </v-app-bar>
 
-    <v-container fluid>
+    <v-container>
       <div v-if="!currentEvent.can_edit" class="error-page">
         <v-img src="/403.svg" height="100%">
           <h1 class="display-1">
@@ -19,46 +19,52 @@
       </div>
       <template v-else>
         <v-row justify="center">
-          <v-col cols="12" md="8">
-            <v-btn
-              large
-              title="Click to publish or unpublish this event"
-              depressed
-              :color="currentEvent.published === 1 ? 'green': 'primary'"
-              rounded
-              @click="togglePublishing"
-            >
-              {{ currentEvent.published === 1 ? 'Published': 'Draft' }}
-            </v-btn>
-            <v-btn
-              large
-              title="Delete this event"
-              icon
-              color="error"
-              depressed
-              rounded
-              @click="deleteEventDialog = true"
-            >
-              <v-icon>mdi-delete-outline</v-icon>
-            </v-btn>
-            <v-btn large title="View event like the same way users see it" rounded text :to="`/events/${$route.params.event}`">
-              View event
-            </v-btn>
-          </v-col>
-          <v-col cols="12" lg="8">
-            <v-tabs centered grow>
-              <v-tab :to="`/events/${$route.params.event}/manage`">
-                General information
-              </v-tab>
-              <v-tab :to="`/events/${$route.params.event}/manage/ticket`">
-                Tickets
-              </v-tab>
-              <v-tab :to="`/events/${$route.params.event}/manage/rsvps`">
-                RSVPs
-              </v-tab>
-            </v-tabs>
-            <nuxt-child />
-          </v-col>
+          <v-row justify="center">
+            <SideNavigation />
+
+            <v-col cols="12" lg="9" xl="10">
+              <v-col cols="12" md="10">
+                <v-btn
+                  large
+                  title="Click to publish or unpublish this event"
+                  depressed
+                  :color="currentEvent.published === 1 ? 'green': 'primary'"
+                  rounded
+                  @click="togglePublishing"
+                >
+                  {{ currentEvent.published === 1 ? 'Published': 'Draft' }}
+                </v-btn>
+                <v-btn
+                  large
+                  title="Delete this event"
+                  icon
+                  color="error"
+                  depressed
+                  rounded
+                  @click="deleteEventDialog = true"
+                >
+                  <v-icon>mdi-delete-outline</v-icon>
+                </v-btn>
+                <v-btn large title="View event like the same way users see it" rounded text :to="`/events/${$route.params.event}`">
+                  View event
+                </v-btn>
+              </v-col>
+              <v-col cols="12" lg="8">
+                <v-tabs centered grow>
+                  <v-tab :to="`/events/${$route.params.event}/manage`">
+                    General information
+                  </v-tab>
+                  <v-tab :to="`/events/${$route.params.event}/manage/ticket`">
+                    Tickets
+                  </v-tab>
+                  <v-tab :to="`/events/${$route.params.event}/manage/rsvps`">
+                    RSVPs
+                  </v-tab>
+                </v-tabs>
+                <nuxt-child />
+              </v-col>
+            </v-col>
+          </v-row>
         </v-row>
       </template>
     </v-container>

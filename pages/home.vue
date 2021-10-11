@@ -1,33 +1,48 @@
 <template>
-  <v-container fluid>
-    <v-row justify="center">
-      <v-col cols="12">
-        <h1 class="display-1">
-          {{ greeting }}
-        </h1>
-      </v-col>
-      <v-col cols="12" lg="6">
-        <v-tabs grow>
-          <v-tab to="/home">
-            Home
-          </v-tab>
-          <v-tab to="/home/profile">
-            Profile
-          </v-tab>
-          <v-tab to="/home/events">
-            My Events
-          </v-tab>
-          <v-tab to="/home/groups">
-            My Groups
-          </v-tab>
-          <v-tab to="/home/tickets">
-            Tickets
-          </v-tab>
-        </v-tabs>
-        <nuxt-child />
-      </v-col>
-    </v-row>
-  </v-container>
+  <div>
+    <v-app-bar flat>
+      <v-app-bar-nav-icon>
+        <BackButton />
+      </v-app-bar-nav-icon>
+      <v-toolbar-title>
+        <span class="title">Home</span>
+      </v-toolbar-title>
+    </v-app-bar>
+
+    <v-container>
+      <v-row justify="center">
+        <SideNavigation />
+
+        <v-col cols="12" lg="9" xl="10">
+          <v-col cols="12">
+            <h1 class="display-1">
+              {{ greeting }}
+            </h1>
+          </v-col>
+          <v-col cols="12" lg="10" sm="8">
+            <v-tabs grow>
+              <v-tab exact to="/home">
+                Home
+              </v-tab>
+              <v-tab to="/home/profile">
+                Profile
+              </v-tab>
+              <v-tab to="/home/events">
+                My Events
+              </v-tab>
+              <v-tab to="/home/groups">
+                My Groups
+              </v-tab>
+              <v-tab to="/home/tickets">
+                Tickets
+              </v-tab>
+            </v-tabs>
+            <nuxt-child />
+          </v-col>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 <script>
 export default {

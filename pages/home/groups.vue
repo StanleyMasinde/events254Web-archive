@@ -13,12 +13,13 @@
       </v-col>
     </v-row>
 
-    <v-row v-else justify="center">
+    <v-row v-else>
       <v-col
         v-for="(g,i) in groups"
         :key="i"
         cols="12"
         md="6"
+        sm="6"
       >
         <v-card
           :to="`/${g.slug}`"

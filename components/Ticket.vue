@@ -3,7 +3,7 @@
   <div class="ticket">
     <!-- Sample QRCode -->
     <div class="qrcode">
-      <img :src="`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://events.opensource254.co.ke/tickets/${ticket.id}`" alt="QR Code">
+      <img :src="`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://events254.co.ke/tickets/${ticket.id}`" alt="QR Code">
     </div>
 
     <div

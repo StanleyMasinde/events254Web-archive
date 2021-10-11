@@ -1,15 +1,12 @@
 <template>
   <v-app>
-    <!-- Navigation drawer with links to home, about, and contact pages -->
-    <v-navigation-drawer app fixed>
-      <!-- Logo -->
+    <!-- <v-navigation-drawer app fixed>
       <v-list-item>
-        <v-list-item-avatar height="100" width="100">
+        <v-list-item-avatar height="60" width="60">
           <v-img src="/icon.png" />
         </v-list-item-avatar>
       </v-list-item>
 
-      <!-- Links to other pages -->
       <v-list rounded>
         <v-list-item to="/">
           <v-list-item-icon>
@@ -39,16 +36,12 @@
           <v-list-item-title> Search </v-list-item-title>
         </v-list-item>
 
-        <!-- Spacer -->
         <v-spacer />
 
-        <!-- Large button to create a new event -->
         <v-list-item>
           <v-btn
             rounded
             depressed
-            block
-            large
             color="primary"
             to="/events/create"
           >
@@ -77,7 +70,7 @@
           </v-list-item-action>
         </v-list-item>
       </template>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
 
     <v-main>
       <nuxt />
