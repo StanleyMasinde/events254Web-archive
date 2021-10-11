@@ -196,10 +196,8 @@ export default {
       }
     }
   },
-  watchQuery (newQuery) {
-    if (newQuery.length >= 3) {
-      this.$fetch()
-    }
+  watchQuery (newQuery, oldQuery) {
+    this.$fetch()
   },
   mounted () {
     this.searchQuery = this.$route.query.q || ''

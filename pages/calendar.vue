@@ -188,21 +188,22 @@ export default {
   methods: {
     async getCurrentMonth () {
       try {
-        const data = await this.$http.get(
+        const { data } = await this.$axios.get(
           `/search/calendar/?date=${this.focus}`
         )
-        const evts = await data.json()
-        this.events = evts.map((evt) => {
+        this.events = data.map((evt) => {
           const start = this.$moment(evt.startDate).format('YYYY-MM-DD HH:mm')
           const end = this.$moment(evt.endDate).format('YYYY-MM-DD HH:mm')
           const isAllDay = start === end
+          const color = isAllDay ? 'blue' : 'green'
           return {
             id: evt.id,
             name: evt.about,
             start,
             end,
             timed: !isAllDay,
-            location: evt.location
+            location: evt.location,
+            color
           }
         })
       } catch (error) {
