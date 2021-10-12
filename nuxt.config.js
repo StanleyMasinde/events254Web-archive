@@ -1,11 +1,12 @@
 /* eslint-disable nuxt/no-cjs-in-config */
 const colors = require('vuetify/lib/util/colors').default
+const axios = require('axios').default
 module.exports = {
   // Nuxt server
   server: {
     port: process.env.PORT || 3000,
     host: 'localhost',
-    timing: false
+    timing: true
   },
 
   generate: {
@@ -222,15 +223,39 @@ module.exports = {
     hostname: 'https://events254.co.ke',
     gzip: true,
     exclude: [],
-    routes: [
-      {
-        url: '/',
-        changefreq: 'hourly',
-        priority: 1,
-        lastmod: new Date(),
-        lastmodrealtime: true
+    routes: async () => {
+      try {
+        const { data } = await axios.get(process.env.API_URL + '/events')
+        const users = await axios.get(process.env.API_URL + '/users')
+        const groups = await axios.get(process.env.API_URL + '/groups')
+
+        const usersArray = users.data.data.map((user) => {
+          return {
+            url: `/u/${user.id}`,
+            changefreq: 'daily',
+            priority: 0.8
+          }
+        })
+
+        const groupsArray = groups.data.data.map((group) => {
+          return {
+            url: `/${group.slug}`,
+            changefreq: 'daily',
+            priority: 0.8
+          }
+        })
+        const routes = data.events.map((event) => {
+          return {
+            url: `/events/${event.id}`,
+            changefreq: 'daily',
+            priority: 0.8
+          }
+        })
+        return routes.concat(usersArray).concat(groupsArray)
+      } catch (error) {
+        console.log(error)
       }
-    ]
+    }
   },
   /*
      ** Axios module configuration
