@@ -76,15 +76,17 @@
                     >
                       <h5>Attendees</h5>
                       <div class="stacked-av">
-                        <v-avatar
-                          v-for="(a, i) in currentEvent.attendees"
-                          :key="i"
-                          :title="a.name"
-                          color="brown"
-                        >
-                          {{ a.name.charAt(0) }}
+                        <client-only>
+                          <v-avatar
+                            v-for="(a, i) in currentEvent.attendees"
+                            :key="i"
+                            :title="a.name"
+                            color="brown"
+                          >
+                            {{ a.name.charAt(0) }}
                           <!-- <span>{{ initials(a.name) }}</span> -->
-                        </v-avatar>
+                          </v-avatar>
+                        </client-only>
                       </div>
                     </v-card-text>
                   </template>
@@ -104,7 +106,7 @@
                       />
                       <template v-if="!currentEvent.currentUserTicket">
                         <BuyTicket
-                          v-if="!currentEvent.can_edit"
+                          v-if="!canEdit"
                           :past="currentEvent.past"
                           :tickets="currentEvent.tickets"
                         />
