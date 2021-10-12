@@ -1,6 +1,8 @@
 <template>
   <div>
-    <AppBar title="Create event" />
+    <client-only>
+      <AppBar title="Create event" />
+    </client-only>
 
     <v-container>
       <v-row justify="center">

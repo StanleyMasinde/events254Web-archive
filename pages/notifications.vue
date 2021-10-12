@@ -1,6 +1,9 @@
 <template>
   <div>
-    <AppBar title="Notifications" />
+    <client-only>
+      <AppBar title="Notifications" />
+    </client-only>
+
     <v-container fluid>
       <v-row justify="center">
         <SideNavigation />

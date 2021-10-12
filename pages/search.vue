@@ -1,6 +1,8 @@
 <template>
   <div>
-    <AppBar title="Search for events" />
+    <client-only>
+      <AppBar title="Search for events" />
+    </client-only>
 
     <v-container>
       <v-row justify="center">

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <AppBar title="Categories" />
+    <client-only>
+      <AppBar title="Categories" />
+    </client-only>
 
     <v-container>
       <v-row>

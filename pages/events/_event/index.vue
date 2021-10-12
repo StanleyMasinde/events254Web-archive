@@ -1,11 +1,8 @@
 <template>
   <div>
-    <v-app-bar flat>
-      <v-app-bar-nav-icon>
-        <BackButton />
-      </v-app-bar-nav-icon>
-      <v-toolbar-title>{{ currentEvent.about || "Events254" }}</v-toolbar-title>
-    </v-app-bar>
+    <client-only>
+      <AppBar :title="currentEvent.title" />
+    </client-only>
 
     <v-container fluid>
       <!-- Still loading the group information -->
@@ -17,7 +14,6 @@
       <!-- Event body -->
       <v-row v-else>
         <SideNavigation />
-
         <v-col cols="12" lg="9" xl="10">
           <v-col cols="12" md="10">
             <p>
@@ -76,17 +72,15 @@
                     >
                       <h5>Attendees</h5>
                       <div class="stacked-av">
-                        <client-only>
-                          <v-avatar
-                            v-for="(a, i) in currentEvent.attendees"
-                            :key="i"
-                            :title="a.name"
-                            color="brown"
-                          >
-                            {{ a.name.charAt(0) }}
+                        <v-avatar
+                          v-for="(a, i) in currentEvent.attendees"
+                          :key="i"
+                          :title="a.name"
+                          color="brown"
+                        >
+                          {{ a.name.charAt(0) }}
                           <!-- <span>{{ initials(a.name) }}</span> -->
-                          </v-avatar>
-                        </client-only>
+                        </v-avatar>
                       </div>
                     </v-card-text>
                   </template>
@@ -289,7 +283,6 @@ export default {
       this.verifyTransaction(transactionId)
     }
   },
-  auth: false,
   methods: {
     async verifyTransaction (transactionID) {
       try {
@@ -305,7 +298,17 @@ export default {
         throw new Error(error)
       }
     }
-  }
+  },
+  initClientOnlyComp (count = 10) {
+    this.$nextTick(() => {
+      if (this.$refs.myComp) {
+        // ...
+      } else if (count > 0) {
+        this.initClientOnlyComp(count - 1)
+      }
+    })
+  },
+  auth: false
 }
 </script>
 <style lang="scss" scoped>

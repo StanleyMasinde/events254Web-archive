@@ -1,6 +1,8 @@
 <template>
   <div>
-    <AppBar title="Home" />
+    <client-only>
+      <AppBar title="Home" />
+    </client-only>
 
     <v-container>
       <v-row justify="center">

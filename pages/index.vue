@@ -1,6 +1,8 @@
 <template>
   <div>
-    <AppBar title="Events254" :back="false" />
+    <client-only>
+      <AppBar title="Events254" :back="false" />
+    </client-only>
 
     <v-container fluid>
       <v-row>

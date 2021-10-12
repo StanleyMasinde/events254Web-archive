@@ -1,6 +1,8 @@
 <template>
   <div>
-    <AppBar title="Start a new group" />
+    <client-only>
+      <AppBar title="Start a new group" />
+    </client-only>
 
     <v-container>
       <v-row justify="center">
