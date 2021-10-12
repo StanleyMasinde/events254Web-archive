@@ -244,7 +244,7 @@ module.exports = {
             priority: 0.8
           }
         })
-        const routes = data.events.map((event) => {
+        const routes = data.map((event) => {
           return {
             url: `/events/${event.id}`,
             changefreq: 'daily',
