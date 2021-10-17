@@ -253,6 +253,7 @@ module.exports = {
         })
         return routes.concat(usersArray).concat(groupsArray)
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error)
       }
     }

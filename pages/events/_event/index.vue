@@ -12,9 +12,9 @@
       <FetchError v-else-if="$fetchState.error" />
 
       <!-- Event body -->
-      <v-row v-else>
+      <v-row v-else justify="center">
         <SideNavigation />
-        <v-col cols="12" lg="9" xl="10">
+        <v-col cols="12" lg="8" xl="10">
           <v-col cols="12" md="10">
             <p>
               <span v-if="currentEvent.allDay" class="text--secondary">

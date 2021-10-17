@@ -4,11 +4,11 @@
       <AppBar title="Home" />
     </client-only>
 
-    <v-container>
+    <v-container fluid>
       <v-row justify="center">
         <SideNavigation />
 
-        <v-col cols="12" lg="9" xl="10">
+        <v-col cols="12" lg="7" xl="10">
           <v-col cols="12">
             <h1 class="display-1">
               {{ greeting }}
