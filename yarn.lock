@@ -1591,10 +1591,10 @@
     remark "^13.0.0"
     unist-util-find-all-after "^3.0.2"
 
-"@tiptap/core@^2.0.0-beta.128":
-  version "2.0.0-beta.128"
-  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.0.0-beta.128.tgz#13ff74b611e30b3b3d934aff7d223b61183c7270"
-  integrity sha512-i+So3uS6cfPDJLJjZ9DhWg6bfmSk3h8rhKKjyxlSW1wKkXoLw0r5sBuHMg3jBnUIKQrWICSHJR44bsA1rbDnRw==
+"@tiptap/core@^2.0.0-beta.130":
+  version "2.0.0-beta.130"
+  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.0.0-beta.130.tgz#d0b0f14bd6aaf2ad79515fe2307beced7d9c704e"
+  integrity sha512-mHj1ZF4Fw0JGmICf2OgUfb1dNDqCLUZY3RjPgGpQNcvCEBqb4nnF30gipFMBhxzEcr4GvqrVzU6fQJelh31WOA==
   dependencies:
     "@types/prosemirror-commands" "^1.0.4"
     "@types/prosemirror-keymap" "^1.0.4"
