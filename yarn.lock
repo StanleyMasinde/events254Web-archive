@@ -1677,10 +1677,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-ordered-list/-/extension-ordered-list-2.0.0-beta.19.tgz#eeab2e8488b84ba7deb93b299370dc187d37c98a"
   integrity sha512-PHC5pA1gohxCJF2xMXOzruPt8XWyWLun3vhJL2AIUUzUoGJmSRhsc8Wreeozdlf8HkKrqnsIuk5tp6IEsau6Pw==
 
-"@tiptap/extension-paragraph@^2.0.0-beta.17":
-  version "2.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-paragraph/-/extension-paragraph-2.0.0-beta.17.tgz#f8f0263359b95dec9c10078699697908568d9be9"
-  integrity sha512-qCQVCf9c2hgaeIdfy22PaoZyW5Vare/1aGkOEAaZma5RjrUbV9hrRKwoW9LsDjnh1EN1fIeKdg02yEhnHWtG8A==
+"@tiptap/extension-paragraph@^2.0.0-beta.19":
+  version "2.0.0-beta.19"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-paragraph/-/extension-paragraph-2.0.0-beta.19.tgz#043211ca77dcc8c22bea8bf9f223892cef2a5fe3"
+  integrity sha512-mk8Es7kZIAAETHqXqMItNs34HnnlFvYp8+u7e8PQZtMF85YaIH4IVCVhCC2/buVRQTBnFJ3bJDbJAnawnxAWBQ==
 
 "@tiptap/extension-strike@^2.0.0-beta.21":
   version "2.0.0-beta.21"
