@@ -30,7 +30,7 @@
           </v-row>
 
           <v-row justify="center" class="mt-12">
-            <v-col cols="12" md="10">
+            <v-col cols="12">
               <v-row cols="12" no-gutters>
                 <v-col>
                   <h2>Browse by category</h2>
@@ -42,31 +42,29 @@
                 </v-col>
               </v-row>
 
-              <v-carousel hide-delimiters height="100" cycle>
-                <v-carousel-item v-for="(e, i) in eventCategories" :key="i">
-                  <v-card>
-                    <v-img
-                      contain
-                      gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-                      height="100"
-                      :src="e.image ? e.image : '/icon.png'"
+              <div class="scroll-y-list">
+                <v-card v-for="(e, i) in eventCategories" :key="i" class="mb-3 mr-3">
+                  <v-img
+                    contain
+                    gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+                    height="100"
+                    :src="e.image ? e.image : '/icon.png'"
+                  >
+                    <v-row
+                      no-gutters
+                      justify="center"
+                      align="center"
+                      style="height: 100%"
                     >
-                      <v-row
-                        no-gutters
-                        justify="center"
-                        align="center"
-                        style="height: 100%"
-                      >
-                        <v-col class="text-center white--text">
-                          <h1 class="title">
-                            {{ e.name }}
-                          </h1>
-                        </v-col>
-                      </v-row>
-                    </v-img>
-                  </v-card>
-                </v-carousel-item>
-              </v-carousel>
+                      <v-col class="text-center white--text">
+                        <h1 class="title">
+                          {{ e.name }}
+                        </h1>
+                      </v-col>
+                    </v-row>
+                  </v-img>
+                </v-card>
+              </div>
             </v-col>
           </v-row>
 
@@ -74,98 +72,49 @@
             <FetchLoading v-if="$fetchState.pending" landing-page />
             <FetchError v-else-if="$fetchState.error" />
 
-            <v-row v-else justify="center" class="mt-12">
-              <v-col cols="12" md="10">
-                <div
-                  v-if="eventsObject.upcomingEvents.length === 0"
-                  class="text-center"
-                >
-                  <h3>Nothing here</h3>
-                </div>
-                <v-row v-else>
-                  <v-col v-for="(c, indx) in eventsObject" :key="indx" cols="12">
-                    <div v-if="c.events.length === 0" class="text-center">
-                      <h3>
-                        Such empty ⦰
-                      </h3>
-                    </div>
-                    <v-col v-if="c.events.length > 0" cols="12">
-                      <v-row>
-                        <v-col>
-                          <h2>{{ c.name }}</h2>
-                        </v-col>
-                        <v-col class="text-right">
-                          <v-btn text rounded color="primary" to="/events">
-                            See more
-                          </v-btn>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-
-                    <v-carousel v-if="c.events.length > 0" height="300" hide-delimiter-background cycle>
-                      <v-carousel-item
-                        v-for="(e, i) in c.events"
-                        :key="i"
-                        cols="11"
-                      >
-                        <v-card
-                          outlined
-                          :to="`/events/${e.id}`"
-                          class="ma-2 no-overflow"
-                          rounded
-                        >
-                          <v-img height="200" class="pa-3" :src="e.image">
-                            <v-row>
-                              <v-col>
-                                <div class="text-left">
-                                  <h3 class="error--text custom-shadow display-1">
-                                    {{ new Date(e.startDate).getDate() }}
-                                  </h3>
-                                  <span class="error--text custom-shadow">{{
-                                    months[$moment(e.startDate).month()]
-                                  }}</span>
-                                </div>
-                              </v-col>
-                              <v-col
-                                v-if="e.isFree"
-                                class="teal--text title text-right custom-shadow"
-                              >
-                                <h3>Free</h3>
-                              </v-col>
-                              <v-col
-                                v-else
-                                class="text-right title white--text custom-shadow"
-                              >
-                                <h3>{{ formatCurrency(e.lowestPrice) }}</h3>
-                              </v-col>
-                            </v-row>
-                          </v-img>
-                          <v-list-item dense>
-                            <v-list-item-content class="body-1">
-                              <v-list-item-title :title="e.about">
-                                {{ e.about }}
-                              </v-list-item-title>
-                              <v-list-item-subtitle class="red--text">
-                                <v-icon>mdi-calendar-outline</v-icon>
-                                {{
-                                  $moment(e.startDate).format(
-                                    "MMMM Do YYYY [at] h:mm a"
-                                  )
-                                }}
-                              </v-list-item-subtitle>
-                              <v-list-item-subtitle>
-                                <v-icon>mdi-map-marker-outline</v-icon>
-                                {{ e.isOnline ? "Online" : e.location }}
-                              </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                        </v-card>
-                      </v-carousel-item>
-                    </v-carousel>
+            <div
+              v-for="(item, index) in newFeedObject"
+              v-else
+              :key="index"
+              :class="{ 'mt-12': index > 0 }"
+              justify="center"
+            >
+              <div v-if="item.data.length > 0">
+                <v-row cols="12" no-gutters>
+                  <v-col>
+                    <h2>{{ item.name }}</h2>
+                  </v-col>
+                  <v-col class="text-right">
+                    <v-btn text rounded color="primary" to="/categories">
+                      See more
+                    </v-btn>
                   </v-col>
                 </v-row>
-              </v-col>
-            </v-row>
+                <div class="scroll-y-list">
+                  <v-card
+                    v-for="(it, ind) in item.data"
+                    :key="ind"
+                    outlined
+                    class="mt-3 mr-3"
+                    :to="it.linkPrefix == 'groups' ? `/${it.id}` : `/events/${it.id}`"
+                  >
+                    <v-img
+                      height="250"
+                      contain
+                      gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+                      :src="it.image ? it.image : '/icon.png'"
+                    />
+                    <v-card-title class="truncate-title" :title="it.name">
+                      {{ it.name }}
+                    </v-card-title>
+                    <v-card-subtitle class="truncate-text" :title="it.description">
+                      <!-- eslint-disable-next-line vue/no-v-html -->
+                      <p v-html="it.description" />
+                    </v-card-subtitle>
+                  </v-card>
+                </div>
+              </div>
+            </div>
           </client-only>
         </v-col>
       </v-row>
@@ -228,7 +177,7 @@ export default {
       filter: {
         category: []
       },
-      eventsObject: {}
+      newFeedObject: {}
     }
   },
   async fetch () {
@@ -236,8 +185,8 @@ export default {
       this.$http.setBaseURL(process.env.API_URL)
     }
     try {
-      const data = await this.$http.get('/events?paginate=6')
-      this.eventsObject = await data.json()
+      const { data } = await this.$axios.get('/feed')
+      this.newFeedObject = data
     } catch (error) {
       this.$sentry.captureException(error)
       throw new Error(error)

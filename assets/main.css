@@ -55,3 +55,76 @@ body {
     z-index: 5;
   }
 }
+
+.scroll-y-list {
+  overflow-y: hidden;
+  overflow-x: scroll!important;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  border-radius: 15px!important;
+  padding: 0!important;
+  margin-bottom: 60px!important;
+}
+
+.scroll-y-list>* {
+  display: block;
+  object-fit: contain;
+  height: max-content;
+  width: 50%;
+}
+
+.scroll-y-list::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.scroll-y-list::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.scroll-y-list::-webkit-scrollbar {
+  width: 0;
+}
+
+.truncate-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-lines: 4;
+}
+
+.truncate-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-lines: 1;
+}
+
+@media only screen and (max-width: 768px) {
+  .truncate-text {
+    max-lines: 2;
+  }
+
+  .truncate-title {
+    max-lines: 1;
+  }
+
+  .scroll-y-list>* {
+    width: 100%;
+  }
+
+  .scroll-y-list {
+    border-radius: 0px;
+  }
+
+  .scroll-y-list>* {
+    height: auto;
+  }
+}
+
+/* .theme--light.v-application {
+  background-color: azure
+}
+.theme--light.v-sheet {
+  background-color: azure
+} */

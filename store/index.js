@@ -1,5 +1,6 @@
 export const state = () => ({
-  list: []
+  list: [],
+  loading: false
 })
 
 export const getters = {
@@ -20,5 +21,11 @@ export const getters = {
 
   authUser (state) {
     return state.auth ? state.auth.user : null
+  }
+}
+
+export const mutations = {
+  setLoading (state, loading) {
+    state.loading = loading
   }
 }
