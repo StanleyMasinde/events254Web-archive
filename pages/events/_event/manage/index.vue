@@ -25,8 +25,8 @@ export default {
     if (process.client) {
       this.$http.setBaseURL(process.env.API_URL)
     }
-    const data = await this.$http.get(`/events/${this.$route.params.event}`)
-    this.currentEvent = await data.json()
+    const { data } = await this.$axios.get(`/events/${this.$route.params.event}`)
+    this.currentEvent = await data
   },
   computed: {
     eventData () {

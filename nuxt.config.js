@@ -51,14 +51,15 @@ module.exports = {
    */
   head: {
     titleTemplate: null,
-    title: 'Events254',
+    title: 'Welcome to Events254',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:site', content: '@events254ke' },
-      { name: 'twitter:creator', content: '@events254ke' },
-      { name: 'twitter:title', content: 'Events254' },
+      { property: 'twitter:card', content: 'summary_large_image' },
+      { property: 'twitter:site', content: '@events254ke' },
+      { property: 'twitter:creator', content: '@events254ke' },
+      { property: 'twitter:title', content: 'Events254 online events' },
+      { property: 'fb:app_id', content: '102278642128094' },
       { hid: 'description', name: 'description', content: 'Find activities, meetups, and more in your city. Sell your tickets, or buy them for free. Find a local event, or create a new one. Find people, or create a new event. The possibilities are endless!' },
       {
         hid: 'og:image',
@@ -285,6 +286,20 @@ module.exports = {
           logout: { url: '/auth/logout', method: 'POST' },
           user: { url: '/auth/user', method: 'GET' }
         }
+      },
+      facebook: {
+        client_id: 194780062632109,
+        endpoints: {
+          userInfo: 'https://graph.facebook.com/v6.0/me?fields=id,name,picture{url}',
+          login: '/auth/social/facebook'
+        },
+        scope: ['public_profile', 'email'],
+        redirect_uri: 'http://localhost:3000/auth/social/facebook/callback'
+      },
+      google: {
+        provider: 'google',
+        client_id: '740457267919-dlb0o4frolhrianlsqlu15l06mhv7593.apps.googleusercontent.com',
+        client_secret: 'BE2kTVlwpA6SuMBZMVryxyVV'
       }
     }
   },

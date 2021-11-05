@@ -61,14 +61,11 @@ export default {
     }
   },
   async fetch () {
-    if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL)
-    }
     try {
-      const res = await this.$http.get(
+      const { data } = await this.$axios.get(
         `/groups/${this.$route.params.company}/events?filter=past`
       )
-      this.eventsObject = await res.json()
+      this.eventsObject = data
     } catch (error) {
       throw new Error(error)
     }

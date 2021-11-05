@@ -9,7 +9,7 @@
       </v-toolbar-title>
     </v-app-bar>
 
-    <v-container>
+    <v-container fluid>
       <div v-if="!currentEvent.can_edit" class="error-page">
         <v-img src="/403.svg" height="100%">
           <h1 class="display-1">

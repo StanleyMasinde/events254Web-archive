@@ -43,7 +43,11 @@
               </v-row>
 
               <div class="scroll-y-list">
-                <v-card v-for="(e, i) in eventCategories" :key="i" class="mb-3 mr-3">
+                <v-card
+                  v-for="(e, i) in eventCategories"
+                  :key="i"
+                  class="mb-3 mr-3"
+                >
                   <v-img
                     contain
                     gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
@@ -91,31 +95,54 @@
                   </v-col>
                 </v-row>
                 <div class="scroll-y-list">
-                  <v-card
-                    v-for="(it, ind) in item.data"
-                    :key="ind"
-                    outlined
-                    class="mt-3 mr-3"
-                    :to="it.linkPrefix == 'groups' ? `/${it.id}` : `/events/${it.id}`"
-                  >
-                    <v-img
+                  <div v-for="(it, ind) in item.data" :key="ind">
+                    <v-card
+                      :to="
+                        it.linkPrefix == 'groups'
+                          ? `/${it.id}`
+                          : `/events/${it.id}`
+                      "
                       height="250"
-                      contain
-                      gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-                      :src="it.image ? it.image : '/icon.png'"
-                    />
-                    <v-card-title class="truncate-title" :title="it.name">
-                      {{ it.name }}
-                    </v-card-title>
-                    <v-card-subtitle class="truncate-text" :title="it.description">
-                      <!-- eslint-disable-next-line vue/no-v-html -->
-                      <p v-html="it.description" />
-                    </v-card-subtitle>
-                  </v-card>
+                      outlined
+                      class="mt-3 mr-3"
+                    >
+                      <v-img
+                        height="150"
+                        contain
+                        gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+                        :src="it.image ? it.image : '/icon.png'"
+                      >
+                        <v-card-actions>
+                          <v-spacer />
+                          <v-btn
+                            dark
+                            icon
+                            @click="$router.push(`/evengts/${it.id}`)"
+                          >
+                            <v-icon>mdi-heart</v-icon>
+                          </v-btn>
+                          <v-btn dark icon>
+                            <v-icon>mdi-share-variant</v-icon>
+                          </v-btn>
+                        </v-card-actions>
+                      </v-img>
+                      <v-card-text>
+                        <span v-if="it.linkPrefix == 'events'" class="red--text">
+                          {{ $moment(it.startDate).format("MMM DD, YYYY") }}
+                        </span>
+                        <br>
+                        <span class="truncate-text heading">
+                          {{ it.name }}
+                        </span>
+                      </v-card-text>
+                    </v-card>
+                  </div>
                 </div>
               </div>
             </div>
           </client-only>
+
+          <v-col lg="3" xl="4" />
         </v-col>
       </v-row>
 
@@ -181,9 +208,6 @@ export default {
     }
   },
   async fetch () {
-    if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL)
-    }
     try {
       const { data } = await this.$axios.get('/feed')
       this.newFeedObject = data
@@ -194,6 +218,9 @@ export default {
   },
   auth: false,
   methods: {
+    stripHtmltags (html) {
+      return html.replace(/<(?:.|\n)*?>/gm, '')
+    },
     formatCurrency (value = 0) {
       return Intl.NumberFormat('en-US', {
         style: 'currency',

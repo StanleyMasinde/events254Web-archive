@@ -202,7 +202,7 @@ export default {
             description: this.currentEvent ? this.strippedDescription : '',
             offers: {
               '@type': 'Offer',
-              url: `https://www.example.com/${
+              url: `https://events254.co.ke/${
                 this.currentEvent ? this.currentEvent.id : ''
               }`,
               price: this.currentEvent.tickets[0]
@@ -212,16 +212,15 @@ export default {
               availability: 'https://schema.org/InStock',
               validFrom: `${
                 this.currentEvent ? this.currentEvent.created_at : ''
+              }`,
+              validThrough: `${
+                this.currentEvent ? this.currentEvent.endDate : ''
               }`
-            },
-            performer: {
-              '@type': 'PerformingGroup',
-              name: this.currentEvent ? this.currentEvent.organiser.name : ''
             },
             organizer: {
               '@type': 'Organization',
               name: this.currentEvent ? this.currentEvent.organiser.name : '',
-              url: `${this.organiserLink}`
+              url: `https://events254.co.ke/${this.organiserLink}`
             }
           }
         }
@@ -229,6 +228,7 @@ export default {
       meta: [
         {
           name: 'description',
+          hid: 'description',
           content: this.strippedDescription
         },
         {
@@ -242,6 +242,19 @@ export default {
         {
           hid: 'og:image',
           property: 'og:image',
+          content: this.currentEvent.image
+        },
+        {
+          property: 'twitter:title',
+          content: this.currentEvent.about
+        },
+        {
+          property: 'twitter:description',
+          content: this.strippedDescription
+        },
+        {
+          hid: 'twitter:image',
+          property: 'twitter:image',
           content: this.currentEvent.image
         }
       ]

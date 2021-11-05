@@ -1,5 +1,5 @@
 <template>
-  <v-col v-if="$vuetify.breakpoint.lgAndUp" lg="2" xl="3">
+  <v-col v-if="$vuetify.breakpoint.lgAndUp" lg="2" xl="2">
     <v-card class="mt-9 sticky-top" outlined>
       <v-list-item to="/">
         <v-list-item-icon>
