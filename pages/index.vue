@@ -89,8 +89,8 @@
                     <h2>{{ item.name }}</h2>
                   </v-col>
                   <v-col class="text-right">
-                    <v-btn text rounded color="primary" to="/categories">
-                      See more
+                    <v-btn icon rounded color="primary" to="/categories">
+                      <v-icon left>mdi-chevron-right</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
