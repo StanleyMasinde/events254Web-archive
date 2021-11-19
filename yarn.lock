@@ -1700,7 +1700,7 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-text/-/extension-text-2.0.0-beta.15.tgz#f08cff1b78f1c6996464dfba1fef8ec1e107617f"
   integrity sha512-S3j2+HyV2gsXZP8Wg/HA+YVXQsZ3nrXgBM9HmGAxB0ESOO50l7LWfip0f3qcw1oRlh5H3iLPkA6/f7clD2/TFA==
 
-"@tiptap/vue-2@^2.0.0-beta.60":
+"@tiptap/vue-2@^2.0.0-beta.68":
   version "2.0.0-beta.69"
   resolved "https://registry.yarnpkg.com/@tiptap/vue-2/-/vue-2-2.0.0-beta.69.tgz#65ed98e966c28c9614d4c5a6218e99397a2e0a26"
   integrity sha512-Adm+YvhaihW3mpFIBgPH/3qlxG3hY7/g52gM3Kg0f//SNg/bDqK+AMLroZB5Je06ihCqBaRb1hrSD0/gTVMJ1g==
