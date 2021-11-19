@@ -22,9 +22,7 @@
                   <h1 class="display-1 gray--text">
                     Sorry 😢 There's nothing here
                   </h1>
-                  <v-btn text x-large color="primary" to="/">
-                    Go home
-                  </v-btn>
+                  <v-btn text x-large color="primary" to="/"> Go home </v-btn>
                 </v-col>
               </v-row>
             </v-container>
@@ -41,11 +39,7 @@
             <v-card-title>
               <v-row>
                 <v-col cols="12" sm="4">
-                  <v-avatar
-                    height="100"
-                    width="100"
-                    color="brown"
-                  >
+                  <v-avatar height="100" width="100" color="brown">
                     <span class="white--text display-3">{{ innitials }}</span>
                   </v-avatar>
                 </v-col>
@@ -62,7 +56,13 @@
             <v-card-text>
               <h3>Events by {{ user.name }}</h3>
               <v-list>
-                <v-card v-for="event in user.events" :key="event.id" class="mb-2" outlined :to="'/events/' + event.id">
+                <v-card
+                  v-for="event in user.events"
+                  :key="event.id"
+                  class="mb-2"
+                  outlined
+                  :to="'/events/' + event.id"
+                >
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>
@@ -76,69 +76,69 @@
           </v-card>
         </v-col>
       </v-row>
-    <!-- End of success -->
+      <!-- End of success -->
     </v-container>
   </div>
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      user: {}
-    }
+      user: {},
+    };
   },
-  async fetch () {
+  async fetch() {
     if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL)
+      this.$http.setBaseURL(process.env.API_URL);
     }
     try {
-      const res = await this.$http.get(`/users/${this.$route.params.id}`)
-      this.user = await res.json()
+      const { data } = await this.$axios.get(`/users/${this.$route.params.id}`);
+      this.user = data;
     } catch (error) {
-      this.$sentry.captureException(error)
-      throw new Error(error)
+      this.$sentry.captureException(error);
+      throw new Error(error);
     }
   },
-  head () {
+  head() {
     return {
-      title: this.user.name || 'Events254',
+      title: this.user.name || "Events254",
       meta: [
         {
-          property: 'og:title',
-          content: this.user.name
+          property: "og:title",
+          content: this.user.name,
         },
         {
-          property: 'og:description',
-          content: this.user.bio || this.user.name
-        }
+          property: "og:description",
+          content: this.user.bio || this.user.name,
+        },
       ],
       script: [
         {
-          type: 'application/ld+json',
+          type: "application/ld+json",
           json: {
-            '@context': 'http://schema.org',
-            '@type': 'Person',
+            "@context": "http://schema.org",
+            "@type": "Person",
             name: this.user.name,
             url: `https://events254.co.ke/u/${this.user.id}`,
             image: this.user.avatar,
-            description: this.user.bio || this.user.name
-          }
-        }
-      ]
-    }
+            description: this.user.bio || this.user.name,
+          },
+        },
+      ],
+    };
   },
   auth: false,
   computed: {
-    innitials () {
+    innitials() {
       if (!this.user.name) {
-        return
+        return;
       }
-      const [firstName, lastName] = this.user.name.split(' ')
+      const [firstName, lastName] = this.user.name.split(" ");
       if (!lastName) {
-        return `${firstName.split('')[0]}`
+        return `${firstName.split("")[0]}`;
       }
-      return `${firstName.split('')[0]}${lastName.split('')[0]}`
-    }
-  }
-}
+      return `${firstName.split("")[0]}${lastName.split("")[0]}`;
+    },
+  },
+};
 </script>
