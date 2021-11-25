@@ -90,7 +90,9 @@
                   </v-col>
                   <v-col class="text-right">
                     <v-btn icon rounded color="primary" to="/categories">
-                      <v-icon left>mdi-chevron-right</v-icon>
+                      <v-icon left>
+                        mdi-arrow-right
+                      </v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -127,7 +129,10 @@
                         </v-card-actions>
                       </v-img>
                       <v-card-text>
-                        <span v-if="it.linkPrefix == 'events'" class="red--text">
+                        <span
+                          v-if="it.linkPrefix == 'events'"
+                          class="red--text"
+                        >
                           {{ $moment(it.startDate).format("MMM DD, YYYY") }}
                         </span>
                         <br>

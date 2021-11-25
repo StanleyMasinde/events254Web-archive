@@ -83,8 +83,7 @@ module.exports = {
   plugins: [
     '~/plugins/axios',
     '~/plugins/veevalidate.js',
-    '~/plugins/moment.js',
-    { src: '~/plugins/matomo.js', ssr: false }
+    '~/plugins/moment.js'
   ],
   /*
    ** Nuxt.js dev-modules
@@ -94,7 +93,9 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
-    '@nuxtjs/stylelint-module'
+    '@nuxtjs/stylelint-module',
+    // Doc: https://google-analytics.nuxtjs.org/
+    '@nuxtjs/google-analytics'
   ],
   /*
    ** Nuxt.js modules
@@ -110,8 +111,6 @@ module.exports = {
     '@nuxtjs/auth-next',
     // Site maps module
     '@nuxtjs/sitemap',
-    // HTTP module
-    '@nuxt/http',
     // Sentry https://sentry.nuxtjs.org/
     '@nuxtjs/sentry'
   ],
@@ -139,6 +138,14 @@ module.exports = {
       },
       icons: 'mdi'
     }
+  },
+
+  /**
+   * Google Analytics
+   */
+  googleAnalytics: {
+    id: 'G-Q17ZEPCB3C',
+    dev: false
   },
 
   /*

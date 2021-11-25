@@ -20,7 +20,6 @@
   ],
   "dependencies": {
     "@babel/eslint-parser": "^7.16.3",
-    "@nuxt/http": "^0.6.4",
     "@nuxtjs/auth-next": "^5.0.0-1624817847.21691f1",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/dotenv": "^1.4.1",
@@ -48,10 +47,10 @@
     "eslint": "^8.2.0",
     "moment-timezone": "^0.5.33",
     "nuxt": "^2.15.8",
-    "vee-validate": "^3.4.13",
-    "vue-matomo": "^4.1.0"
+    "vee-validate": "^3.4.13"
   },
   "devDependencies": {
+    "@nuxtjs/google-analytics": "^2.4.0",
     "babel-eslint": "^10.1.0",
     "eslint-plugin-nuxt": "^3.0.0",
     "stylelint": "^13.13.1"
