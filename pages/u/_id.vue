@@ -22,7 +22,9 @@
                   <h1 class="display-1 gray--text">
                     Sorry 😢 There's nothing here
                   </h1>
-                  <v-btn text x-large color="primary" to="/"> Go home </v-btn>
+                  <v-btn text x-large color="primary" to="/">
+                    Go home
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-container>
@@ -82,63 +84,60 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      user: {},
-    };
-  },
-  async fetch() {
-    if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL);
+      user: {}
     }
+  },
+  async fetch () {
     try {
-      const { data } = await this.$axios.get(`/users/${this.$route.params.id}`);
-      this.user = data;
+      const { data } = await this.$axios.get(`/users/${this.$route.params.id}`)
+      this.user = data
     } catch (error) {
-      this.$sentry.captureException(error);
-      throw new Error(error);
+      this.$sentry.captureException(error)
+      throw new Error(error)
     }
   },
-  head() {
+  head () {
     return {
-      title: this.user.name || "Events254",
+      title: this.user.name || 'Events254',
       meta: [
         {
-          property: "og:title",
-          content: this.user.name,
+          property: 'og:title',
+          content: this.user.name
         },
         {
-          property: "og:description",
-          content: this.user.bio || this.user.name,
-        },
+          property: 'og:description',
+          content: this.user.bio || this.user.name
+        }
       ],
       script: [
         {
-          type: "application/ld+json",
+          type: 'application/ld+json',
           json: {
-            "@context": "http://schema.org",
-            "@type": "Person",
+            '@context': 'http://schema.org',
+            '@type': 'Person',
             name: this.user.name,
             url: `https://events254.co.ke/u/${this.user.id}`,
             image: this.user.avatar,
-            description: this.user.bio || this.user.name,
-          },
-        },
-      ],
-    };
+            description: this.user.bio || this.user.name
+          }
+        }
+      ]
+    }
   },
   auth: false,
   computed: {
-    innitials() {
+    innitials () {
       if (!this.user.name) {
-        return;
+        return
       }
-      const [firstName, lastName] = this.user.name.split(" ");
+      const [firstName, lastName] = this.user.name.split(' ')
       if (!lastName) {
-        return `${firstName.split("")[0]}`;
+        return `${firstName.split('')[0]}`
       }
-      return `${firstName.split("")[0]}${lastName.split("")[0]}`;
-    },
-  },
-};
+      return `${firstName.split('')[0]}${lastName.split('')[0]}`
+    }
+  }
+}
 </script>

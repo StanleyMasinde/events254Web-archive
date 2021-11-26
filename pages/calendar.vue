@@ -135,21 +135,39 @@ export default {
       calendarType: '4day',
       focus: '',
       dialog: false,
-      selectedEvent: {}
+      selectedEvent: {},
+      colors: [
+        '#F44336',
+        '#E91E63',
+        '#9C27B0',
+        '#673AB7',
+        '#3F51B5',
+        '#2196F3',
+        '#03A9F4',
+        '#00BCD4',
+        '#009688',
+        '#4CAF50',
+        '#8BC34A',
+        '#CDDC39',
+        '#FFEB3B',
+        '#FFC107',
+        '#FF9800',
+        '#FF5722',
+        '#795548',
+        '#9E9E9E',
+        '#607D8B'
+      ]
     }
   },
   async fetch () {
-    if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL)
-    }
     try {
-      const data = await this.$http.get('/search/calendar')
-      const evts = await data.json()
+      const { data } = await this.$axios.get('/search/calendar')
+      const evts = data
       this.events = evts.map((evt) => {
         const start = this.$moment(evt.startDate).format('YYYY-MM-DD HH:mm')
         const end = this.$moment(evt.endDate).format('YYYY-MM-DD HH:mm')
         const isAllDay = start === end
-        const color = isAllDay ? 'blue' : 'green'
+        const color = this.colors[Math.floor(Math.random() * this.colors.length)]
         return {
           id: evt.id,
           name: evt.about,
@@ -190,7 +208,7 @@ export default {
           const start = this.$moment(evt.startDate).format('YYYY-MM-DD HH:mm')
           const end = this.$moment(evt.endDate).format('YYYY-MM-DD HH:mm')
           const isAllDay = start === end
-          const color = isAllDay ? 'blue' : 'green'
+          const color = this.colors[Math.floor(Math.random() * this.colors.length)]
           return {
             id: evt.id,
             name: evt.about,
