@@ -144,7 +144,7 @@ module.exports = {
    * Google Analytics
    */
   googleAnalytics: {
-    id: 'G-Q17ZEPCB3C'
+    id: 'G-8ZTW8DQCKZ'
   },
 
   /*
