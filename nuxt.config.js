@@ -236,6 +236,8 @@ module.exports = {
     exclude: [],
     routes: async () => {
       try {
+        console.log(process.env.API_URL)
+        console.log(process.env.API_URL)
         const { data } = await axios.get(process.env.API_URL + '/events')
         const users = await axios.get(process.env.API_URL + '/users')
         const groups = await axios.get(process.env.API_URL + '/groups')
