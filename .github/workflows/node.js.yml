@@ -36,7 +36,7 @@ jobs:
       - name: Build
         run: yarn generate
       - name: Upload to s3
-        run: aws s3 sync dist/ s3://${{ secrets.AWS_BUCKET }}}/events254.co.ke --acl public-read --cache-control max-age=31536000,public
+        run: aws s3 sync dist/ s3://events254/events254.co.ke --acl public-read --cache-control max-age=31536000,public
       - name: Invalidate Cloudfront
         run: aws cloudfront create-invalidation --distribution-id ${secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths "/*"
       
