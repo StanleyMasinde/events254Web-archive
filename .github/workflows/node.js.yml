@@ -10,13 +10,13 @@ jobs:
             name: production
             url: https://events254.co.ke
     env:
-        AWS_ACCESS_KEY_ID: ${secrets.AWS_ACCESS_KEY_ID}
-        AWS_SECRET_ACCESS_KEY: ${secrets.AWS_SECRET_ACCESS_KEY}
-        AWS_DEFAULT_REGION: ${secrets.AWS_DEFAULT_REGION}
-        AWS_BUCKET: ${secrets.AWS_BUCKET}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
         API_URL: https://api.events254.co.ke
         APP_URL: https://events254.co.ke
-        API_KEY: ${secrets.API_KEY}
+        API_KEY: ${{ secrets.API_KEY }}
     runs-on: ubuntu-latest
     name: Build and Deploy to S3
     steps:
