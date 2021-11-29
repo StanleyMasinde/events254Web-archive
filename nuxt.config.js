@@ -236,34 +236,44 @@ module.exports = {
     exclude: [],
     routes: async () => {
       try {
-        console.log(process.env.API_URL)
-        console.log(process.env.API_URL)
+        axios.defaults.headers.common['X-Api-Key'] = process.env.API_KEY
         const { data } = await axios.get(process.env.API_URL + '/events')
         const users = await axios.get(process.env.API_URL + '/users')
         const groups = await axios.get(process.env.API_URL + '/groups')
 
-        const usersArray = users.data.data.map((user) => {
-          return {
-            url: `/u/${user.id}`,
-            changefreq: 'daily',
-            priority: 0.8
-          }
-        })
+        let usersArray = []
+        let groupsArray = []
+        let routes = []
 
-        const groupsArray = groups.data.data.map((group) => {
-          return {
-            url: `/${group.slug}`,
-            changefreq: 'daily',
-            priority: 0.8
-          }
-        })
-        const routes = data.map((event) => {
-          return {
-            url: `/events/${event.id}`,
-            changefreq: 'daily',
-            priority: 0.8
-          }
-        })
+        if (users.data.data.length > 0) {
+          usersArray = users.data.data.map((user) => {
+            return {
+              url: `/u/${user.id}`,
+              changefreq: 'daily',
+              priority: 0.8
+            }
+          })
+        }
+
+        if (groups.data.data.length > 0) {
+          groupsArray = groups.data.data.map((group) => {
+            return {
+              url: `/${group.slug}`,
+              changefreq: 'daily',
+              priority: 0.8
+            }
+          })
+        }
+
+        if (data.length > 0) {
+          routes = data.map((event) => {
+            return {
+              url: `/events/${event.id}`,
+              changefreq: 'daily',
+              priority: 0.8
+            }
+          })
+        }
         return routes.concat(usersArray).concat(groupsArray)
       } catch (error) {
         // eslint-disable-next-line no-console
