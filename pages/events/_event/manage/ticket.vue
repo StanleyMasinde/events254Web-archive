@@ -6,7 +6,7 @@
         {{ success }}
       </v-alert> -->
 
-      <div class="ma-5">
+      <div class="ma-5 pa-5 text-center">
         <v-btn rounded depressed color="primary" @click="showCreating = true">
           Create a new ticket
         </v-btn>
@@ -20,6 +20,9 @@
       <!-- When no tickets were found for the current event -->
       <div v-if="tickets.length === 0" class="ma-5 text-center">
         <h2>You have not created any tickets for this event</h2>
+        <p>
+          You can create more than one ticket for this event. e.g. a ticket for VIP, a ticket for regular, etc.
+        </p>
       </div>
 
       <!-- Hurray 🎉 we found some tickets -->

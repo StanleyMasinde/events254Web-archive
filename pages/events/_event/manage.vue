@@ -1,13 +1,8 @@
 <template>
   <div>
-    <v-app-bar flat>
-      <v-toolbar-title>
-        <v-btn icon exact :to="`/events/${$route.params.event}`">
-          <v-icon> mdi-arrow-left </v-icon>
-        </v-btn>
-        Managing {{ currentEvent.about }}
-      </v-toolbar-title>
-    </v-app-bar>
+    <client-only>
+      <AppBar title="Manage event" />
+    </client-only>
 
     <v-container fluid>
       <div v-if="!currentEvent.can_edit" class="error-page">
@@ -50,9 +45,9 @@
                 </v-btn>
               </v-col>
               <v-col cols="12" lg="8">
-                <v-tabs centered grow>
+                <v-tabs centered grow scrollable>
                   <v-tab :to="`/events/${$route.params.event}/manage`">
-                    General information
+                    General
                   </v-tab>
                   <v-tab :to="`/events/${$route.params.event}/manage/ticket`">
                     Tickets
@@ -100,9 +95,6 @@ export default {
     }
   },
   async fetch () {
-    if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL)
-    }
     const { data } = await this.$axios.get(
       `/events/${this.$route.params.event}`
     )

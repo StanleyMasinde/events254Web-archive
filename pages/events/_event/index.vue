@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <AppBar :title="currentEvent.title" />
+      <AppBar title="Event" />
     </client-only>
 
     <v-container fluid>

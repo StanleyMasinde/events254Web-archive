@@ -69,17 +69,14 @@ export default {
     }
   },
   async fetch () {
-    if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL)
-    }
-    const company = await this.$http.get(
+    const company = await this.$axios.get(
       `/groups/${this.$route.params.company}`
     )
-    const members = await this.$http.get(
+    const members = await this.$axios.get(
       `/groups/${this.$route.params.company}/members`
     )
-    this.members = await members.json()
-    this.group = await company.json()
+    this.members = await members.data
+    this.group = await company.data
   },
   head () {
     return {

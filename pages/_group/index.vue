@@ -1,6 +1,8 @@
 <template>
   <div>
-    <AppBar :title="group.name" />
+    <client-only>
+      <AppBar title="Group" />
+    </client-only>
     <v-container>
       <client-only>
         <FetchLoading v-if="$fetchState.pending" event-page />

@@ -45,7 +45,7 @@ module.exports = {
 
   /** Application mode */
   // ssr: false,
-  target: 'static',
+  // target: 'static',
 
   /*
    ** Headers of the page

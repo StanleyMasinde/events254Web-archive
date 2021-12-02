@@ -105,6 +105,7 @@
                           : `/events/${it.id}`
                       "
                       height="250"
+                      style="width: 90%"
                       outlined
                       class="mt-3 mr-3"
                     >

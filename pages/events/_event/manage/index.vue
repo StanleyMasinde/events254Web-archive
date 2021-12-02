@@ -22,9 +22,6 @@ export default {
     }
   },
   async fetch () {
-    if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL)
-    }
     const { data } = await this.$axios.get(`/events/${this.$route.params.event}`)
     this.currentEvent = await data
   },
