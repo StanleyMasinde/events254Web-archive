@@ -1642,10 +1642,10 @@
     prosemirror-view "^1.23.1"
     tippy.js "^6.3.7"
 
-"@tiptap/extension-heading@^2.0.0-beta.18":
-  version "2.0.0-beta.23"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-heading/-/extension-heading-2.0.0-beta.23.tgz#8aafadc58a8d536b7f7885e4ff0f64d30908a868"
-  integrity sha512-/WLymJjY+MMvee79rWHSKDBGVRw4dbBUMrFLqKLjQQBS1xS8+UW2TYzRrAH6HAH4Tc6WO39ZDbd9K9kc9wqPnA==
+"@tiptap/extension-heading@^2.0.0-beta.25":
+  version "2.0.0-beta.25"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-heading/-/extension-heading-2.0.0-beta.25.tgz#80d88cd0269e824b6b2e3e4dcd60280aff83c906"
+  integrity sha512-7cK2gB3eqb7U0KmpWIPT7tsHGuVeFk4q1q/V6q91NTtZ4HdOMAyFuYTZu1iXufKyoEXTftByE85EYsfJGeGiRQ==
 
 "@tiptap/extension-italic@^2.0.0-beta.19":
   version "2.0.0-beta.24"
