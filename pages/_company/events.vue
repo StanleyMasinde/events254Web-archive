@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppBar :title="`${group.name} Events`" />
+    <AppBar :title="`Group Events`" />
     <v-container fluid>
       <v-row>
         <SideNavigation />
