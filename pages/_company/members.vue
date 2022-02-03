@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppBar :title="`${group.name} - Members`" />
+    <AppBar title="Group - Members" />
 
     <v-container>
       <v-row v-if="$fetchState.pending" justify="center">
@@ -32,27 +32,37 @@
 
         <v-col cols="12" lg="9" xl="10">
           <v-col cols="12" md="8">
+            <div v-if="members.length > 0">
+              <h3>This group has {{ members.length }} {{ members.length === 1 ? 'member' : 'members' }}</h3>
+            </div>
             <v-list shaped dense>
-              <v-list-item v-for="(m, i) in members" :key="i" :to="`/u/${m.userId}`">
-                <v-list-item-avatar>
-                  <v-avatar color="brown" />
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    <h3>{{ m.name }}</h3>
-                  </v-list-item-title>
-                  <v-list-item-subtitle class="body-1">
-                    <span class="subtitle">{{ m.bio }}</span> <br>
-                    <i>Member since: {{ $moment(m.memberSince).format('Do MMMM YYYY') }}</i>
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
+              <v-card outlined>
+                <v-list-item v-for="(m, i) in members" :key="i" :to="`/u/${m.userId}`">
+                  <v-list-item-avatar>
+                    <v-avatar tile color="brown" />
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      <h3>{{ m.name }}</h3>
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="body-1">
+                      <span class="subtitle">{{ m.bio }}</span> <br>
+                      <small><i>Joined: {{ $moment(m.memberSince).format('Do MMMM YYYY') }}</i></small>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-card>
             </v-list>
           </v-col>
           <v-col cols="12">
-            <h1 v-if="members.length === 0" class="display-1">
-              This group has no members
-            </h1>
+            <div v-if="members.length === 0">
+              <h1
+                class="display-1"
+              >
+                This group has no members
+              </h1>
+              <NoData />
+            </div>
           </v-col>
         </v-col>
       </v-row>

@@ -49,6 +49,7 @@
         <h1 class="display-1">
           No events available
         </h1>
+        <NoData />
       </v-col>
     </v-row>
   </div>

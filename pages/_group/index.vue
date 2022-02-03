@@ -36,6 +36,7 @@
                 </h3>
               </v-card-text>
               <v-card-actions v-if="!group.isManager">
+                <v-spacer />
                 <v-btn
                   v-if="!group.isMember"
                   depressed
@@ -46,16 +47,15 @@
                 >
                   Join this group
                 </v-btn>
-                <v-btn
+                <v-chip
                   v-else
-                  text
-                  depressed
-                  large
-                  rounded
                   color="primary"
+                  small
+                  class="ma-2"
                 >
+                  <v-icon>mdi-account</v-icon>
                   You are a member of this group
-                </v-btn>
+                </v-chip>
               </v-card-actions>
               <EditGroupDialog v-else :current-group="group" />
             </v-card>
