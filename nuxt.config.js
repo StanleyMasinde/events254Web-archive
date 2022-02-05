@@ -153,7 +153,7 @@ module.exports = {
   */
   sentry: {
     dsn: 'https://6aaa64b176a0433da7cb306409587b56@o954334.ingest.sentry.io/5903368',
-    release: 'v1.0.0',
+    release: process.env.npm_package_version,
     environment: 'production',
     ignoreErrors: [],
     config: {
@@ -180,40 +180,14 @@ module.exports = {
       display: 'standalone',
       start_url: '/',
       background_color: '#ffffff',
-      theme_color: '#49c5b6'
+      theme_color: '#ff8601'
     },
     workbox: {
       runtimeCaching: [
         {
-          urlPattern: '/events/.*',
-          strategyOptions: {
-            cacheName: 'events-cache'
-          },
-          strategyPlugins: [{
-            use: 'Expiration',
-            config: {
-              maxEntries: 100,
-              maxAgeSeconds: 300
-            }
-          }]
-        },
-        {
           urlPattern: 'https://res.cloudinary.com/.*',
           strategyOptions: {
             cacheName: 'cloudinary-cache'
-          },
-          strategyPlugins: [{
-            use: 'Expiration',
-            config: {
-              maxEntries: 100,
-              maxAgeSeconds: 3600
-            }
-          }]
-        },
-        {
-          urlPattern: 'https://api.events254.co.ke/.*',
-          strategyOptions: {
-            cacheName: 'api-cache'
           },
           strategyPlugins: [{
             use: 'Expiration',

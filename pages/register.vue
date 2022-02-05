@@ -4,10 +4,26 @@
       Register
     </h3>
     <br>
+    <v-alert
+      v-if="errorMessage"
+      type="error"
+      dismissible
+    >
+      {{ errorMessage }}
+    </v-alert>
+
     <ValidationObserver ref="form" v-slot="{ invalid }">
       <v-form @submit.prevent="register">
         <ValidationProvider v-slot="{ errors }" name="name" rules="required">
-          <v-text-field v-model="user.name" name="name" :error-messages="errors" label="Name" outlined />
+          <v-text-field
+            v-model="user.name"
+            name="name"
+            :error-messages="errors"
+            label="Full Name"
+            outlined
+            prepend-inner-icon="mdi-account"
+            autocomplete="name"
+          />
         </ValidationProvider>
 
         <ValidationProvider v-slot="{ errors }" name="email" rules="required|email">
@@ -17,7 +33,8 @@
             :error-messages="errors"
             type="email"
             outlined
-            label="Email"
+            label="Email Address"
+            prepend-inner-icon="mdi-email"
           />
         </ValidationProvider>
 
@@ -25,22 +42,40 @@
           <v-text-field
             v-model="user.password"
             name="password"
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
             :error-messages="errors"
             outlined
             label="Password"
+            prepend-inner-icon="mdi-lock"
+            autocomplete="new-password"
+            :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            @click:append="showPassword = !showPassword"
           />
         </ValidationProvider>
 
-        <v-btn :disabled="invalid" type="submit" rounded large color="accent">
+        <v-btn
+          :disabled="invalid"
+          block
+          type="submit"
+          rounded
+          x-large
+          color="accent"
+        >
           Sign up
+          <v-icon right>
+            mdi-account-plus
+          </v-icon>
         </v-btn>
-        <v-btn text to="/login" color="primary">
-          Sign in
-        </v-btn>
-        <v-btn text to="/password/reset" color="primary">
-          Did you forget your password?
-        </v-btn>
+
+        <v-card-actions>
+          <v-btn text color="primary" href="/login">
+            Sign in
+          </v-btn>
+          Or
+          <v-btn text to="/password/reset" color="primary">
+            Reset Password
+          </v-btn>
+        </v-card-actions>
       </v-form>
     </ValidationObserver>
   </div>
@@ -51,6 +86,8 @@ export default {
   layout: 'auth',
   data () {
     return {
+      showPassword: false,
+      errorMessage: null,
       user: {
         name: null,
         email: null,
@@ -88,6 +125,10 @@ export default {
       } catch (error) {
         if (error.response.status === 422) {
           this.$refs.form.setErrors(error.response.data.errors)
+          return
+        }
+        if (error.response.data) {
+          this.errorMessage = error.response.data.message
           return
         }
         // TODO add proper handling

@@ -4,34 +4,32 @@
       <AppBar title="Events254" :back="false" />
     </client-only>
 
-    <v-container fluid>
-      <v-row justify="center">
-        <SideNavigation />
-
-        <v-col cols="12" lg="6" xl="4">
-          <v-row justify="center">
-            <v-col cols="12" sm="6" md="6" class="pt-5">
-              <h1 class="">
-                There are a lot of things to do here.
+    <v-row>
+      <v-col cols="12">
+        <v-img src="/home_bg.jpg" style="height: 500px;">
+          <v-row justify="center" align="center" class="fill-height" no-gutters>
+            <v-col cols="11" md="8">
+              <h1 class="display-1 white--text text-xs-center">
+                What are your plans for the day?
               </h1>
-              <p class="body-1">
-                Find activities, meetups, and more in your city. Sell your
-                tickets, or buy them for free. Find a local event, or create a
-                new one. Find people, or create a new event. The possibilities
-                are endless!
-              </p>
-            </v-col>
-            <v-col cols="12" sm="6" md="4">
-              <v-img
-                contain
-                src="https://res.cloudinary.com/streetcoder/image/upload/v1626949280/events254/undraw_events_2p66_sx7tl4.svg"
+              <v-text-field
+                placeholder="Search for an events, meetups, or anything else"
+                append-icon="mdi-magnify"
+                solo
+                x-large
+                @click="$router.push('/search')"
               />
             </v-col>
           </v-row>
-
+        </v-img>
+      </v-col>
+    </v-row>
+    <v-container fluid>
+      <v-row justify="center">
+        <v-col cols="12" md="8">
           <v-row justify="center" class="mt-12">
             <v-col cols="12">
-              <v-row cols="12" no-gutters>
+              <v-row>
                 <v-col>
                   <h2>Browse by category</h2>
                 </v-col>
@@ -84,7 +82,7 @@
               justify="center"
             >
               <div v-if="item.data.length > 0">
-                <v-row cols="12" no-gutters>
+                <v-row no-gutters>
                   <v-col>
                     <h2>{{ item.name }}</h2>
                   </v-col>
@@ -147,8 +145,6 @@
               </div>
             </div>
           </client-only>
-
-          <v-col lg="3" xl="4" />
         </v-col>
       </v-row>
 
