@@ -12,7 +12,7 @@
     </v-row>
     <v-row justify="center">
       <v-col cols="12" md="10" class="mt-3">
-        <v-calendar />
+        <v-calendar type="week" />
       </v-col>
     </v-row>
   </div>

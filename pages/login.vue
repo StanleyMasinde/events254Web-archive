@@ -13,26 +13,27 @@
           <ValidationProvider name="email" rules="required">
             <v-text-field
               v-model="cred.email"
-              rounded
               name="username"
               outlined
               label="Username or Email"
+              prepend-inner-icon="mdi-account"
             />
           </ValidationProvider>
 
           <ValidationProvider name="password" rules="required">
             <v-text-field
               v-model="cred.password"
-              rounded
               name="password"
               type="password"
               outlined
               label="Password"
+              prepend-inner-icon="mdi-lock"
             />
           </ValidationProvider>
+
           <v-btn
             rounded
-            large
+            x-large
             :disabled="invalid"
             type="submit"
             color="primary"
@@ -96,10 +97,10 @@ export default {
         this.$router.push()
       } catch (error) {
         if (error.response) {
-          if (error.response.status === 500) {
+          if (error.response.status === 500 || error.response.status === 502) {
             throw new Error(error)
           }
-          this.err = error.response.data.message
+          this.err = error.response.data?.message
           setTimeout(() => {
             this.err = null
           }, 5000)

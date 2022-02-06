@@ -12,7 +12,7 @@
         <v-row v-else>
           <v-col cols="12" md="8">
             <v-card flat>
-              <v-img height="300" :src="group.pictureUrl" />
+              <v-img gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)" contain height="300" :src="group.pictureUrl ? group.pictureUrl : '/icon.png'" />
             </v-card>
           </v-col>
           <v-col cols="12" md="4">

@@ -61,6 +61,7 @@ module.exports = {
       { property: 'twitter:creator', content: '@events254ke' },
       { property: 'twitter:title', content: 'Events254 online events' },
       { property: 'fb:app_id', content: '102278642128094' },
+      { property: 'theme-color', content: '#ff8601' },
       { hid: 'description', name: 'description', content: 'Find activities, meetups, and more in your city. Sell your tickets, or buy them for free. Find a local event, or create a new one. Find people, or create a new event. The possibilities are endless!' },
       {
         hid: 'og:image',
@@ -73,7 +74,7 @@ module.exports = {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#49c5b6' },
+  loading: { color: '#ff8601' },
   /*
    ** Global CSS
    */
@@ -154,11 +155,8 @@ module.exports = {
   sentry: {
     dsn: 'https://6aaa64b176a0433da7cb306409587b56@o954334.ingest.sentry.io/5903368',
     release: process.env.npm_package_version,
-    environment: 'production',
-    ignoreErrors: [],
-    config: {
-      environment: 'production'
-    }
+    environment: process.env.NODE_ENV,
+    ignoreErrors: []
   },
 
   /**

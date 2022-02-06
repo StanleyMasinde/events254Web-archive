@@ -79,10 +79,6 @@ body {
   background: transparent;
 }
 
-.scroll-y-list::-webkit-scrollbar {
-  width: 0;
-}
-
 .truncate-text {
   overflow: scroll;
   text-overflow: ellipsis;

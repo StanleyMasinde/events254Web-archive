@@ -121,6 +121,11 @@ export default {
       }
     }
   },
+  head () {
+    return {
+      title: 'My Profile'
+    }
+  },
   computed: {
     ...mapGetters(['authUser'])
   },

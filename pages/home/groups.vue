@@ -54,6 +54,11 @@ export default {
     } catch (error) {
       throw new Error(error)
     }
+  },
+  head () {
+    return {
+      title: 'My Groups'
+    }
   }
 }
 </script>

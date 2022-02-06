@@ -132,7 +132,7 @@ export default {
   data () {
     return {
       events: [],
-      calendarType: '4day',
+      calendarType: 'week',
       focus: '',
       dialog: false,
       selectedEvent: {},

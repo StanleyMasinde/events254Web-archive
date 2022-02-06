@@ -4,36 +4,40 @@
       <AppBar title="Home" />
     </client-only>
 
-    <v-container fluid>
-      <v-row justify="center">
-        <SideNavigation />
+    <v-container>
+      <v-row>
+        <v-col cols="12" md="10">
+          <h1 class="display-1">
+            {{ greeting }}
+          </h1>
+        </v-col>
+      </v-row>
 
-        <v-col cols="12" lg="7" xl="10">
-          <v-col cols="12">
-            <h1 class="display-1">
-              {{ greeting }}
-            </h1>
-          </v-col>
-          <v-col cols="12" lg="10" sm="8">
-            <v-tabs grow>
-              <v-tab exact to="/home">
-                Home
-              </v-tab>
-              <v-tab to="/home/profile">
-                Profile
-              </v-tab>
-              <v-tab to="/home/events">
-                My Events
-              </v-tab>
-              <v-tab to="/home/groups">
-                My Groups
-              </v-tab>
-              <v-tab to="/home/tickets">
-                Tickets
-              </v-tab>
-            </v-tabs>
-            <nuxt-child />
-          </v-col>
+      <v-row justify="center">
+        <v-col cols="12" md="8">
+          <v-tabs icons-and-text grow right>
+            <v-tab exact to="/home">
+              Home
+              <v-icon>mdi-home</v-icon>
+            </v-tab>
+            <v-tab to="/home/profile">
+              Profile
+              <v-icon>mdi-account</v-icon>
+            </v-tab>
+            <v-tab to="/home/events">
+              My Events
+              <v-icon>mdi-calendar-multiple</v-icon>
+            </v-tab>
+            <v-tab to="/home/groups">
+              My Groups
+              <v-icon>mdi-account-group</v-icon>
+            </v-tab>
+            <v-tab to="/home/tickets">
+              Tickets
+              <v-icon>mdi-ticket</v-icon>
+            </v-tab>
+          </v-tabs>
+          <nuxt-child />
         </v-col>
       </v-row>
     </v-container>

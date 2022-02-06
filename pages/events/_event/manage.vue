@@ -14,52 +14,64 @@
       </div>
       <template v-else>
         <v-row justify="center">
-          <v-row justify="center">
-            <SideNavigation />
+          <v-col cols="12" md="8">
+            <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+              <v-btn
+                large
+                title="Click to publish or unpublish this event"
+                depressed
+                :color="currentEvent.published === 1 ? 'green': 'primary'"
+                rounded
+                @click="togglePublishing"
+              >
+                {{ currentEvent.published === 1 ? 'Published': 'Draft' }}
+                <v-icon right>
+                  {{ currentEvent.published === 1 ? 'mdi-eye': 'mdi-eye-off' }}
+                </v-icon>
+              </v-btn>
+            </transition>
 
-            <v-col cols="12" lg="9" xl="10">
-              <v-col cols="12" md="10">
-                <v-btn
-                  large
-                  title="Click to publish or unpublish this event"
-                  depressed
-                  :color="currentEvent.published === 1 ? 'green': 'primary'"
-                  rounded
-                  @click="togglePublishing"
-                >
-                  {{ currentEvent.published === 1 ? 'Published': 'Draft' }}
-                </v-btn>
-                <v-btn
-                  large
-                  title="Delete this event"
-                  icon
-                  color="error"
-                  depressed
-                  rounded
-                  @click="deleteEventDialog = true"
-                >
-                  <v-icon>mdi-delete-outline</v-icon>
-                </v-btn>
-                <v-btn large title="View event like the same way users see it" rounded text :to="`/events/${$route.params.event}`">
-                  View event
-                </v-btn>
-              </v-col>
-              <v-col cols="12" lg="8">
-                <v-tabs centered grow scrollable>
-                  <v-tab :to="`/events/${$route.params.event}/manage`">
-                    General
-                  </v-tab>
-                  <v-tab :to="`/events/${$route.params.event}/manage/ticket`">
-                    Tickets
-                  </v-tab>
-                  <v-tab :to="`/events/${$route.params.event}/manage/rsvps`">
-                    RSVPs
-                  </v-tab>
-                </v-tabs>
-                <nuxt-child />
-              </v-col>
-            </v-col>
-          </v-row>
+            <v-btn
+              large
+              title="Delete this event"
+              color="error"
+              depressed
+              rounded
+              @click="deleteEventDialog = true"
+            >
+              Delete this event
+              <v-icon>mdi-delete-outline</v-icon>
+            </v-btn>
+            <v-btn
+              exact
+              large
+              text
+              rounded
+              color="primary"
+              title="View event like the same way users see it"
+              :to="`/events/${$route.params.event}`"
+            >
+              View event
+              <v-icon>mdi-eye</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col cols="12" lg="8">
+            <v-tabs icons-and-text centered grow scrollable>
+              <v-tab exact :to="`/events/${$route.params.event}/manage`">
+                General
+                <v-icon>mdi-information-outline</v-icon>
+              </v-tab>
+              <v-tab :to="`/events/${$route.params.event}/manage/ticket`">
+                Tickets
+                <v-icon>mdi-ticket-outline</v-icon>
+              </v-tab>
+              <v-tab :to="`/events/${$route.params.event}/manage/rsvps`">
+                RSVPs
+                <v-icon>mdi-account-multiple-outline</v-icon>
+              </v-tab>
+            </v-tabs>
+            <nuxt-child />
+          </v-col>
         </v-row>
       </template>
     </v-container>
@@ -123,6 +135,41 @@ export default {
 }
 </script>
 <style lang="scss">
+.animated.fadeIn {
+  animation-name: fadeIn;
+  animation-duration: 3s;
+}
+
+.animated.fadeOut {
+  animation-name: fadeOut;
+  animation-duration: 3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    scale: 0.9;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    scale: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    scale: 0.9;
+    transform: translateY(-10px);
+  }
+}
 .error-page {
   height: 89vh;
   text-align: center;

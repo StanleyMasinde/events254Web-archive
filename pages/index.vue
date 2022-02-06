@@ -3,17 +3,16 @@
     <client-only>
       <AppBar title="Events254" :back="false" />
     </client-only>
-
     <v-row>
       <v-col cols="12">
         <v-img src="/home_bg.jpg" style="height: 500px;">
           <v-row justify="center" align="center" class="fill-height" no-gutters>
             <v-col cols="11" md="8">
-              <h1 class="display-1 white--text text-xs-center">
+              <h1 class="display-1 white--text text-xs-center mb-3">
                 What are your plans for the day?
               </h1>
               <v-text-field
-                placeholder="Search for an events, meetups, or anything else"
+                placeholder="Search for events, meetups, or anything else"
                 append-icon="mdi-magnify"
                 solo
                 x-large
@@ -31,11 +30,13 @@
             <v-col cols="12">
               <v-row>
                 <v-col>
-                  <h2>Browse by category</h2>
+                  <h3 class="headline">
+                    Browse by category
+                  </h3>
                 </v-col>
                 <v-col class="text-right">
-                  <v-btn text rounded color="primary" to="/categories">
-                    See more
+                  <v-btn icon rounded color="primary" to="/categories">
+                    <v-icon>mdi-arrow-right</v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
@@ -45,11 +46,12 @@
                   v-for="(e, i) in eventCategories"
                   :key="i"
                   class="mb-3 mr-3"
+                  outlined
                 >
                   <v-img
                     contain
                     gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-                    height="100"
+                    height="150"
                     :src="e.image ? e.image : '/icon.png'"
                   >
                     <v-row
@@ -84,7 +86,9 @@
               <div v-if="item.data.length > 0">
                 <v-row no-gutters>
                   <v-col>
-                    <h2>{{ item.name }}</h2>
+                    <h2 class="headline">
+                      {{ item.name }}
+                    </h2>
                   </v-col>
                   <v-col class="text-right">
                     <v-btn icon rounded color="primary" to="/categories">
@@ -102,16 +106,17 @@
                           ? `/${it.id}`
                           : `/events/${it.id}`
                       "
-                      height="250"
+                      height="350"
                       style="width: 90%"
                       outlined
                       class="mt-3 mr-3"
                     >
                       <v-img
-                        height="150"
+                        height="200"
                         contain
                         gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
                         :src="it.image ? it.image : '/icon.png'"
+                        lazy-src="/icon.png"
                       >
                         <v-card-actions>
                           <v-spacer />
@@ -127,15 +132,17 @@
                           </v-btn>
                         </v-card-actions>
                       </v-img>
-                      <v-card-text>
+                      <v-card-text class="body-1">
                         <span
                           v-if="it.linkPrefix == 'events'"
                           class="red--text"
                         >
-                          {{ $moment(it.startDate).format("MMM DD, YYYY") }}
+                          <span>{{ $moment(it.startDate).calendar(null, {
+                            sameElse: 'MMM DD, [from] YYYY hh:mm A'
+                          }) }}</span>
                         </span>
                         <br>
-                        <span class="truncate-text heading">
+                        <span class="heading">
                           {{ it.name }}
                         </span>
                       </v-card-text>
@@ -188,20 +195,6 @@ export default {
           image:
             'https://res.cloudinary.com/streetcoder/image/upload/v1628589266/events254/undraw_workout_gcgu_meujil.svg'
         }
-      ],
-      months: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
       ],
       filter: {
         category: []
