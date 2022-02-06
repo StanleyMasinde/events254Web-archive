@@ -61,7 +61,9 @@ module.exports = {
       { property: 'twitter:creator', content: '@events254ke' },
       { property: 'twitter:title', content: 'Events254 online events' },
       { property: 'fb:app_id', content: '102278642128094' },
-      { property: 'theme-color', content: '#ff8601' },
+      { property: 'theme_color', content: '#ff8601' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: 'Events254 online events' },
       { hid: 'description', name: 'description', content: 'Find activities, meetups, and more in your city. Sell your tickets, or buy them for free. Find a local event, or create a new one. Find people, or create a new event. The possibilities are endless!' },
       {
         hid: 'og:image',
