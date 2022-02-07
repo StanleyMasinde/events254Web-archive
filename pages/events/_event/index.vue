@@ -37,8 +37,8 @@
         <v-col cols="12" md="5">
           <v-card flat>
             <v-img
-              gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-              height="300"
+              gradient="to top right, rgba(100,115,201,.1), rgba(25,32,72,.4)"
+              height="350"
               contain
               :src="currentEvent.image ? currentEvent.image : '/icon.png'"
             />
@@ -50,19 +50,27 @@
               <span class="red--text">
                 <span v-if="differenceInDays === 0">
                   All-day event <br>
-                  {{ getTimeStringForSameDay(currentEvent.startDate, currentEvent.endDate) }}
+                  {{
+                    getTimeStringForSameDay(
+                      currentEvent.startDate,
+                      currentEvent.endDate
+                    )
+                  }}
                 </span>
                 <span v-else>
-                  {{ getTimeStringForDifferentDay(currentEvent.startDate, currentEvent.endDate) }}
+                  {{
+                    getTimeStringForDifferentDay(
+                      currentEvent.startDate,
+                      currentEvent.endDate
+                    )
+                  }}
                 </span>
               </span>
               <br>
               Event by:
               <router-link :to="organiserLink">
                 {{
-                  currentEvent.organiser
-                    ? currentEvent.organiser.name
-                    : "N/A"
+                  currentEvent.organiser ? currentEvent.organiser.name : "N/A"
                 }}
               </router-link>
               <br>
@@ -89,6 +97,7 @@
             </template>
             <client-only>
               <v-card-actions>
+                <v-spacer />
                 <v-btn
                   v-if="canEdit"
                   text
@@ -109,7 +118,6 @@
                   />
                 </template>
                 <template v-else>
-                  {{ currentEvent.past ? "You went" : "You are going" }}
                   <v-btn
                     color="primary"
                     depressed
@@ -117,18 +125,28 @@
                     rounded
                     to="/home/tickets"
                   >
-                    View your tickets
+                    <v-icon left>
+                      mdi-ticket-percent
+                    </v-icon>
+                    View your ticket
                   </v-btn>
                 </template>
               </v-card-actions>
             </client-only>
           </v-card>
         </v-col>
+      </v-row>
+      <v-row justify="center">
         <v-col cols="12" md="8">
-          <v-card flat>
-            <!-- eslint-disable-next-line vue/no-v-html -->
-            <v-card-text class="body-1" v-html="currentEvent.description" />
-          </v-card>
+          <v-row>
+            <v-col cols="12" md="7">
+              <h3 class="headline">
+                About this event
+              </h3>
+              <!-- eslint-disable-next-line vue/no-v-html -->
+              <div class="subtitle" v-html="currentEvent.description" />
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
       <!-- End of event body -->
@@ -309,8 +327,8 @@ export default {
       return `From ${startTime} to ${endTime}`
     },
     getTimeStringForDifferentDay (start, end) {
-      const startTime = this.$moment(start).format('dddd, MMMM Do')
-      const endTime = this.$moment(end).format('dddd, MMMM Do')
+      const startTime = this.$moment(start).format('ll')
+      const endTime = this.$moment(end).format('ll')
       if (startTime === endTime) {
         return `From ${startTime}`
       }

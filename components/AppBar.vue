@@ -1,19 +1,18 @@
 <template>
   <div>
     <template v-if="$vuetify.breakpoint.lgAndUp">
-      <v-toolbar color="primary" fixed>
-        <v-row justify="center" align="center" no-gutters>
+      <v-toolbar color="primary" fixed flat>
+        <v-row justify="center" align="center">
           <v-col cols="12" md="8">
-            <v-row no-gutters align="center">
+            <v-row align="center" justify="space-around">
               <v-col>
                 <v-app-bar-title>
                   <v-img src="/icon.png" height="60" width="60" contain />
                 </v-app-bar-title>
               </v-col>
 
-              <v-col>
-                <v-spacer />
-              </v-col>
+              <v-spacer />
+              <v-col />
 
               <v-col>
                 <v-btn to="/" depressed icon exact>

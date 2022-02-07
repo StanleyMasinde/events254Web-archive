@@ -3,26 +3,25 @@
     <client-only>
       <AppBar title="Events254" :back="false" />
     </client-only>
-    <v-row>
-      <v-col cols="12">
-        <v-img src="/home_bg.jpg" style="height: 500px;">
-          <v-row justify="center" align="center" class="fill-height" no-gutters>
-            <v-col cols="11" md="8">
-              <h1 class="display-1 white--text text-xs-center mb-3">
-                What are your plans for the day?
-              </h1>
-              <v-text-field
-                placeholder="Search for events, meetups, or anything else"
-                append-icon="mdi-magnify"
-                solo
-                x-large
-                @click="$router.push('/search')"
-              />
-            </v-col>
-          </v-row>
-        </v-img>
-      </v-col>
-    </v-row>
+
+    <div style="width: 100%;">
+      <v-img src="/home_bg.jpg" style="height: 500px;">
+        <v-row justify="center" align="center" class="fill-height">
+          <v-col cols="11" md="7">
+            <h1 class="display-1 white--text text-xs-center mb-3">
+              What are your plans for the day?
+            </h1>
+            <v-text-field
+              placeholder="Search for events, meetups, or anything else"
+              append-icon="mdi-magnify"
+              solo
+              x-large
+              @click="$router.push('/search')"
+            />
+          </v-col>
+        </v-row>
+      </v-img>
+    </div>
     <v-container fluid>
       <v-row justify="center">
         <v-col cols="12" md="8">
