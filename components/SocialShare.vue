@@ -74,8 +74,12 @@ export default {
   },
   data () {
     return {
-      customShare: false,
-      fullUrl: `${process.env.APP_URL}${this.url}`
+      customShare: false
+    }
+  },
+  computed: {
+    fullUrl () {
+      return `${process.env.APP_URL}${this.url}`
     }
   },
   methods: {
