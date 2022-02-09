@@ -1,7 +1,6 @@
 /* eslint-disable nuxt/no-cjs-in-config */
-const colors = require('vuetify/lib/util/colors').default
-const axios = require('axios').default
-module.exports = {
+import axios from 'axios'
+export default {
   // Nuxt server
   server: {
     port: process.env.PORT || 3000,
@@ -16,7 +15,7 @@ module.exports = {
   // disable ssr
   // ssr: false,
 
-  // target: 'static',
+  target: 'static',
 
   // Vue router
   router: {
@@ -118,26 +117,7 @@ module.exports = {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     treeShake: true,
-    theme: {
-      dark: false,
-      themes: {
-        light: {
-          primary: '#ff8601',
-          accent: '#01FF86',
-          secondary: '#8601FF',
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
-      }
-    },
-    defaultAssets: {
-      font: {
-        family: 'Montserrat'
-      },
-      icons: 'mdi'
-    }
+    optionsPath: './vuetify.options.js'
   },
 
   /**

@@ -113,14 +113,14 @@ export default {
   methods: {
     async confirmOrder () {
       try {
-        await this.$axios.post(
+        const { data } = await this.$axios.post(
           `/events/${this.$route.params.event}/register`,
           {
             ticket_id: this.eventRsvp.ticket.id,
             rsvp_count: this.eventRsvp.rsvp_count
           }
         )
-        this.$router.push('/home/tickets')
+        this.$router.push(`/tickets/${data.ticketId}`)
         // TODO I honestly don't know what to do here
         // I will just close the Modal for now
       } catch (error) {

@@ -15,6 +15,7 @@
                   filled
                   rounded
                   placeholder="Title"
+                  autofocus
                 />
                 <v-row>
                   <v-col>
@@ -99,35 +100,30 @@
               @click="showPreviewPage = true"
             >
               Next
+              <v-icon right>
+                mdi-arrow-right
+              </v-icon>
             </v-btn>
           </v-form>
         </ValidationObserver>
       </div>
       <!-- Show the event preview -->
       <div v-show="showPreviewPage">
-        <v-toolbar flat tile>
-          <v-toolbar-title>
-            <v-btn icon @click="showPreviewPage = false">
-              <v-icon>mdi-arrow-left</v-icon>
-            </v-btn>
-          </v-toolbar-title>
-        </v-toolbar>
-        <v-img class="white--text" height="300" :src="event.image ? event.image:'/icon.png'">
-          <v-row align="end" no-gutters class="bottom-gradient fill-height">
-            <v-col cols="12" style="width:100vw;">
+        <v-img class="white--text" height="400" contain :src="event.image ? event.image:'/icon.png'">
+          <div class="event-preview">
+            <div>
               <form id="eventForm">
                 <ImageUpload name="image" @change="onImageInputChage" />
               </form>
-            </v-col>
-            <v-col cols="12" style="width:100vw;">
-              <div>
-                <h2>{{ event.about }}</h2>
-                <p class="body-1 red--text">
-                  {{ $moment(event.startDate).format('dddd, MMMM Do YYYY') }}
-                </p>
-              </div>
-            </v-col>
-          </v-row>
+            </div>
+            <div class="preview-about">
+              {{ event.about || 'Event title' }}
+            </div>
+
+            <div class="preview-date">
+              {{ timeDateString }}
+            </div>
+          </div>
         </v-img>
 
         <v-btn
@@ -181,6 +177,15 @@ export default {
       title: 'Create a new Event'
     }
   },
+  computed: {
+    timeDateString () {
+      const startDate = this.event.startDate || this.$moment()
+      const endDate = this.event.endDate
+
+      return this.$moment(startDate).format('dddd, MMMM Do YYYY') +
+        (this.hasEndDate ? ' - ' + this.$moment(endDate).format('dddd, MMMM Do YYYY') : '')
+    }
+  },
   methods: {
     onImageInputChage (e) {
       const url = URL.createObjectURL(e)
@@ -216,6 +221,27 @@ export default {
 </script>
 
 <style scoped>
+.event-preview {
+  background: #16161685;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  display: grid;
+  grid-template-rows: 3fr 40px 100px;
+  padding-left: 10px;
+}
+
+.preview-about {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-align: start;
+}
+
+.preview-date {
+  color: rgb(204, 0, 0);
+}
+
 .bottom-gradient {
   background-image: linear-gradient(
     to top,

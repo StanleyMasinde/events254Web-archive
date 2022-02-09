@@ -4,18 +4,20 @@
       <AppBar title="Create event" />
     </client-only>
 
-    <v-container>
-      <v-row justify="center">
-        <SideNavigation />
-
-        <v-col cols="12" lg="9" xl="10">
-          <v-row justify="center">
-            <v-col cols="12" md="8">
-              <CreateEvent />
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-container>
+    <div class="my-row">
+      <v-col cols="12" md="6">
+        <CreateEvent />
+      </v-col>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.my-row {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+</style>

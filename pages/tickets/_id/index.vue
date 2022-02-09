@@ -1,13 +1,6 @@
 <template>
   <div>
-    <v-app-bar flat>
-      <v-app-bar-nav-icon>
-        <BackButton />
-      </v-app-bar-nav-icon>
-      <v-toolbar-title>
-        <span>Ticket</span>
-      </v-toolbar-title>
-    </v-app-bar>
+    <AppBar />
 
     <v-container>
       <!-- Still loading the group information -->
@@ -35,13 +28,22 @@
         </div>
       </v-row>
 
-      <v-row v-else justify="center">
-        <v-col cols="12">
-          <v-btn x-large color="primary" target="_blank" icon :to="`/tickets/${ticket.ticketId}/print`">
+      <v-row v-else>
+        <v-col cols="8">
+          <v-btn
+            x-large
+            color="primary"
+            target="_blank"
+            icon
+            :to="`/tickets/${ticket.ticketId}/print`"
+          >
             <v-icon>mdi-printer</v-icon>
           </v-btn>
         </v-col>
-        <v-col cols="12" md="10">
+      </v-row>
+
+      <v-row justify="center">
+        <v-col cols="12" md="8">
           <Ticket :ticket="ticket" />
         </v-col>
       </v-row>
@@ -57,7 +59,9 @@ export default {
   },
   async fetch () {
     try {
-      const { data } = await this.$axios.get(`/tickets/${this.$route.params.id}`)
+      const { data } = await this.$axios.get(
+        `/tickets/${this.$route.params.id}`
+      )
       this.ticket = data
     } catch (error) {
       throw new Error(error)

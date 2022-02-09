@@ -123,7 +123,7 @@
                     depressed
                     large
                     rounded
-                    to="/home/tickets"
+                    :to="`/tickets/${currentEvent.currentUserTicket.id}`"
                   >
                     <v-icon left>
                       mdi-ticket-percent
@@ -179,7 +179,9 @@ export default {
       )
       this.currentEvent = data
     } catch (error) {
-      throw new Error(error)
+      if (error.response.status === 500) {
+        this.$router.push('/error')
+      }
     }
   },
   head () {

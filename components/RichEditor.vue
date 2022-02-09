@@ -195,7 +195,7 @@ export default {
       onUpdate: (d) => {
         this.$emit('input', d.editor.getHTML())
       },
-      autofocus: true,
+      autofocus: false,
       content: '',
       extensions: [
         Bold,

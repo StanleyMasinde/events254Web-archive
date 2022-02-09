@@ -1,6 +1,7 @@
 <template>
-  <div dropzone>
+  <div id="dropzone" dropzone class="dropzone" @click="triggerUpload">
     <input
+      id="imageInput"
       flat
       filled
       chips
@@ -28,6 +29,9 @@ export default {
   methods: {
     onchange (e) {
       this.$emit('change', e.target.files[0])
+    },
+    triggerUpload () {
+      document.querySelector('#imageInput').click()
     }
   }
 }
@@ -43,6 +47,7 @@ div {
     text-align: center;
     cursor: pointer;
     background-color: #ffffff77;
+    z-index: 2;
 }
 
 div:hover {
@@ -56,6 +61,7 @@ p {
     position: relative;
     bottom: 90%;
     display: block;
+    z-index: 1;
 }
 
 input {

@@ -1,77 +1,5 @@
 <template>
   <v-app>
-    <!-- <v-navigation-drawer app fixed>
-      <v-list-item>
-        <v-list-item-avatar height="60" width="60">
-          <v-img src="/icon.png" />
-        </v-list-item-avatar>
-      </v-list-item>
-
-      <v-list rounded>
-        <v-list-item to="/">
-          <v-list-item-icon>
-            <v-icon>mdi-home-outline</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title> Home </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item to="/calendar">
-          <v-list-item-icon>
-            <v-icon>mdi-calendar-outline</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title> Calendar </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item to="/home">
-          <v-list-item-icon>
-            <v-icon>mdi-account-outline</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title> Profile </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item to="/search">
-          <v-list-item-icon>
-            <v-icon>mdi-magnify</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title> Search </v-list-item-title>
-        </v-list-item>
-
-        <v-spacer />
-
-        <v-list-item>
-          <v-btn
-            rounded
-            depressed
-            color="primary"
-            to="/events/create"
-          >
-            Create an event
-          </v-btn>
-        </v-list-item>
-      </v-list>
-
-      <template #append>
-        <v-list-item v-if="$auth.user">
-          <v-list-item-avatar>
-            <v-avatar
-              color="brown"
-            >
-              <span class="white--text">{{ $store.getters.initials }}</span>
-            </v-avatar>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>{{ $auth.user.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ $auth.user.username || 'No username' }}</v-list-item-subtitle>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-btn icon @click="$auth.logout()">
-              <v-icon>mdi-logout</v-icon>
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
-      </template>
-    </v-navigation-drawer> -->
-
     <v-main>
       <nuxt />
     </v-main>
@@ -85,7 +13,7 @@
       <v-btn icon to="/">
         <v-icon>mdi-home-outline</v-icon>
       </v-btn>
-      <v-btn icon :to="`/calendar?date=${today}`">
+      <v-btn icon to="/calendar">
         <v-icon>mdi-calendar-outline</v-icon>
       </v-btn>
       <!-- Event creation button
@@ -111,53 +39,53 @@
       </v-col>
       <v-col cols="12" sm="8" md="3">
         <v-list-item-subtitle>
-          <nuxt-link to="/" class="text-primary">
+          <nuxt-link to="/" class="body-1">
             Home
           </nuxt-link>
         </v-list-item-subtitle>
         <v-list-item-subtitle>
-          <nuxt-link to="/calendar" class="text-primary">
+          <nuxt-link to="/calendar" class="body-1">
             Calendar
           </nuxt-link>
         </v-list-item-subtitle>
         <v-list-item-subtitle>
-          <nuxt-link to="/home" class="text-primary">
+          <nuxt-link to="/home" class="body-1">
             Profile
           </nuxt-link>
         </v-list-item-subtitle>
         <v-list-item-subtitle>
-          <nuxt-link to="/search" class="text-primary">
+          <nuxt-link to="/search" class="body-1">
             Search
           </nuxt-link>
         </v-list-item-subtitle>
 
         <v-list-item-subtitle>
-          <nuxt-link to="/faqs" class="text-primary">
+          <nuxt-link to="/faqs" class="body-1">
             FAQs
           </nuxt-link>
         </v-list-item-subtitle>
       </v-col>
       <v-col cols="12" sm="12" md="3">
         <v-list-item-subtitle>
-          <nuxt-link to="#" class="text-primary" @click="$auth.logout()">
+          <nuxt-link to="#" class="body-1" @click="$auth.logout()">
             Logout
           </nuxt-link>
         </v-list-item-subtitle>
 
         <v-list-item-subtitle>
-          <nuxt-link to="/home/tickets" class="text-primary">
+          <nuxt-link to="/home/tickets" class="body-1">
             Tickets
           </nuxt-link>
         </v-list-item-subtitle>
 
         <v-list-item-subtitle>
-          <nuxt-link to="/events/create" class="text-primary">
+          <nuxt-link to="/events/create" class="body-1">
             Create an event
           </nuxt-link>
         </v-list-item-subtitle>
 
         <v-list-item-subtitle>
-          <nuxt-link to="/groups/create" class="text-primary">
+          <nuxt-link to="/groups/create" class="body-1">
             Start a new group
           </nuxt-link>
         </v-list-item-subtitle>
@@ -165,25 +93,25 @@
 
       <v-col cols="12" sm="12" md="3">
         <v-list-item-subtitle>
-          <nuxt-link to="/about" class="text-primary">
+          <nuxt-link to="/about" class="body-1">
             About
           </nuxt-link>
         </v-list-item-subtitle>
 
         <v-list-item-subtitle>
-          <nuxt-link to="/contact" class="text-primary">
+          <nuxt-link to="/contact" class="body-1">
             Contact
           </nuxt-link>
         </v-list-item-subtitle>
 
         <v-list-item-subtitle>
-          <nuxt-link to="/privacy" class="text-primary">
+          <nuxt-link to="/privacy" class="body-1">
             Privacy policy
           </nuxt-link>
         </v-list-item-subtitle>
 
         <v-list-item-subtitle>
-          <nuxt-link to="/terms" class="text-primary">
+          <nuxt-link to="/terms" class="body-1">
             Terms of service
           </nuxt-link>
         </v-list-item-subtitle>
