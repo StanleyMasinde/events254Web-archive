@@ -15,7 +15,7 @@ export default {
   // disable ssr
   // ssr: false,
 
-  target: 'static',
+  // target: 'static',
 
   // Vue router
   router: {
