@@ -117,7 +117,13 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     treeShake: true,
-    optionsPath: './vuetify.options.js'
+    optionsPath: './vuetify.options.js',
+    defaultAssets: {
+      font: {
+        family: 'Montserrat'
+      },
+      icons: 'mdi'
+    }
   },
 
   /**

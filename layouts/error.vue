@@ -1,7 +1,7 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-main>
-      <div class="full-height">
+      <div class="fill-height">
         <v-img height="400" contain :src="error.statusCode === 404 ? '/not_found.svg': '/500.svg'">
           <v-container>
             <v-row justify="center">
@@ -50,6 +50,6 @@ export default {
 </script>
 <style scoped>
 .full-height {
-  height: 50vh!important;
+  height: 90vh!important;
 }
 </style>

@@ -6,70 +6,66 @@
 
     <v-container fluid>
       <v-row justify="center">
-        <SideNavigation />
+        <v-col cols="12" md="8">
+          <v-card outlined>
+            <v-card-title v-if="$refs.calendar">
+              {{ $refs.calendar.title }}
+            </v-card-title>
 
-        <v-col cols="12" lg="7" xl="10">
-          <v-col cols="12" md="10">
-            <v-card outlined>
-              <v-card-title v-if="$refs.calendar">
-                {{ $refs.calendar.title }}
-              </v-card-title>
+            <v-card-actions>
+              <v-row>
+                <v-col cols="12" sm="4">
+                  <v-btn
+                    rounded
+                    depressed
+                    block
+                    color="primary"
+                    @click="setToday"
+                  >
+                    Today
+                  </v-btn>
+                </v-col>
 
-              <v-card-actions>
-                <v-row>
-                  <v-col cols="12" sm="4">
-                    <v-btn
-                      rounded
-                      depressed
-                      block
-                      color="primary"
-                      @click="setToday"
-                    >
-                      Today
-                    </v-btn>
-                  </v-col>
+                <v-col cols="12" sm="1">
+                  <v-btn icon block @click="prev">
+                    <v-icon>mdi-chevron-left</v-icon>
+                  </v-btn>
+                </v-col>
 
-                  <v-col cols="12" sm="1">
-                    <v-btn icon block @click="prev">
-                      <v-icon>mdi-chevron-left</v-icon>
-                    </v-btn>
-                  </v-col>
+                <v-col cols="12" sm="1">
+                  <v-btn icon block @click="next">
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </v-btn>
+                </v-col>
 
-                  <v-col cols="12" sm="1">
-                    <v-btn icon block @click="next">
-                      <v-icon>mdi-chevron-right</v-icon>
-                    </v-btn>
-                  </v-col>
-
-                  <v-col cols="12" sm="4">
-                    <v-select
-                      v-model="calendarType"
-                      outlined
-                      :items="[
-                        { text: 'Week', value: 'week' },
-                        { text: 'Month', value: 'month' },
-                        { text: '4Day', value: '4day' },
-                        { text: 'Day', value: 'day' },
-                      ]"
-                      label="View"
-                    />
-                  </v-col>
-                </v-row>
-              </v-card-actions>
-              <v-card-title>
-                <span class="headline">Calendar</span>
-              </v-card-title>
-              <v-card-text>
-                <v-calendar
-                  ref="calendar"
-                  v-model="focus"
-                  :events="events"
-                  :type="calendarType"
-                  @click:event="onClickEvent"
-                />
-              </v-card-text>
-            </v-card>
-          </v-col>
+                <v-col cols="12" sm="4">
+                  <v-select
+                    v-model="calendarType"
+                    outlined
+                    :items="[
+                      { text: 'Week', value: 'week' },
+                      { text: 'Month', value: 'month' },
+                      { text: '4Day', value: '4day' },
+                      { text: 'Day', value: 'day' },
+                    ]"
+                    label="View"
+                  />
+                </v-col>
+              </v-row>
+            </v-card-actions>
+            <v-card-title>
+              <span class="headline">Calendar</span>
+            </v-card-title>
+            <v-card-text>
+              <v-calendar
+                ref="calendar"
+                v-model="focus"
+                :events="events"
+                :type="calendarType"
+                @click:event="onClickEvent"
+              />
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
 
@@ -132,7 +128,7 @@ export default {
   data () {
     return {
       events: [],
-      calendarType: 'week',
+      calendarType: 'month',
       focus: '',
       dialog: false,
       selectedEvent: {},

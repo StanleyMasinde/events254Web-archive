@@ -19,27 +19,13 @@
                   <v-icon>mdi-home</v-icon>
                 </v-btn>
 
-                <v-btn
-                  icon
-                  to="/search"
-                >
-                  <v-icon>mdi-magnify</v-icon>
-                </v-btn>
-
-                <v-btn
-                  icon
-                  to="/notifications"
-                >
+                <v-btn icon to="/notifications">
                   <v-icon>mdi-bell</v-icon>
                 </v-btn>
 
                 <v-menu offset-y>
                   <template #activator="{ on, attrs }">
-                    <v-avatar
-                      size="50"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
+                    <v-avatar size="50" v-bind="attrs" v-on="on">
                       <v-icon>mdi-menu</v-icon>
                     </v-avatar>
                   </template>
@@ -63,49 +49,27 @@
                       </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item>
+                    <v-list-item to="/events/create" exact>
+                      <v-list-item-icon>
+                        <v-icon>mdi-plus-circle-outline</v-icon>
+                      </v-list-item-icon>
                       <v-list-item-content>
-                        <v-list-item-title>
-                          <v-btn
-                            to="/events/create"
-                            color="primary"
-                            rounded
-                            large
-                            block
-                            depressed
-                          >
-                            Create a new event
-                            <v-icon right>
-                              mdi-calendar-plus
-                            </v-icon>
-                          </v-btn>
-                        </v-list-item-title>
+                        <v-list-item-title> Create event </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item dense>
+                    <v-list-item to="/groups/create" exact>
+                      <v-list-item-icon>
+                        <v-icon>mdi-plus-circle-outline</v-icon>
+                      </v-list-item-icon>
                       <v-list-item-content>
-                        <v-list-item-title>
-                          <v-btn
-                            to="/groups/create"
-                            color="primary"
-                            rounded
-                            large
-                            block
-                            depressed
-                          >
-                            Start a new group
-                            <v-icon right>
-                              mdi-account-multiple-plus
-                            </v-icon>
-                          </v-btn>
-                        </v-list-item-title>
+                        <v-list-item-title> Start a group </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
 
                     <v-divider />
 
-                    <v-list-item>
+                    <v-list-item @click="$auth.logout()">
                       <v-list-item-icon>
                         <v-icon>mdi-exit-to-app</v-icon>
                       </v-list-item-icon>

@@ -5,7 +5,7 @@
     </client-only>
 
     <div style="width: 100%;">
-      <v-img src="/home_bg.jpg" style="height: 500px;">
+      <v-img src="/home_bg.jpg" style="height: 500px;" gradient="to top right, rgba(0,0,0,.9), rgba(0,0,0,.1)">
         <v-row justify="center" align="center" class="fill-height">
           <v-col cols="11" md="7">
             <h1 class="display-1 white--text text-xs-center mb-3">
@@ -34,8 +34,8 @@
                   </h3>
                 </v-col>
                 <v-col class="text-right">
-                  <v-btn icon rounded color="primary" to="/categories">
-                    <v-icon>mdi-arrow-right</v-icon>
+                  <v-btn text rounded color="primary" to="/categories">
+                    See all
                   </v-btn>
                 </v-col>
               </v-row>
@@ -73,7 +73,7 @@
 
           <client-only>
             <FetchLoading v-if="$fetchState.pending" landing-page />
-            <FetchError v-else-if="$fetchState.error" />
+            <FetchError v-else-if="$fetchState.error" :error="$fetchState.error" />
 
             <div
               v-for="(item, index) in newFeedObject"
@@ -137,7 +137,7 @@
                           class="red--text"
                         >
                           <span>{{ $moment(it.startDate).calendar(null, {
-                            sameElse: 'MMM DD, [from] YYYY hh:mm A'
+                            sameElse: 'MMM DD, [from] hh:mm A'
                           }) }}</span>
                         </span>
                         <br>
