@@ -277,7 +277,7 @@ export default {
       try {
         const { data } = await this.$axios.post(this.createUrl, formData)
         this.message.success = true
-        this.$router.push(`/events/${data.id}/manage`)
+        this.$router.push(`/events/${data.id}/manage/ticket`)
       } catch (error) {
         if (error.response.status === 422) {
           this.$refs.observer.setErrors(error.response.data.errors)
