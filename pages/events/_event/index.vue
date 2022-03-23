@@ -12,143 +12,145 @@
       <FetchError v-else-if="$fetchState.error" />
 
       <!-- Event body -->
-      <v-row v-else justify="center">
-        <v-col cols="12" md="8">
-          <p>
-            <span v-if="currentEvent.allDay" class="text--secondary">
-              {{
-                $moment(currentEvent.startDate).calendar(null, {
-                  sameElse: "MMMM D, YYYY",
-                })
-              }}
-            </span>
-            <span v-else class="text--secondary">{{
-              $moment(currentEvent.startDate).format("MMMM Do YYYY [at] h:mm a")
-            }}</span>
-            <br>
-            <span class="text-h5 font-weight-bold">
-              {{ currentEvent.about }}
-            </span>
-          </p>
-        </v-col>
-      </v-row>
-
-      <v-row justify="center">
-        <v-col cols="12" md="5">
-          <v-card flat>
-            <v-img
-              gradient="to top right, rgba(100,115,201,.1), rgba(25,32,72,.4)"
-              height="350"
-              contain
-              :src="currentEvent.image ? currentEvent.image : '/icon.png'"
-            />
-          </v-card>
-        </v-col>
-        <v-col class="sticky-top" cols="12" md="3">
-          <v-card outlined>
-            <v-card-text class="body-1">
-              <span class="red--text">
-                <span v-if="differenceInDays === 0">
-                  All-day event <br>
-                  {{
-                    getTimeStringForSameDay(
-                      currentEvent.startDate,
-                      currentEvent.endDate
-                    )
-                  }}
-                </span>
-                <span v-else>
-                  {{
-                    getTimeStringForDifferentDay(
-                      currentEvent.startDate,
-                      currentEvent.endDate
-                    )
-                  }}
-                </span>
-              </span>
-              <br>
-              Event by:
-              <router-link :to="organiserLink">
+      <template v-else>
+        <v-row justify="center">
+          <v-col cols="12" md="8">
+            <p>
+              <span v-if="currentEvent.allDay" class="text--secondary">
                 {{
-                  currentEvent.organiser ? currentEvent.organiser.name : "N/A"
+                  $moment(currentEvent.startDate).calendar(null, {
+                    sameElse: "MMMM D, YYYY",
+                  })
                 }}
-              </router-link>
+              </span>
+              <span v-else class="text--secondary">{{
+                $moment(currentEvent.startDate).format("MMMM Do YYYY [at] h:mm a")
+              }}</span>
               <br>
-              Location: {{ currentEvent.location || "Online" }}
-            </v-card-text>
-            <template v-if="currentEvent.attendees">
-              <v-card-text
-                v-if="currentEvent.attendees.length > 0"
-                class="body-1"
-              >
-                <h5>Attendees</h5>
-                <div class="stacked-av">
-                  <v-avatar
-                    v-for="(a, i) in currentEvent.attendees"
-                    :key="i"
-                    :title="a.name"
-                    color="brown"
-                  >
-                    {{ a.name.charAt(0) }}
-                    <!-- <span>{{ initials(a.name) }}</span> -->
-                  </v-avatar>
-                </div>
+              <span class="text-h5 font-weight-bold">
+                {{ currentEvent.about }}
+              </span>
+            </p>
+          </v-col>
+        </v-row>
+
+        <v-row justify="center">
+          <v-col cols="12" md="5">
+            <v-card flat>
+              <v-img
+                gradient="to top right, rgba(100,115,201,.1), rgba(25,32,72,.4)"
+                height="350"
+                contain
+                :src="currentEvent.image ? currentEvent.image : '/icon.png'"
+              />
+            </v-card>
+          </v-col>
+          <v-col class="sticky-top" cols="12" md="3">
+            <v-card outlined>
+              <v-card-text class="body-1">
+                <span class="red--text">
+                  <span v-if="differenceInDays === 0">
+                    All-day event <br>
+                    {{
+                      getTimeStringForSameDay(
+                        currentEvent.startDate,
+                        currentEvent.endDate
+                      )
+                    }}
+                  </span>
+                  <span v-else>
+                    {{
+                      getTimeStringForDifferentDay(
+                        currentEvent.startDate,
+                        currentEvent.endDate
+                      )
+                    }}
+                  </span>
+                </span>
+                <br>
+                Event by:
+                <router-link :to="organiserLink">
+                  {{
+                    currentEvent.organiser ? currentEvent.organiser.name : "N/A"
+                  }}
+                </router-link>
+                <br>
+                Location: {{ currentEvent.location || "Online" }}
               </v-card-text>
-            </template>
-            <client-only>
-              <v-card-actions>
-                <v-spacer />
-                <v-btn
-                  v-if="canEdit"
-                  text
-                  :to="`/events/${currentEvent.id}/manage`"
+              <template v-if="currentEvent.attendees">
+                <v-card-text
+                  v-if="currentEvent.attendees.length > 0"
+                  class="body-1"
                 >
-                  Manage event
-                </v-btn>
-                <social-share
-                  :url="`/events/${currentEvent.id}`"
-                  :title="currentEvent.about"
-                  :description="currentEvent.description"
-                />
-                <template v-if="!currentEvent.currentUserTicket">
-                  <BuyTicket
-                    v-if="!canEdit"
-                    :past="currentEvent.past"
-                    :tickets="currentEvent.tickets"
-                  />
-                </template>
-                <template v-else>
+                  <h5>Attendees</h5>
+                  <div class="stacked-av">
+                    <v-avatar
+                      v-for="(a, i) in currentEvent.attendees"
+                      :key="i"
+                      :title="a.name"
+                      color="brown"
+                    >
+                      {{ a.name.charAt(0) }}
+                    <!-- <span>{{ initials(a.name) }}</span> -->
+                    </v-avatar>
+                  </div>
+                </v-card-text>
+              </template>
+              <client-only>
+                <v-card-actions>
+                  <v-spacer />
                   <v-btn
-                    color="primary"
-                    depressed
-                    large
-                    rounded
-                    :to="`/tickets/${currentEvent.currentUserTicket.id}`"
+                    v-if="canEdit"
+                    text
+                    :to="`/events/${currentEvent.id}/manage`"
                   >
-                    <v-icon left>
-                      mdi-ticket-percent
-                    </v-icon>
-                    View your ticket
+                    Manage event
                   </v-btn>
-                </template>
-              </v-card-actions>
-            </client-only>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-col cols="12" md="8">
-          <v-row>
-            <v-col cols="12" md="7">
-              <h3 class="headline">
-                About this event
-              </h3>
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <div class="subtitle" v-html="currentEvent.description" />
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+                  <social-share
+                    :url="`/events/${currentEvent.id}`"
+                    :title="currentEvent.about"
+                    :description="currentEvent.description"
+                  />
+                  <template v-if="!currentEvent.currentUserTicket">
+                    <BuyTicket
+                      v-if="!canEdit"
+                      :past="currentEvent.past"
+                      :tickets="currentEvent.tickets"
+                    />
+                  </template>
+                  <template v-else>
+                    <v-btn
+                      color="primary"
+                      depressed
+                      large
+                      rounded
+                      :to="`/tickets/${currentEvent.currentUserTicket.id}`"
+                    >
+                      <v-icon left>
+                        mdi-ticket-percent
+                      </v-icon>
+                      View your ticket
+                    </v-btn>
+                  </template>
+                </v-card-actions>
+              </client-only>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row justify="center">
+          <v-col cols="12" md="8">
+            <v-row>
+              <v-col cols="12" md="7">
+                <h3 class="headline">
+                  About this event
+                </h3>
+                <!-- eslint-disable-next-line vue/no-v-html -->
+                <div class="subtitle" v-html="currentEvent.description" />
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </template>
       <!-- End of event body -->
     </v-container>
   </div>

@@ -1,10 +1,17 @@
 <template>
   <div>
     <client-only>
+      <div id="errorAlert" />
       <v-alert v-if="message.success" type="success">
         Event created
       </v-alert>
+      <v-alert v-if="message.errors" type="error">
+        <small v-for="(error, i) in message.errors" :key="i">{{
+          error[0]
+        }}</small>
+      </v-alert>
       <div v-show="!showPreviewPage">
+        <!-- Event creation form -->
         <ValidationObserver ref="observer" v-slot="{ invalid }">
           <v-form ref="form" @submit.prevent="createEvent">
             <v-card flat outlined style="width: 100vw" class="mb-2">
@@ -61,12 +68,13 @@
               </v-card-actions>
             </v-card>
 
+            <v-divider class="my-4" />
             <v-text-field
               v-if="!isVirtual"
               v-model="event.location"
               class="ma-0"
               autocomplete="address-level1"
-              placeholder="Location"
+              placeholder="45 Main St, San Francisco, CA"
               rounded
               filled
               prepend-inner-icon="mdi-map-marker"
@@ -76,19 +84,36 @@
               v-model="event.online_link"
               class="ma-0"
               autocomplete="url"
-              placeholder="Meeting link"
+              placeholder="your-event-url.com"
               rounded
               filled
               type="url"
               hint="You can add this later"
               prepend-inner-icon="mdi-link"
+              prefix="https://"
             />
             <v-checkbox
               v-model="isVirtual"
               class="ma-0"
               hint="If the event is online"
-              label="It is a virtual event"
+              label="This is an online event"
             />
+
+            <v-divider class="my-4" />
+
+            <ValidationProvider v-slot="{ errors }" name="category" rules="required">
+              <v-select
+                v-model="event.category_id"
+                hint="This will be used to classify the event"
+                :items="categories"
+                item-text="name"
+                item-value="id"
+                label="Event category"
+                prepend-inner-icon="mdi-format-list-bulleted"
+                outlined
+                :error-messages="errors"
+              />
+            </ValidationProvider>
 
             <RichEditor v-model="event.description" />
             <v-btn
@@ -109,22 +134,51 @@
       </div>
       <!-- Show the event preview -->
       <div v-show="showPreviewPage">
-        <v-img class="white--text" height="400" contain :src="event.image ? event.image:'/icon.png'">
-          <div class="event-preview">
-            <div>
-              <form id="eventForm">
-                <ImageUpload name="image" @change="onImageInputChage" />
-              </form>
-            </div>
-            <div class="preview-about">
-              {{ event.about || 'Event title' }}
-            </div>
+        <!-- Btn to go back to the event creation form -->
+        <v-row>
+          <v-col>
+            <v-btn
+              x-large
+              depressed
+              rounded
+              text
+              title="Go back to the event details"
+              icon
+              @click="showPreviewPage = false"
+            >
+              <v-icon left x-large>
+                mdi-arrow-left
+              </v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <!-- End of btn to go back to the event creation form -->
 
-            <div class="preview-date">
-              {{ timeDateString }}
-            </div>
-          </div>
-        </v-img>
+        <v-row>
+          <v-col>
+            <v-img
+              class="white--text"
+              height="400"
+              contain
+              :src="event.image ? event.image : '/icon.png'"
+            >
+              <div class="event-preview">
+                <div>
+                  <form id="eventForm">
+                    <ImageUpload name="image" @change="onImageInputChage" />
+                  </form>
+                </div>
+                <div class="preview-about">
+                  {{ event.about || "Event title" }}
+                </div>
+
+                <div class="preview-date">
+                  {{ timeDateString }}
+                </div>
+              </div>
+            </v-img>
+          </v-col>
+        </v-row>
 
         <v-btn
           class="mt-5"
@@ -157,8 +211,9 @@ export default {
       isVirtual: false,
       message: {
         success: null,
-        err: null
+        errors: null
       },
+      categories: [],
       event: {
         image: null,
         location: null,
@@ -172,6 +227,14 @@ export default {
       }
     }
   },
+  async fetch () {
+    try {
+      const { data } = await this.$axios.get('/categories')
+      this.categories = data
+    } catch (e) {
+      throw new Error(e)
+    }
+  },
   head () {
     return {
       title: 'Create a new Event'
@@ -182,8 +245,12 @@ export default {
       const startDate = this.event.startDate || this.$moment()
       const endDate = this.event.endDate
 
-      return this.$moment(startDate).format('dddd, MMMM Do YYYY') +
-        (this.hasEndDate ? ' - ' + this.$moment(endDate).format('dddd, MMMM Do YYYY') : '')
+      return (
+        this.$moment(startDate).format('dddd, MMMM Do YYYY') +
+        (this.hasEndDate
+          ? ' - ' + this.$moment(endDate).format('dddd, MMMM Do YYYY')
+          : '')
+      )
     }
   },
   methods: {
@@ -196,7 +263,11 @@ export default {
       const form = document.querySelector('#eventForm')
       const formData = new FormData(form)
       formData.append('about', this.event.about)
-      formData.append('description', this.event.description || this.event.about)
+      formData.append(
+        'description',
+        this.event.description || this.event.about
+      )
+      formData.append('category_id', this.event.category_id)
       formData.append('startDate', this.event.startDate)
       formData.append('startTime', this.event.startTime)
       formData.append('endDate', this.event.endDate || this.startDate)
@@ -206,10 +277,14 @@ export default {
       try {
         const { data } = await this.$axios.post(this.createUrl, formData)
         this.message.success = true
-        this.$router.push(`/events/${data.id}/manage`)
+        this.$router.push(`/events/${data.id}/manage/ticket`)
       } catch (error) {
         if (error.response.status === 422) {
           this.$refs.observer.setErrors(error.response.data.errors)
+          this.message.errors = error.response.data.errors
+          document
+            .querySelector('#errorAlert')
+            .scrollIntoView({ behavior: 'smooth' })
           return
         }
         // TODO add proper handling
@@ -243,11 +318,6 @@ export default {
 }
 
 .bottom-gradient {
-  background-image: linear-gradient(
-    to top,
-    #0000008e 0%,
-    transparent 772px
-  );
+  background-image: linear-gradient(to top, #0000008e 0%, transparent 772px);
 }
-
 </style>

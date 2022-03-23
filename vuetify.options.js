@@ -18,7 +18,7 @@ export default function () {
       dark: getPreferedTheme() === 'dark',
       themes: {
         light: {
-          primary: '#ff8601',
+          primary: '#ff6601',
           accent: '#01FF86',
           secondary: '#8601FF',
           info: colors.teal.lighten1,
