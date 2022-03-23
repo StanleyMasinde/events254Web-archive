@@ -1,180 +1,198 @@
 <template>
   <div>
-    <v-row>
-      <v-col>
-        <h2>Create a new event</h2>
-      </v-col>
-    </v-row>
-
-    <v-stepper v-model="step" flat outlined>
-      <v-stepper-header>
-        <v-stepper-step :complete="step > 1" step="1" :step-key="1">
-          Select event type
-        </v-stepper-step>
-
-        <v-stepper-step :complete="step > 2" step="2" :step-key="2">
-          Add event details
-        </v-stepper-step>
-
-        <v-stepper-step :complete="step > 3" step="3" :step-key="3">
-          Select event category
-        </v-stepper-step>
-      </v-stepper-header>
-
-      <v-stepper-items>
-        <v-stepper-content step="1">
-          <v-row justify="center">
-            <v-col cols="6">
-              <v-card
-                class="mt-3"
-                hover
-                flat
-                min-height="175"
-                max-height="175"
-                @click="setEventAttendanceMode('inPerson')"
-              >
-                <v-img src="/in_person.svg" height="100" contain />
-                <v-card-text class="text-center">
-                  <h3>In Person event</h3>
-                </v-card-text>
-              </v-card>
-            </v-col>
-
-            <v-col cols="6">
-              <v-card
-                class="mt-3"
-                hover
-                flat
-                min-height="175"
-                max-height="175"
-                @click="setEventAttendanceMode('virtual')"
-              >
-                <v-img src="/virtual.svg" height="100" contain />
-                <v-card-text class="text-center">
-                  <h3>Virtual event</h3>
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-stepper-content>
-
-        <v-stepper-content step="2">
-          <v-row justify="center">
-            <v-col class="texr-center">
-              <ValidationObserver v-slot="{ invalid }">
-                <v-card-text>
-                  <h3>
-                    Creating
-                    {{
-                      event.attendanceMode === "inPerson"
-                        ? "an in Person"
-                        : "a virtual"
-                    }}
-                    event
-                  </h3>
-                  <v-form>
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      rules="required"
-                      name="about"
-                    >
-                      <v-text-field
-                        v-model="event.about"
-                        label="What is the event about?"
-                        :error-messages="errors.about"
-                        required
-                        autocomplete="none"
-                        solo
-                        rounded
-                        flat
-                        class="display-1"
+    <client-only>
+      <div id="errorAlert" />
+      <v-alert v-if="message.success" type="success">
+        Event created
+      </v-alert>
+      <v-alert v-if="message.errors" type="error">
+        <small v-for="(error, i) in message.errors" :key="i">{{
+          error[0]
+        }}</small>
+      </v-alert>
+      <div v-show="!showPreviewPage">
+        <!-- Event creation form -->
+        <ValidationObserver ref="observer" v-slot="{ invalid }">
+          <v-form ref="form" @submit.prevent="createEvent">
+            <v-card flat outlined style="width: 100vw" class="mb-2">
+              <v-card-text>
+                <v-text-field
+                  v-model="event.about"
+                  style="font-weight: 800"
+                  filled
+                  rounded
+                  placeholder="Title"
+                  autofocus
+                />
+                <v-row>
+                  <v-col>
+                    <ValidationProvider v-slot="{ errors }" rules="required">
+                      <DateInput
+                        v-model="event.startDate"
+                        :error-messages="errors"
+                        name="startDate"
+                        label="Start"
                       />
                     </ValidationProvider>
+                  </v-col>
+                  <v-col v-if="!isAllDay">
+                    <TimeInput v-model="event.startTime" name="startTime" />
+                  </v-col>
+                </v-row>
 
-                    <v-divider />
+                <v-row v-if="hasEndDate">
+                  <v-col>
+                    <DateInput
+                      v-model="event.endDate"
+                      name="endDate"
+                      label="End"
+                      value=""
+                    />
+                  </v-col>
+                  <v-col v-if="!isAllDay">
+                    <TimeInput v-model="event.endTime" name="endTime" />
+                  </v-col>
+                </v-row>
+              </v-card-text>
+              <v-card-actions class="text-right">
+                <v-checkbox
+                  v-model="isAllDay"
+                  hint="If the event has no end time"
+                  label="All day"
+                />
+                <v-checkbox
+                  v-model="hasEndDate"
+                  hint="If the event has no end time"
+                  label="Add end date"
+                />
+              </v-card-actions>
+            </v-card>
 
-                    <div class="mb-3">
-                      <v-row align="center" justify="center">
-                        <v-col cols="1">
-                          <v-icon>mdi-calendar-clock</v-icon>
-                        </v-col>
+            <v-divider class="my-4" />
+            <v-text-field
+              v-if="!isVirtual"
+              v-model="event.location"
+              class="ma-0"
+              autocomplete="address-level1"
+              placeholder="45 Main St, San Francisco, CA"
+              rounded
+              filled
+              prepend-inner-icon="mdi-map-marker"
+            />
+            <v-text-field
+              v-else
+              v-model="event.online_link"
+              class="ma-0"
+              autocomplete="url"
+              placeholder="your-event-url.com"
+              rounded
+              filled
+              type="url"
+              hint="You can add this later"
+              prepend-inner-icon="mdi-link"
+              prefix="https://"
+            />
+            <v-checkbox
+              v-model="isVirtual"
+              class="ma-0"
+              hint="If the event is online"
+              label="This is an online event"
+            />
 
-                        <v-col cols="9" class="body-1">
-                          All day
-                        </v-col>
+            <v-divider class="my-4" />
 
-                        <v-col cols="2">
-                          <v-switch
-                            v-model="event.isAllDay"
-                            inset
-                            class="display-1"
-                          />
-                        </v-col>
-                      </v-row>
+            <ValidationProvider v-slot="{ errors }" name="category" rules="required">
+              <v-select
+                v-model="event.category_id"
+                hint="This will be used to classify the event"
+                :items="categories"
+                item-text="name"
+                item-value="id"
+                label="Event category"
+                prepend-inner-icon="mdi-format-list-bulleted"
+                outlined
+                :error-messages="errors"
+              />
+            </ValidationProvider>
 
-                      <v-row justify="center" align="center">
-                        <v-col cols="5">
-                          <span ref="startDate" class="title" @click="showStartDatePicker">{{ $moment(event.startDate).format("MMM DD, YYYY") }}</span>
-                        </v-col>
+            <RichEditor v-model="event.description" />
+            <v-btn
+              large
+              depressed
+              rounded
+              color="primary"
+              :disabled="invalid"
+              @click="showPreviewPage = true"
+            >
+              Next
+              <v-icon right>
+                mdi-arrow-right
+              </v-icon>
+            </v-btn>
+          </v-form>
+        </ValidationObserver>
+      </div>
+      <!-- Show the event preview -->
+      <div v-show="showPreviewPage">
+        <!-- Btn to go back to the event creation form -->
+        <v-row>
+          <v-col>
+            <v-btn
+              x-large
+              depressed
+              rounded
+              text
+              title="Go back to the event details"
+              icon
+              @click="showPreviewPage = false"
+            >
+              <v-icon left x-large>
+                mdi-arrow-left
+              </v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <!-- End of btn to go back to the event creation form -->
 
-                        <v-col cols="2" />
+        <v-row>
+          <v-col>
+            <v-img
+              class="white--text"
+              height="400"
+              contain
+              :src="event.image ? event.image : '/icon.png'"
+            >
+              <div class="event-preview">
+                <div>
+                  <form id="eventForm">
+                    <ImageUpload name="image" @change="onImageInputChage" />
+                  </form>
+                </div>
+                <div class="preview-about">
+                  {{ event.about || "Event title" }}
+                </div>
 
-                        <v-col cols="5" class="text-right">
-                          <span ref="endDate" class="title" @click="showEndDatePicker">{{ $moment(event.endDate).format("MMM DD, YYYY") }}</span>
-                        </v-col>
-                      </v-row>
+                <div class="preview-date">
+                  {{ timeDateString }}
+                </div>
+              </div>
+            </v-img>
+          </v-col>
+        </v-row>
 
-                      <v-row v-if="!event.isAllDay" no-gutters justify="center" align="center">
-                        <v-col class="title mt-n2 mb-n8" cols="2">
-                          →
-                        </v-col>
-                      </v-row>
-
-                      <v-row v-if="!event.isAllDay" justify="center">
-                        <v-col cols="5">
-                          <span ref="startTime" class="title" @click="showStartTimePicker">{{ event.startTime }}</span>
-                        </v-col>
-
-                        <v-col cols="2" />
-
-                        <v-col cols="5" class="text-right">
-                          <span ref="endTime" class="title" @click="showEndTimePicker">{{ event.endTime }}</span>
-                        </v-col>
-                      </v-row>
-
-                      <v-date-picker v-if="startDatePicker" v-model="event.startDate" full-width />
-                      <v-time-picker v-if="startTimePicker" v-model="event.startTime" full-width />
-                      <v-date-picker v-if="endDatePicker" v-model="event.endDate" full-width />
-                      <v-time-picker v-if="endTimePicker" v-model="event.endTime" full-width />
-                    </div>
-                    <v-divider />
-                  </v-form>
-                </v-card-text>
-
-                <v-card-actions>
-                  <v-spacer />
-                  <v-btn color="primary" depressed @click="step = 1">
-                    <v-icon>mdi-chevron-left</v-icon>
-                    Back
-                  </v-btn>
-                  <v-btn
-                    color="primary"
-                    depressed
-                    :disabled="invalid"
-                    @click="step = 3"
-                  >
-                    Next
-                    <v-icon right>
-                      mdi-chevron-right
-                    </v-icon>
-                  </v-btn>
-                </v-card-actions>
-              </ValidationObserver>
-            </v-col>
-          </v-row>
-        </v-stepper-content>
-      </v-stepper-items>
-    </v-stepper>
+        <v-btn
+          class="mt-5"
+          color="primary"
+          depressed
+          block
+          x-large
+          rounded
+          @click="createEvent"
+        >
+          Create Event
+        </v-btn>
+      </div>
+    </client-only>
   </div>
 </template>
 <script>
@@ -188,30 +206,33 @@ export default {
   data () {
     return {
       showPreviewPage: false,
-      step: 1,
       isAllDay: false,
       hasEndDate: false,
       isVirtual: false,
-      startDatePicker: false,
-      startTimePicker: false,
-      endDatePicker: false,
-      endTimePicker: false,
       message: {
         success: null,
-        err: null
+        errors: null
       },
+      categories: [],
       event: {
         image: null,
         location: null,
         online_link: null,
         about: null,
         description: null,
-        startDate: this.$moment().format('YYYY-MM-DD'),
-        startTime: this.$moment().add(0.5, 'hours').format('HH:mm'),
-        endDate: this.$moment().add(1, 'h').format('YYYY-MM-DD'),
-        endTime: this.$moment().add(1, 'h').format('HH:mm'),
-        attendance_mode: null
+        startDate: null,
+        startTime: null,
+        endDate: null,
+        endTime: null
       }
+    }
+  },
+  async fetch () {
+    try {
+      const { data } = await this.$axios.get('/categories')
+      this.categories = data
+    } catch (e) {
+      throw new Error(e)
     }
   },
   head () {
@@ -233,34 +254,6 @@ export default {
     }
   },
   methods: {
-    showStartDatePicker () {
-      this.startDatePicker = true
-      this.startTimePicker = false
-      this.endDatePicker = false
-      this.endTimePicker = false
-    },
-    showStartTimePicker () {
-      this.startDatePicker = false
-      this.startTimePicker = true
-      this.endDatePicker = false
-      this.endTimePicker = false
-    },
-    showEndDatePicker () {
-      this.startDatePicker = false
-      this.startTimePicker = false
-      this.endDatePicker = true
-      this.endTimePicker = false
-    },
-    showEndTimePicker () {
-      this.startDatePicker = false
-      this.startTimePicker = false
-      this.endDatePicker = false
-      this.endTimePicker = true
-    },
-    setEventAttendanceMode (mode) {
-      this.event.attendance_mode = mode
-      this.step = 2
-    },
     onImageInputChage (e) {
       const url = URL.createObjectURL(e)
       URL.createObjectURL(e)
@@ -274,6 +267,7 @@ export default {
         'description',
         this.event.description || this.event.about
       )
+      formData.append('category_id', this.event.category_id)
       formData.append('startDate', this.event.startDate)
       formData.append('startTime', this.event.startTime)
       formData.append('endDate', this.event.endDate || this.startDate)
@@ -287,6 +281,10 @@ export default {
       } catch (error) {
         if (error.response.status === 422) {
           this.$refs.observer.setErrors(error.response.data.errors)
+          this.message.errors = error.response.data.errors
+          document
+            .querySelector('#errorAlert')
+            .scrollIntoView({ behavior: 'smooth' })
           return
         }
         // TODO add proper handling
