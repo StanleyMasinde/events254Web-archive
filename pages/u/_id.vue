@@ -8,34 +8,7 @@
     </v-app-bar>
 
     <v-container>
-      <v-row v-if="$fetchState.pending" justify="center">
-        <h1>Loading</h1>
-      </v-row>
-
-      <!-- Something went wrong! 😭 -->
-      <v-row v-else-if="$fetchState.error">
-        <div class="full-height">
-          <v-img height="300" contain src="/not_found.svg">
-            <v-container>
-              <v-row justify="center">
-                <v-col cols="12" md="8">
-                  <h1 class="display-1 gray--text">
-                    Sorry 😢 There's nothing here
-                  </h1>
-                  <v-btn text x-large color="primary" to="/">
-                    Go home
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-img>
-        </div>
-      </v-row>
-      <!-- End of error -->
-
-      <!-- Success! -->
-      <!-- User public info with avatar and list of events organized -->
-      <v-row v-else>
+      <v-row>
         <v-col cols="12" md="8">
           <v-card outlined>
             <v-card-title>
@@ -84,17 +57,11 @@
 </template>
 <script>
 export default {
-  data () {
-    return {
-      user: {}
-    }
-  },
-  async fetch () {
+  async asyncData ({ params, $axios }) {
     try {
-      const { data } = await this.$axios.get(`/users/${this.$route.params.id}`)
-      this.user = data
+      const { data } = await $axios.get(`/users/${params.id}`)
+      return { user: data }
     } catch (error) {
-      this.$sentry.captureException(error)
       throw new Error(error)
     }
   },

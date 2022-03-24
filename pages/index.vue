@@ -1,8 +1,6 @@
 <template>
   <div>
-    <client-only>
-      <AppBar title="Events254" :back="false" />
-    </client-only>
+    <AppBar title="Events254" :back="false" />
 
     <div style="width: 100%;">
       <v-img src="/home_bg.jpg" style="height: 500px;" gradient="to top right, rgba(0,0,0,.9), rgba(0,0,0,.1)">
@@ -71,86 +69,80 @@
             </v-col>
           </v-row>
 
-          <client-only>
-            <FetchLoading v-if="$fetchState.pending" landing-page />
-            <FetchError v-else-if="$fetchState.error" :error="$fetchState.error" />
-
-            <div
-              v-for="(item, index) in newFeedObject"
-              v-else
-              :key="index"
-              :class="{ 'mt-12': index > 0 }"
-              justify="center"
-            >
-              <div v-if="item.data.length > 0">
-                <v-row no-gutters>
-                  <v-col>
-                    <h2 class="headline">
-                      {{ item.name }}
-                    </h2>
-                  </v-col>
-                  <v-col class="text-right">
-                    <v-btn icon rounded color="primary" to="/categories">
-                      <v-icon left>
-                        mdi-arrow-right
-                      </v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-                <div class="scroll-y-list">
-                  <div v-for="(it, ind) in item.data" :key="ind">
-                    <v-card
-                      :to="
-                        it.linkPrefix == 'groups'
-                          ? `/${it.id}`
-                          : `/events/${it.id}`
-                      "
-                      height="350"
-                      style="width: 90%"
-                      outlined
-                      class="mt-3 mr-3"
+          <div
+            v-for="(item, index) in newFeedObject"
+            :key="index"
+            :class="{ 'mt-12': index > 0 }"
+            justify="center"
+          >
+            <div v-if="item.data.length > 0">
+              <v-row no-gutters>
+                <v-col>
+                  <h2 class="headline">
+                    {{ item.name }}
+                  </h2>
+                </v-col>
+                <v-col class="text-right">
+                  <v-btn icon rounded color="primary" to="/categories">
+                    <v-icon left>
+                      mdi-arrow-right
+                    </v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <div class="scroll-y-list">
+                <div v-for="(it, ind) in item.data" :key="ind">
+                  <v-card
+                    :to="
+                      it.linkPrefix == 'groups'
+                        ? `/${it.id}`
+                        : `/events/${it.id}`
+                    "
+                    height="350"
+                    style="width: 90%"
+                    outlined
+                    class="mt-3 mr-3"
+                  >
+                    <v-img
+                      height="200"
+                      contain
+                      gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+                      :src="it.image ? it.image : '/icon.png'"
+                      lazy-src="/icon.png"
                     >
-                      <v-img
-                        height="200"
-                        contain
-                        gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-                        :src="it.image ? it.image : '/icon.png'"
-                        lazy-src="/icon.png"
-                      >
-                        <v-card-actions>
-                          <v-spacer />
-                          <v-btn
-                            dark
-                            icon
-                            @click="$router.push(`/evengts/${it.id}`)"
-                          >
-                            <v-icon>mdi-heart</v-icon>
-                          </v-btn>
-                          <v-btn dark icon>
-                            <v-icon>mdi-share-variant</v-icon>
-                          </v-btn>
-                        </v-card-actions>
-                      </v-img>
-                      <v-card-text class="body-1">
-                        <span
-                          v-if="it.linkPrefix == 'events'"
-                          class="red--text"
+                      <v-card-actions>
+                        <v-spacer />
+                        <v-btn
+                          dark
+                          icon
+                          @click="$router.push(`/evengts/${it.id}`)"
                         >
-                          <span>{{ $moment(it.startDate).calendar(null, {
-                            sameElse: 'MMM DD, [from] hh:mm A'
-                          }) }}</span>
-                        </span>
-                        <br>
-                        <span class="heading">
-                          {{ it.name }}
-                        </span>
-                      </v-card-text>
-                    </v-card>
-                  </div>
+                          <v-icon>mdi-heart</v-icon>
+                        </v-btn>
+                        <v-btn dark icon>
+                          <v-icon>mdi-share-variant</v-icon>
+                        </v-btn>
+                      </v-card-actions>
+                    </v-img>
+                    <v-card-text class="body-1">
+                      <span
+                        v-if="it.linkPrefix == 'events'"
+                        class="red--text"
+                      >
+                        <span>{{ $moment(it.startDate).calendar(null, {
+                          sameElse: 'MMM DD, [from] hh:mm A'
+                        }) }}</span>
+                      </span>
+                      <br>
+                      <span class="heading">
+                        {{ it.name }}
+                      </span>
+                    </v-card-text>
+                  </v-card>
                 </div>
               </div>
             </div>
-          </client-only>
+          </div>
         </v-col>
       </v-row>
 
@@ -171,6 +163,12 @@
 </template>
 <script>
 export default {
+  async asyncData ({ $axios }) {
+    const { data } = await $axios.get('/feed')
+    return {
+      newFeedObject: data
+    }
+  },
   data () {
     return {
       searchQuery: null,
@@ -197,17 +195,7 @@ export default {
       ],
       filter: {
         category: []
-      },
-      newFeedObject: {}
-    }
-  },
-  async fetch () {
-    try {
-      const { data } = await this.$axios.get('/feed')
-      this.newFeedObject = data
-    } catch (error) {
-      this.$sentry.captureException(error)
-      throw new Error(error)
+      }
     }
   },
   auth: false,

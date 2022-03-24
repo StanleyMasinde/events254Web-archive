@@ -1,8 +1,6 @@
 <template>
   <div>
-    <client-only>
-      <AppBar title="Calendar 📅" />
-    </client-only>
+    <AppBar title="Calendar 📅" />
 
     <v-container fluid>
       <v-row justify="center">
