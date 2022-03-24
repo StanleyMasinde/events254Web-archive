@@ -16,6 +16,7 @@ export default {
       let events = []
       let groups = []
 
+      axios.defaults.headers.common['X-Api-Key'] = process.env.API_KEY
       const [usersRes, eventsRes, groupsRes] = await Promise.all([
         axios.get(process.env.API_URL + '/users'),
         axios.get(process.env.API_URL + '/events'),
