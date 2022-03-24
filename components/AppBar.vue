@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <client-only>
     <template v-if="$vuetify.breakpoint.lgAndUp">
       <v-toolbar color="primary" fixed flat>
         <v-row justify="center" align="center">
@@ -107,7 +107,7 @@
         </v-toolbar-items>
       </v-app-bar>
     </template>
-  </div>
+  </client-only>
 </template>
 
 <script>
