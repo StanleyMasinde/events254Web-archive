@@ -123,14 +123,6 @@ export default {
       icons: 'mdi'
     }
   },
-
-  /**
-   * Google Analytics
-   */
-  googleAnalytics: {
-    id: 'G-8ZTW8DQCKZ'
-  },
-
   /*
   * Sentry config
   */
