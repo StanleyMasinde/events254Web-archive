@@ -15,7 +15,7 @@ export default {
   // disable ssr
   // ssr: false,
 
-  // target: 'static',
+  target: 'static',
 
   // Vue router
   router: {
@@ -92,9 +92,7 @@ export default {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
-    '@nuxtjs/stylelint-module',
-    // Doc: https://google-analytics.nuxtjs.org/
-    '@nuxtjs/google-analytics'
+    '@nuxtjs/stylelint-module'
   ],
   /*
    ** Nuxt.js modules
@@ -190,52 +188,7 @@ export default {
     hostname: 'https://events254.co.ke',
     gzip: true,
     exclude: [],
-    routes: async () => {
-      try {
-        axios.defaults.headers.common['X-Api-Key'] = process.env.API_KEY
-        const { data } = await axios.get(process.env.API_URL + '/events')
-        const users = await axios.get(process.env.API_URL + '/users')
-        const groups = await axios.get(process.env.API_URL + '/groups')
-
-        let usersArray = []
-        let groupsArray = []
-        let routes = []
-
-        if (users.data.data.length > 0) {
-          usersArray = users.data.data.map((user) => {
-            return {
-              url: `/u/${user.id}`,
-              changefreq: 'daily',
-              priority: 0.8
-            }
-          })
-        }
-
-        if (groups.data.data.length > 0) {
-          groupsArray = groups.data.data.map((group) => {
-            return {
-              url: `/${group.slug}`,
-              changefreq: 'daily',
-              priority: 0.8
-            }
-          })
-        }
-
-        if (data.length > 0) {
-          routes = data.map((event) => {
-            return {
-              url: `/events/${event.id}`,
-              changefreq: 'daily',
-              priority: 0.8
-            }
-          })
-        }
-        return routes.concat(usersArray).concat(groupsArray)
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error)
-      }
-    }
+    routes: []
   },
   /*
      ** Axios module configuration
