@@ -36,6 +36,14 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+            
+      - name: Cache build files 📦
+        uses: actions/cache@v3
+        with:
+          path: ./dist
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies 👨🏻‍💻
         run: npm ci --prefer-offline --no-audit
@@ -43,5 +51,5 @@ jobs:
       - name: Run linter 👀
         run: npm run lint
       
-      - name: Build 🚀
-        run: npm run build
+      - name: Build Static 🚀
+        run: npm run generate
