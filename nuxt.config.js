@@ -9,7 +9,44 @@ export default {
   },
 
   generate: {
-    fallback: true
+    fallback: true,
+    interval: 100,
+    routes: async () => {
+      let users = []
+      let events = []
+      let groups = []
+
+      const [usersRes, eventsRes, groupsRes] = await Promise.all([
+        axios.get(process.env.API_URL + '/users'),
+        axios.get(process.env.API_URL + '/events'),
+        axios.get(process.env.API_URL + '/groups')
+      ])
+
+      users = usersRes.data.data
+      events = eventsRes.data
+      groups = groupsRes.data.data
+
+      const routes = []
+      users.forEach((user) => {
+        routes.push({
+          route: `/u/${user.id}`,
+          payload: user
+        })
+      })
+
+      events.forEach((event) => {
+        routes.push({
+          route: `/events/${event.id}`,
+          payload: event
+        })
+      })
+
+      groups.forEach((group) => {
+        routes.push({ route: `/${group.slug}`, payload: group })
+      })
+
+      return routes
+    }
   },
 
   // disable ssr
@@ -23,8 +60,8 @@ export default {
   },
 
   /**
-   * The loading indicator
-   */
+     * The loading indicator
+     */
   loadingIndicator: {
     name: 'rectangle-bounce',
     color: '#3B8070',
@@ -32,8 +69,8 @@ export default {
   },
 
   /**
-   * modern property
-   */
+     * modern property
+     */
   modern: true,
 
   /** Page transition */
@@ -47,8 +84,8 @@ export default {
   // target: 'static',
 
   /*
-   ** Headers of the page
-   */
+     ** Headers of the page
+     */
   head: {
     titleTemplate: null,
     title: 'Welcome to Events254',
@@ -69,24 +106,24 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   /*
-   ** Customize the progress-bar color
-   */
+     ** Customize the progress-bar color
+     */
   loading: { color: '#ff8601' },
   /*
-   ** Global CSS
-   */
+     ** Global CSS
+     */
   css: ['@/assets/main.css'],
   /*
-   ** Plugins to load before mounting the App
-   */
+     ** Plugins to load before mounting the App
+     */
   plugins: [
     '~/plugins/axios',
     '~/plugins/veevalidate.js',
     '~/plugins/moment.js'
   ],
   /*
-   ** Nuxt.js dev-modules
-   */
+     ** Nuxt.js dev-modules
+     */
   buildModules: [
     '@nuxtjs/vuetify',
     // Doc: https://github.com/nuxt-community/eslint-module
@@ -95,8 +132,8 @@ export default {
     '@nuxtjs/stylelint-module'
   ],
   /*
-   ** Nuxt.js modules
-   */
+     ** Nuxt.js modules
+     */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
@@ -124,8 +161,8 @@ export default {
     }
   },
   /*
-  * Sentry config
-  */
+    * Sentry config
+    */
   sentry: {
     dsn: 'https://6aaa64b176a0433da7cb306409587b56@o954334.ingest.sentry.io/5903368',
     release: process.env.npm_package_version,
@@ -134,9 +171,9 @@ export default {
   },
 
   /**
-   * PWA options
-   *
-   */
+     * PWA options
+     *
+     */
   pwa: {
     meta: {
       name: 'Events254',
@@ -173,9 +210,9 @@ export default {
     }
   },
   /**
-   * Sitemap
-   * https://sitemap.nuxtjs.org/guide/configuration
-   */
+     * Sitemap
+     * https://sitemap.nuxtjs.org/guide/configuration
+     */
   sitemap: {
     hostname: 'https://events254.co.ke',
     gzip: true,
@@ -183,15 +220,15 @@ export default {
     routes: []
   },
   /*
-     ** Axios module configuration
-     ** See https://axios.nuxtjs.org/options
-     */
+       ** Axios module configuration
+       ** See https://axios.nuxtjs.org/options
+       */
   axios: {},
 
   /*
-     ** vuetify module configuration
-     ** https://github.com/nuxt-community/vuetify-module
-     */
+       ** vuetify module configuration
+       ** https://github.com/nuxt-community/vuetify-module
+       */
   auth: {
     strategies: {
       cookie: {
@@ -227,12 +264,12 @@ export default {
     }
   },
   /*
-     ** Build configuration
-     */
+       ** Build configuration
+       */
   build: {
     transpile: ['vee-validate', 'moment-timezone']
     /*
-       ** You can extend webpack config here
-       */
+         ** You can extend webpack config here
+         */
   }
 }
