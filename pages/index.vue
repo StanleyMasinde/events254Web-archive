@@ -1,6 +1,6 @@
 <template>
   <h1 class="text-3xl font-bold underline">
-    Hello {{ name }}
+    Hello {{ name }}!ß
   </h1>
 </template>
 
