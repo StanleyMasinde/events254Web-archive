@@ -25,6 +25,7 @@
           <div
             class="h-28 min-w-[97vw] max-w-[90vw] sm:min-w-[50%] sm:max-w-[50%] gap-1 pr-1 border mr-1 rounded-md grid grid-cols-3 snap-center sm:snap-start"
             v-for="(e, i) in s.data" :key="i">
+
             <div class="relative">
               <div class="absolute top-0 bg-white bg-opacity-50">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -33,19 +34,24 @@
                     d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                 </svg>
               </div>
-              <img class="w-full h-full object-cover object-center rounded-md"
-                :src="e.pictureUrl ? e.pictureUrl : 'https://picsum.photos/id/1/200/300'">
+              <router-link :to="`/${e.linkPrefix}/${e.id}`">
+                <img class="w-full h-full object-cover object-center rounded-md"
+                  :src="e.pictureUrl ? e.pictureUrl : 'https://picsum.photos/id/1/200/300'">
+              </router-link>
             </div>
+
             <div class="grid grid-rows-5 col-span-2">
-              <div class="row-span-1">
-                <p class="text-red-500 text-sm" v-if="e.linkPrefix == 'events'">{{ moment(e.startDate).calendar(null,
-                    {
-                      sameElse: 'MMM DD, [from] hh:mm A'
-                    })
-                }}</p>
-                <h1 class="line-clamp-2 font-bold text-sm">{{ e.name }}</h1>
-                <p class=" line-clamp-3 text-sm">{{ e.description }}</p>
-              </div>
+              <router-link :to="`/${e.linkPrefix}/${e.id}`">
+                <div class="row-span-1">
+                  <p class="text-red-500 text-sm" v-if="e.linkPrefix == 'events'">{{ moment(e.startDate).calendar(null,
+                      {
+                        sameElse: 'MMM DD, [from] hh:mm A'
+                      })
+                  }}</p>
+                  <h1 class="line-clamp-1 font-bold text-sm">{{ e.name }}</h1>
+                  <p class=" line-clamp-2 text-sm">{{ e.description }}</p>
+                </div>
+              </router-link>
             </div>
           </div>
         </div>
@@ -60,9 +66,5 @@
 import moment from 'moment-timezone'
 
 const config = useRuntimeConfig()
-console.log(config);
-const { data, pending, error, refresh } = await useAsyncData(
-  'feed',
-  () => $fetch(`${config.public.apiUrl}/feed`)
-)
+const { data, pending, error, refresh } = await useFetch(`${config.public.apiUrl}/feed`)
 </script>

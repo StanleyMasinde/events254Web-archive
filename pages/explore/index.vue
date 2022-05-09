@@ -8,3 +8,9 @@
         </div>
     </div>
 </template>
+
+<script setup>
+useHead({
+    title: 'Get the latest events',
+})
+</script>
