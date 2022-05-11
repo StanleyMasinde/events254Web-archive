@@ -13,7 +13,8 @@
     "nuxt": "^3.0.0-rc.3"
   },
   "dependencies": {
-    "moment-timezone": "^0.5.34"
+    "moment-timezone": "^0.5.34",
+    "vee-validate": "^4.5.11"
   },
   "overrides": {
     "ufo": "^0.8.4"

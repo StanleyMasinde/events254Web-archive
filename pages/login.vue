@@ -8,14 +8,20 @@
             <form method="POST">
                 <label for="username">
                     <h1>Email, phone or username</h1>
-                    <input class="w-full rounded-lg mb-2" type="text" name="username" id="username"
-                        placeholder="Username, email or phone">
+                    <input v-model="username" class="w-full rounded-lg mb-2" :class="{ 'border-red-400 ring-red-400 ring-1': userNameError }"
+                        type="text" name="username" id="username" placeholder="Username, email or phone">
+                    <div class=" -mt-2">
+                        <span class=" text-sm text-red-500 italic">{{ userNameError }}</span>
+                    </div>
                 </label>
 
                 <label for="password">
                     <h1>Password</h1>
-                    <input class="w-full rounded-lg mb-3" type="password" name="password" id="password"
-                        placeholder="Password">
+                    <input v-model="password" class="w-full rounded-lg mb-3" :class="{ 'border-red-400 ring-red-400 ring-1': passwordError }" type="password" name="password"
+                        id="password" placeholder="Password">
+                    <div class=" -mt-2">
+                        <span class=" text-sm text-red-500 italic">{{ passwordError }}</span>
+                    </div>
                 </label>
 
                 <div class="my-4">
@@ -23,7 +29,7 @@
                 </div>
 
 
-                <button class="bg-primary rounded-lg w-full text-white font-bold py-2 px-4">
+                <button :disabled="formIsInvalid" class="bg-primary rounded-lg w-full text-white font-bold py-2 px-4 disabled:bg-white disabled:border disabled:text-gray-700">
                     Sign in
                 </button>
             </form>
@@ -38,7 +44,40 @@
 </template>
 
 <script setup>
+import { reactive, computed } from 'vue'
+import { useForm, useField } from 'vee-validate';
 useHead({
     title: 'Sign in to your account',
+})
+
+const credentials = reactive({
+    username: '',
+    password: ''
+})
+
+const validationSchema = {
+    username(value) {
+        if (!value) {
+            return 'This field is required'
+        }
+        return true
+    },
+    password(value) {
+        if (!value) {
+            return 'Please enter a password'
+        }
+        return true
+    },
+}
+
+useForm({
+    validationSchema
+})
+
+const { value: username, errorMessage: userNameError, meta: usernameMeta } = useField('username')
+const { value: password, errorMessage: passwordError, meta: passwordMeta } = useField('password')
+
+const formIsInvalid = computed(() => {
+    return !usernameMeta.valid || !passwordMeta.valid
 })
 </script>
