@@ -12,46 +12,50 @@
     <!-- Events -->
     <section class="mt-16 sm:px-16">
       <!-- Event types -->
-      <div v-for="(s, i) in data" :key="i" class="mb-7">
-        <div v-if="s.data.length > 0" class="flex justify-between">
-          <h1 class=" font-bold text-xl">{{ s.name }}</h1>
+      <div v-for="(s, i) in data" :key="i" class="mb-5">
+        <div v-if="s.data.length > 0" class="flex justify-between px-2">
+          <h1 class="font-bold text-xl">{{ s.name }}</h1>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
             stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </div>
 
-        <div v-if="s.data.length > 0" class="flex overflow-y-hidden ml-2 sm:ml-0 rounded-md snap-mandatory snap-x">
-          <div
-            class="h-28 min-w-[97vw] max-w-[90vw] sm:min-w-[50%] sm:max-w-[50%] gap-1 pr-1 border mr-1 rounded-md grid grid-cols-3 snap-center sm:snap-start"
-            v-for="(e, i) in s.data" :key="i">
-
-            <div class="relative">
-              <div class="absolute top-0 bg-white bg-opacity-50">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                </svg>
-              </div>
-              <router-link :to="`/${e.linkPrefix}/${e.id}`">
-                <img class="w-full h-full object-cover object-center rounded-md"
-                  :src="e.pictureUrl ? e.pictureUrl : 'https://picsum.photos/id/1/200/300'">
-              </router-link>
+        <div v-if="s.data.length > 0"
+          class="flex overflow-y-hidden ml-2 first:ml-0 sm:ml-0 rounded-lg snap-mandatory snap-x">
+          <div class="mr-2 last:mr-0 rounded-lg snap-center" v-for="(e, i) in s.data" :key="i">
+            <div class="min-w-[79vw] md:min-w-[35vw] rounded-lg border-2 border-gray-100">
+              <nuxt-link :to="`/${e.linkPrefix}/${e.id}`">
+                <img class="h-44 w-full rounded-lg" :src="e.image ?? 'https://picsum.photos/id/1/500/300'"
+                  alt="Event" />
+              </nuxt-link>
             </div>
 
-            <div class="grid grid-rows-5 col-span-2">
-              <router-link :to="`/${e.linkPrefix}/${e.id}`">
-                <div class="row-span-1">
-                  <p class="text-red-500 text-sm" v-if="e.linkPrefix == 'events'">{{ moment(e.startDate).calendar(null,
-                      {
-                        sameElse: 'MMM DD, [from] hh:mm A'
-                      })
-                  }}</p>
-                  <h1 class="line-clamp-1 font-bold text-sm">{{ e.name }}</h1>
-                  <p class=" line-clamp-2 text-sm">{{ e.description }}</p>
-                </div>
-              </router-link>
+            <div class="flex justify-end -mt-5 mr-2">
+              <div>
+                <button class="bg-primary text-white rounded-full p-2 border-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                </button>
+              </div>
+
+              <div>
+                <button class="bg-primary text-white rounded-full p-2 border-2 border-gray-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <h1 class=" font-bold">{{ moment(e.startDate).format('dddd Do MMMM') }}</h1>
+              <h1 class=" text-xl font-bold">{{ e.name }}</h1>
             </div>
           </div>
         </div>

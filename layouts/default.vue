@@ -88,7 +88,7 @@
         <slot></slot>
         <div class="mt-32 sm:mt-0"></div>
         <!--Bottom navigation for mobile-->
-        <div class="w-screen px-2 py-4 fixed bottom-0 bg-gray-100">
+        <div class="w-screen px-2 sm:hidden py-4 fixed bottom-0 bg-gray-100">
             <ul class="flex justify-between">
                 <nuxt-link to="/">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-full" fill="none" viewBox="0 0 24 24"
