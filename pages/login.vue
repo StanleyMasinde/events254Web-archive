@@ -1,15 +1,19 @@
 <template>
-    <section class="px-2">
+    <section class="px-3">
         <div>
             <div class="mb-4 mt-2 text-center">
                 <h1 class="text-xl font-bold">Welcome back!</h1>
                 <p class="mt-2 mb-7">Enter your account details to sign in into your Events254 account</p>
             </div>
-            <form method="POST">
+            <div class="text-red-500  rounded-lg py-2 text-center">
+                <p class="font-bold">{{ errorMessage }}</p>
+            </div>
+            <form method="POST" @submit.prevent="attemptLogin">
                 <label for="username">
                     <h1>Email, phone or username</h1>
-                    <input v-model="username" class="w-full rounded-lg mb-2" :class="{ 'border-red-400 ring-red-400 ring-1': userNameError }"
-                        type="text" name="username" id="username" placeholder="Username, email or phone">
+                    <input v-model="username" class="w-full rounded-lg mb-2"
+                        :class="{ 'border-red-400 ring-red-400 ring-1': userNameError }" type="text" name="username"
+                        id="username" placeholder="Username, email or phone">
                     <div class=" -mt-2">
                         <span class=" text-sm text-red-500 italic">{{ userNameError }}</span>
                     </div>
@@ -17,7 +21,8 @@
 
                 <label for="password">
                     <h1>Password</h1>
-                    <input v-model="password" class="w-full rounded-lg mb-3" :class="{ 'border-red-400 ring-red-400 ring-1': passwordError }" type="password" name="password"
+                    <input v-model="password" class="w-full rounded-lg mb-3"
+                        :class="{ 'border-red-400 ring-red-400 ring-1': passwordError }" type="password" name="password"
                         id="password" placeholder="Password">
                     <div class=" -mt-2">
                         <span class=" text-sm text-red-500 italic">{{ passwordError }}</span>
@@ -29,7 +34,8 @@
                 </div>
 
 
-                <button :disabled="formIsInvalid" class="bg-primary rounded-lg w-full text-white font-bold py-2 px-4 disabled:bg-white disabled:border disabled:text-gray-700">
+                <button :disabled="formIsInvalid" type="submit"
+                    class="bg-primary rounded-lg w-full text-white font-bold py-2 px-4 disabled:bg-white disabled:border disabled:text-gray-700">
                     Sign in
                 </button>
             </form>
@@ -44,16 +50,15 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useForm, useField } from 'vee-validate';
+import axios from 'axios'
+
+const config = useRuntimeConfig()
 useHead({
     title: 'Sign in to your account',
 })
 
-const credentials = reactive({
-    username: '',
-    password: ''
-})
 
 const validationSchema = {
     username(value) {
@@ -65,6 +70,9 @@ const validationSchema = {
     password(value) {
         if (!value) {
             return 'Please enter a password'
+        }
+        if (value.length < 6) {
+            return 'This does not look right'
         }
         return true
     },
@@ -80,4 +88,29 @@ const { value: password, errorMessage: passwordError, meta: passwordMeta } = use
 const formIsInvalid = computed(() => {
     return !usernameMeta.valid || !passwordMeta.valid
 })
+
+const errorMessage = ref('')
+const $axios = axios.create({
+    baseURL: config.public.apiUrl,
+    withCredentials: true
+})
+const attemptLogin = async () => {
+    try {
+      const res = await $axios.post('/auth/login', {
+          email: username.value,
+          password: password.value
+      })
+
+      console.log(res.headers);
+
+     const user =  await $axios.get('/auth/user')
+     console.log(user);
+    } catch (error) {
+        errorMessage.value = error
+
+         setTimeout(() => {
+             errorMessage.value = ''
+         }, 5000)
+    }
+}
 </script>

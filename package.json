@@ -13,6 +13,7 @@
     "nuxt": "^3.0.0-rc.3"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "moment-timezone": "^0.5.34",
     "vee-validate": "^4.5.11"
   },
