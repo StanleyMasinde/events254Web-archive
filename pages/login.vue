@@ -1,5 +1,5 @@
 <template>
-    <section class="px-3">
+    <section class="px-3 sm:px-64">
         <div>
             <div class="mb-4 mt-2 text-center">
                 <h1 class="text-xl font-bold">Welcome back!</h1>
@@ -54,7 +54,6 @@ import { ref, computed } from 'vue'
 import { useForm, useField } from 'vee-validate';
 import axios from 'axios'
 
-const config = useRuntimeConfig()
 useHead({
     title: 'Sign in to your account',
 })
@@ -90,10 +89,7 @@ const formIsInvalid = computed(() => {
 })
 
 const errorMessage = ref('')
-const $axios = axios.create({
-    baseURL: config.public.apiUrl,
-    withCredentials: true
-})
+const { $axios } = useNuxtApp()
 const attemptLogin = async () => {
     try {
       const res = await $axios.post('/auth/login', {
