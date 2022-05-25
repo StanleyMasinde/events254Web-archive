@@ -57,6 +57,15 @@ useHead({
     title: 'Sign in to your account',
 })
 
+definePageMeta({
+    middleware: ["guest"],
+})
+
+const auth = localStorage.getItem('auth');
+if (auth === 'true') {
+    redirect('/');
+}
+
 
 const validationSchema = {
     username(value) {
@@ -101,7 +110,7 @@ const attemptLogin = async () => {
         localStorage.setItem('name', data.user.name)
         localStorage.setItem('email', data.user.email)
         localStorage.setItem('username', data.user.username)
-        
+
         $router.push(localStorage.getItem('lastPath') || '/')
     } catch (error) {
         errorMessage.value = error
