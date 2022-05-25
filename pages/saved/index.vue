@@ -6,4 +6,7 @@
 useHead({
     title: 'Saved events',
 })
+definePageMeta({
+  middleware: ["auth"]
+})
 </script>

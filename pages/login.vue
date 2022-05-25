@@ -52,7 +52,6 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useForm, useField } from 'vee-validate';
-import axios from 'axios'
 
 useHead({
     title: 'Sign in to your account',
@@ -90,23 +89,26 @@ const formIsInvalid = computed(() => {
 
 const errorMessage = ref('')
 const { $axios } = useNuxtApp()
+const $router = useRouter()
 const attemptLogin = async () => {
     try {
-      const res = await $axios.post('/auth/login', {
-          email: username.value,
-          password: password.value
-      })
-
-      console.log(res.headers);
-
-     const user =  await $axios.get('/auth/user')
-     console.log(user);
+        const res = await $axios.post('/auth/login', {
+            email: username.value,
+            password: password.value
+        })
+        const { data } = await $axios.get('/auth/user')
+        localStorage.setItem('auth', true)
+        localStorage.setItem('name', data.user.name)
+        localStorage.setItem('email', data.user.email)
+        localStorage.setItem('username', data.user.username)
+        
+        $router.push(localStorage.getItem('lastPath') || '/')
     } catch (error) {
         errorMessage.value = error
 
-         setTimeout(() => {
-             errorMessage.value = ''
-         }, 5000)
+        setTimeout(() => {
+            errorMessage.value = ''
+        }, 5000)
     }
 }
 </script>

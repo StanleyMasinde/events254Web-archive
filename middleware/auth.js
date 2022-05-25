@@ -1,11 +1,18 @@
 export default defineNuxtRouteMiddleware((to, from) => {
     console.log('auth middleware');
     console.log(`auth middleware: to: ${to.path} from: ${from.path}`);
-    const cookie = useCookie('token');
-    if (cookie) {
-        console.log('auth middleware: cookie found');
-        console.log(`auth middleware: cookie: ${cookie.value}`);
+
+    if(process.server) {
         return;
     }
-    console.log('auth middleware: cookie not found');
+    
+    localStorage.setItem('lastPath', to.path);
+    const auth = localStorage.getItem('auth');
+    if (auth === 'true') {
+        return;
+    }
+    if (to.path === '/login' || to.path === '/register') {
+        return;
+    }
+    return navigateTo('/login');
 })
