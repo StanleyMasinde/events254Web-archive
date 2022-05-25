@@ -40,4 +40,11 @@
 useHead({
     title: 'Create a free account',
 })
+
+onMounted(() => {
+    const auth = localStorage.getItem('auth');
+    if (auth === 'true') {
+        window.location.href = '/'
+    }
+})
 </script>

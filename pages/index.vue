@@ -26,7 +26,7 @@
           <div class="mr-2 last:mr-0 rounded-lg snap-center" v-for="(e, i) in s.data" :key="i">
             <div class="min-w-[79vw] md:min-w-[35vw] rounded-lg border-2 border-gray-100">
               <nuxt-link :to="`/${e.linkPrefix}/${e.id}`">
-                <img class="h-44 w-full rounded-lg" :src="e.image ?? 'https://picsum.photos/id/1/500/300'"
+                <img class="h-44 w-full rounded-lg" src="https://via.placeholder.com/300x200"
                   alt="Event" />
               </nuxt-link>
             </div>

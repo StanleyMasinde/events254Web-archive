@@ -48,39 +48,67 @@
         <div @click="toggleMenu" :class="{
             'hidden': !layout.mobileMenuToggle,
             'relative': layout.mobileMenuToggle
-        }" class="shadow z-10 sm:hidden h-screen">
-            <ul class="pb-2 rounded-md absolute w-full">
+        }" class="shadow z-10 sm:hidden">
+            <ul class="pb-2 rounded-md">
                 <li class="rounded px-1 py-1">
-                    <nuxt-link to="/">
+                    <nuxt-link class=" font-semibold" to="/">
                         Home
                     </nuxt-link>
                 </li>
-
+                <hr>
                 <li class="rounded px-1 py-1">
-                    <nuxt-link to="/explore">
+                    <nuxt-link class=" font-semibold" to="/events/create">
+                        Create Event
+                    </nuxt-link>
+                </li>
+                <hr>
+                <li class="rounded px-1 py-1">
+                    <nuxt-link class=" font-semibold" to="/explore">
                         Explore
                     </nuxt-link>
                 </li>
-
-
+                <hr>
                 <div v-if="!user.isAuthenticated">
                     <li class="px-1 py-1 mt-1 flex justify-between">
-                        <nuxt-link to="/login">
+                        <nuxt-link class="font-semibold" to="/login">
                             Login
                         </nuxt-link>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                        </svg>
                     </li>
-
-
+                    <hr>
                     <li class="rounded-md px-1 py-1 mt-1">
-                        <nuxt-link to="/register">
+                        <nuxt-link class="font-semibold" to="/register">
                             Register
                         </nuxt-link>
                     </li>
+                </div>
+
+                <div v-else>
+                    <li class="px-1 py-1 mt-1 flex">
+                        <div class="h-7 w-7 flex justify-center text-white bg-primary rounded-full mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <nuxt-link class=" font-semibold" to="/profile">
+                                {{ user.name }}
+                            </nuxt-link>
+                        </div>
+                    </li>
+                    <hr>
+                    <li @click="logout()" class="rounded-md px-1 py-1 mt-1 flex">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600 mr-3" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        <p class=" font-semibold">
+                            Logout
+                        </p>
+                    </li>
+                    <hr>
                 </div>
             </ul>
         </div>
@@ -130,7 +158,6 @@
         <!--/ Bottom navigation for mobile-->
         <!-- End of body -->
         <footer class="hidden sm:block">
-            {{ user }}
             <p>&copy; Events254 {{ year }}</p>
             <div class="hidden router-link-exact-active"></div>
         </footer>
@@ -141,11 +168,26 @@
 import { reactive } from 'vue';
 const year = new Date().getFullYear();
 
-const user = useAuth();
-
+const user = reactive({
+    isAuthenticated: false,
+    name: '',
+    username: '',
+    email: '',
+})
 const layout = reactive({
     mobileMenuToggle: false
 });
+
+onMounted(() => {
+    if (localStorage.getItem('auth') === 'true') {
+        user.isAuthenticated = true;
+        user.name = localStorage.getItem('name');
+        user.username = localStorage.getItem('username');
+        user.email = localStorage.getItem('email');
+    }
+});
+
+const logout = useLogout();
 
 function toggleMenu() {
     layout.mobileMenuToggle = !layout.mobileMenuToggle;

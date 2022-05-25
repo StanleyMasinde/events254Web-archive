@@ -7,7 +7,6 @@ export default defineNuxtPlugin(nuxtApp => {
             localStorage.setItem('email', data.user.email)
             localStorage.setItem('username', data.user.username)
         } catch (e) {
-            console.log(e.response);
             localStorage.setItem('auth', false)
             localStorage.setItem('name', '')
             localStorage.setItem('email', '')

@@ -2,12 +2,15 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if(process.server) {
         return;
     }
-    
+
+    const authState = useAuth();
     localStorage.setItem('lastPath', to.path);
     const auth = localStorage.getItem('auth');
-    console.log(`auth: ${auth}`);
     if (auth === 'true') {
-        navigateTo('/');
+        authState.isAuthenticated = true;
+        authState.name = localStorage.getItem('name');
+        authState.email = localStorage.getItem('email');
+        return;
     }
     return
 })
