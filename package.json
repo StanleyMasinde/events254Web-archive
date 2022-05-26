@@ -16,5 +16,19 @@
     "axios": "^0.27.2",
     "moment-timezone": "^0.5.34",
     "vee-validate": "^4.5.11"
-  }
+  },
+  "name": "events-254-client",
+  "description": "Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.",
+  "version": "2.0.0-rc.1",
+  "main": "tailwind.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opensource254/events254Web.git"
+  },
+  "author": "Stanley Masinde",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/opensource254/events254Web/issues"
+  },
+  "homepage": "https://github.com/opensource254/events254Web#readme"
 }
