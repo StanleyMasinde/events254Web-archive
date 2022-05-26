@@ -146,8 +146,7 @@ const registerUser = async () => {
         localStorage.setItem('email', user.email)
         localStorage.setItem('username', user.username)
 
-        location.reload()
-
+        location.reload() // TODO: Auth logic
         $router.push(localStorage.getItem('lastPath') || '/')
     } catch (error) {
         if (error.response.status === 422) {

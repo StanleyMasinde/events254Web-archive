@@ -30,7 +30,9 @@
                 </label>
 
                 <div class="my-4">
-                    <h1 class="underline">Having trouble signing in?</h1>
+                    <nuxt-link to="/password/request">
+                        <h1 class="underline">Having trouble signing in?</h1>
+                    </nuxt-link>
                 </div>
 
 
