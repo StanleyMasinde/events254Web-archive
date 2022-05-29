@@ -12,7 +12,8 @@ export default defineNuxtConfig({
                 { hid: 'theme-color', property: 'theme-color', content: '#ff8601' },
             ],
             link: [
-                { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+                { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+                { rel: 'manifest', href: '/manifest.json'}
             ]
         }
     },
