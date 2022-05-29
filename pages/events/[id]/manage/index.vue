@@ -1,0 +1,7 @@
+<template>
+    <div>
+        <h1>
+            General information
+        </h1>
+    </div>
+</template>

@@ -64,6 +64,13 @@
                                 name="short_description" id="shortDesc" class=" w-full rounded-lg"></textarea>
                         </label>
 
+                        <label for="categories">
+                            <select v-model="event.category_id" name="category_id" class=" w-full mt-3 mb-3 rounded-lg" id="categories">
+                                <option value="">Select category</option>
+                                <option v-for="(c, i) in categories" :key="i" :value="c.id">{{ c.name }}</option>
+                            </select>
+                        </label>
+
                         <label v-if="eventTypeMeta.attendanceMode === 'inPerson'" for="location">
                             <h1>Enter the event's location<span class="mt-4 text-red-600">*</span></h1>
                             <input v-model="event.location" autofocus
@@ -343,6 +350,9 @@ definePageMeta({
     middleware: ['auth'],
 })
 
+const config = useRuntimeConfig()
+const { data: categories, pending, error, refresh } = await useFetch(`${config.public.apiUrl}/categories`)
+
 const eventTypeMeta = reactive({
     attendanceMode: '',
     isAllDay: false,
@@ -382,6 +392,7 @@ const onPosterChange = (e) => {
 }
 
 const { $axios } = useNuxtApp()
+const $router = useRouter()
 const createEvent = async () => {
     const formElement = document.querySelector('#imageForm')
     const newEventData = new FormData(formElement)
@@ -390,7 +401,7 @@ const createEvent = async () => {
     newEventData.append('description', event.description)
     newEventData.append('category_id', event.category_id)
     newEventData.append('startDate', event.startDate)
-    newEventData.append('startTime', event.startTime)
+    newEventData.append('startTime', event.startTime || '00:00')
     newEventData.append('endDate', event.endDate)
     newEventData.append('endTime', event.endTime)
     newEventData.append('location', event.location)
@@ -398,7 +409,7 @@ const createEvent = async () => {
 
     try {
         const { data } = await $axios.post('/events', newEventData)
-        console.log(data)
+        $router.push(`/events/${data.id}/manage`)
     } catch (error) {
         console.log(error)
     }

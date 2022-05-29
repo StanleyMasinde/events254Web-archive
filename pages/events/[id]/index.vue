@@ -39,7 +39,7 @@
         <!--Event info-->
         <div class="mx-2 my-5">
             <h1 class=" text-2xl font-semibold line-clamp-1">{{ data.about }}</h1>
-            <h1 class=" text-lg">By: {{ data.organiser.name ?? 'Events254' }}</h1>
+            <h1 class=" text-lg">By: {{ data.organiser?.name ?? 'Events254' }}</h1>
         </div>
         <!--/ Event info-->
 
@@ -63,9 +63,25 @@
             <p class="">{{ data.description }}</p>
         </div>
 
+        <!--Admin Button-->
+        <div v-if="data.can_edit" class=" fixed left-0 bottom-1 w-screen px-1 sm:px-20">
+            <nuxt-link :to="`/events/${data.id}/manage`">
+                <button class="rounded-xl text-white bg-primary py-3 w-full flex gap-1 justify-center content-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                    </svg>
+                    <div class="">
+                        <h1 class=" font-bold text-lg">Manage Event</h1>
+                    </div>
+                </button>
+            </nuxt-link>
+        </div>
+        <!--/Admin Button-->
 
         <!--Ticket Button-->
-        <div class=" fixed left-0 bottom-1 w-screen px-1 sm:px-20">
+        <div v-else class=" fixed left-0 bottom-1 w-screen px-1 sm:px-20">
             <button class="rounded-xl text-white bg-primary py-3 w-full flex gap-1 justify-center content-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
@@ -85,12 +101,20 @@
 const config = useRuntimeConfig()
 const route = useRoute()
 const eventId = ref(route.params.id)
-const { data, pending, refresh, error } = await useFetch(`${config.public.apiUrl}/events/${eventId.value}`)
+const { $axios } = useNuxtApp()
+const { data, pending, refresh, error } = await useAsyncData('event', async () => {
+    const res = await $axios.get(`/events/${eventId.value}`)
+    return res.data
+})
+
+onMounted(async () => {
+    await refreshNuxtData('event')
+})
 definePageMeta({
     layout: 'event',
 })
 useHead({
-    title: data._value.about
+    title: data.value.about
 })
 
 function getInnitials(name) {

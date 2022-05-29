@@ -5,7 +5,6 @@ export default defineNuxtPlugin(() => {
     baseURL: config.public.apiUrl,
     withCredentials: true
   })
-  window.$axios = axios
   return {
     provide: {
       axios: axios
