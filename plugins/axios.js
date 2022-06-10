@@ -5,6 +5,7 @@ export default defineNuxtPlugin(() => {
     baseURL: config.public.apiUrl,
     withCredentials: true
   })
+  axios.defaults.headers.common['x-api-key'] = config.public.apiKey
   return {
     provide: {
       axios: axios
