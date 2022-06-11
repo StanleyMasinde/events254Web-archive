@@ -60,8 +60,10 @@
         <!--Event About-->
         <div class="mx-2 my-5">
             <h1 class=" text-lg font-semibold line-clamp-1">About</h1>
-            <p class="">{{ data.description }}</p>
+            <div class="prose prose-a:text-primary prose-li:list-disc px-3" v-html="data.description"></div>
         </div>
+
+        <div class=" mb-20"></div>
 
         <!--Admin Button-->
         <div v-if="data.can_edit" class=" fixed left-0 bottom-1 w-screen px-1 sm:px-20">
@@ -81,7 +83,7 @@
         <!--/Admin Button-->
 
         <!--Ticket Button-->
-        <div v-else class=" fixed left-0 bottom-1 w-screen px-1 sm:px-20">
+        <div v-else class=" fixed left-2 right-2 bottom-1 px-1 sm:px-20">
             <button class="rounded-xl text-white bg-primary py-3 w-full flex gap-1 justify-center content-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">

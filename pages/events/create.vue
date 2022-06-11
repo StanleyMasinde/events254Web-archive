@@ -351,7 +351,13 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig()
-const { data: categories, pending, error, refresh } = await useFetch(`${config.public.apiUrl}/categories`)
+const { data: categories, pending, error, refresh } = await useFetch(`${config.public.apiUrl}/categories`, {
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-API-KEY': config.public.apiKey,
+    },
+})
 
 const eventTypeMeta = reactive({
     attendanceMode: '',
