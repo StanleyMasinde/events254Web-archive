@@ -51,10 +51,11 @@
     </section>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useForm, useField } from 'vee-validate';
 
+const { $events254Api } = useNuxtApp()
 useHead({
     title: 'Sign in to your account',
 })
@@ -72,13 +73,13 @@ onMounted(() => {
 
 
 const validationSchema = {
-    username(value) {
+    username(value: string) {
         if (!value) {
             return 'This field is required'
         }
         return true
     },
-    password(value) {
+    password(value: string) {
         if (!value) {
             return 'Please enter a password'
         }
@@ -93,8 +94,8 @@ useForm({
     validationSchema
 })
 
-const { value: username, errorMessage: userNameError, meta: usernameMeta } = useField('username')
-const { value: password, errorMessage: passwordError, meta: passwordMeta } = useField('password')
+const { value: username, errorMessage: userNameError, meta: usernameMeta } = useField<string>('username')
+const { value: password, errorMessage: passwordError, meta: passwordMeta } = useField<string>('password')
 
 const formIsInvalid = computed(() => {
     return !usernameMeta.valid || !passwordMeta.valid
@@ -105,22 +106,19 @@ const { $axios } = useNuxtApp()
 const $router = useRouter()
 const attemptLogin = async () => {
     try {
-        const res = await $axios.post('/auth/login', {
-            email: username.value,
-            password: password.value
+        const { data } = await $events254Api.loginUser({email: username.value, password: password.value}, {
+            headers: {
+                'x-requested-with': 'mobile'
+            }
         })
-        const { data } = await $axios.get('/auth/user')
-        localStorage.setItem('auth', true)
-        localStorage.setItem('name', data.user.name)
-        localStorage.setItem('email', data.user.email)
-        localStorage.setItem('username', data.user.username)
-
-        location.reload()
+        localStorage.setItem('auth.token', data.user.token)
+        localStorage.setItem('auth.name', data.user.name)
+        localStorage.setItem('auth.email', data.user.email)
+        localStorage.setItem('auth.username', data.user.username)
 
         $router.push(localStorage.getItem('lastPath') || '/')
     } catch (error) {
         errorMessage.value = error
-
         setTimeout(() => {
             errorMessage.value = ''
         }, 5000)

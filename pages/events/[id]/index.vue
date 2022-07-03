@@ -26,7 +26,7 @@
                 <!--/ If virtual-->
             </div>
             <div class="border-2 rounded-xl">
-                <img class="rounded-xl w-full" :src="data.image ? data.image : 'https://picsum.photos/id/1/500/300'" />
+                <img class="rounded-xl w-full" :src="data.image || '/hero.svg'" />
             </div>
             <div class="absolute w-full bottom-0 px-24 sm:px-64 text-center">
                 <div class="bg-primary border-2 text-white line-clamp-1 rounded-xl p-1 -mb-5">
@@ -109,11 +109,11 @@ const { $events254Api } = useNuxtApp()
 const { data, pending, refresh, error } = await useAsyncData('event', async () => {
     const res = await $events254Api.getEventById(+eventId.value)
     return res.data
-})
+}, { initialCache: false })
 
-onMounted(async () => {
-    await refreshNuxtData('event')
-})
+// onBeforeMount(async () => {
+//     await refresh()
+// })
 definePageMeta({
     layout: 'event',
 })

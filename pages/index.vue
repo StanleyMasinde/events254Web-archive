@@ -1,13 +1,27 @@
 <template>
   <div>
     <!-- header/Hero -->
-    <section class="bg-slate-500 h-64 mb-7 relative">
-      <img src="/hero.jpg" alt="Hero" class="absolute w-full h-full object-cover" />
-      <div class="absolute w-full bottom-0 px-2 sm:px-16 -mb-7">
-        <input class="form-input w-full h-14 rounded-lg" placeholder="Search for events, locations dates etc" />
+    <section class="bg-slate-500 h-64 mb-7 relative border-b-2">
+      <img src="/hero.svg" alt="Hero" class="absolute w-full h-full object-top object-cover" />
+      <div class="absolute w-full bottom-0 px-4 sm:px-16 -mb-6">
+        <div class=" relative">
+          <input
+            class="transition-all duration-200 form-input w-full border-2 h-12 rounded-lg focus:ring-primary focus:ring-2 focus:border-none"
+            placeholder="Search for events, locations dates etc" />
+          <button class="absolute bg-primary text-white p-2 rounded-lg right-1 top-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+        </div>
       </div>
     </section>
     <!-- Header/hero -->
+
+
+    <!--Categories-->
+    <!--/Categories---->
 
     <!-- Events -->
     <section class="mt-16 sm:px-16">
@@ -26,7 +40,7 @@
           <div class="mr-2 last:mr-0 rounded-lg snap-center" v-for="(e, i) in s.data" :key="i">
             <div class="min-w-[79vw] md:min-w-[35vw] rounded-lg border-2 border-gray-100">
               <nuxt-link :to="`/${e.linkPrefix}/${e.id}`">
-                <img class="h-44 w-full rounded-lg" src="https://via.placeholder.com/300x200" alt="Event" />
+                <img class="h-44 w-full rounded-lg" :src="e.image || '/hero.svg'" alt="Event" />
               </nuxt-link>
             </div>
 
@@ -65,12 +79,12 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import moment from 'moment-timezone'
 
 const { $events254Api } = useNuxtApp()
 const { data, pending, refresh, error } = await useAsyncData('feed', async () => {
-    const res = await $events254Api.newsfeed()
-    return res.data
-})
+  const res = await $events254Api.newsfeed()
+  return res.data
+}, { initialCache: false })
 </script>
