@@ -1,51 +1,55 @@
 <template>
     <section class="px-3 sm:px-64">
         <div>
-            <div class="mb-4 mt-2 text-center">
-                <h1 class="text-xl font-bold">Welcome back!</h1>
-                <p class="mt-2 mb-7">Enter your account details to sign in into your Events254 account</p>
+            <div class="mb-4 mt-2 text-white">
+                <h1 class="text-3xl font-bold">Welcome back!</h1>
+                <p class="mt-2 mb-7">Enter your account details to sign in into your Events254 account to get full
+                    benefits</p>
             </div>
-            <div class="text-red-500  rounded-lg py-2 text-center">
-                <p class="font-bold">{{ errorMessage }}</p>
-            </div>
-            <form method="POST" @submit.prevent="attemptLogin">
-                <label for="username">
-                    <h1>Email, phone or username</h1>
-                    <input v-model="username" class="w-full rounded-lg mb-2"
-                        :class="{ 'border-red-400 ring-red-400 ring-1': userNameError }" type="text" name="username"
-                        id="username" placeholder="Username, email or phone">
-                    <div class=" -mt-2">
-                        <span class=" text-sm text-red-500 italic">{{ userNameError }}</span>
-                    </div>
-                </label>
 
-                <label for="password">
-                    <h1>Password</h1>
-                    <input v-model="password" class="w-full rounded-lg mb-3"
-                        :class="{ 'border-red-400 ring-red-400 ring-1': passwordError }" type="password" name="password"
-                        id="password" placeholder="Password">
-                    <div class=" -mt-2">
-                        <span class=" text-sm text-red-500 italic">{{ passwordError }}</span>
-                    </div>
-                </label>
+            <div class="border rounded-xl px-3 pb-5 text-black bg-white/50">
+                <div class="text-red-500  rounded-lg py-2 text-center">
+                    <p class="font-bold">{{ errorMessage }}</p>
+                </div>
+                <form method="POST" @submit.prevent="attemptLogin">
+                    <label for="username">
+                        <h1>Email, phone or username</h1>
+                        <input v-model="username" class="w-full rounded-lg mb-2"
+                            :class="{ 'border-red-400 ring-red-400 ring-1': userNameError }" type="text" name="username"
+                            id="username" placeholder="Username, email or phone">
+                        <div class=" -mt-2">
+                            <span class=" text-sm text-red-500 italic">{{ userNameError }}</span>
+                        </div>
+                    </label>
 
-                <div class="my-4">
-                    <nuxt-link to="/password/request">
-                        <h1 class="underline">Having trouble signing in?</h1>
+                    <label for="password">
+                        <h1>Password</h1>
+                        <input v-model="password" class="w-full rounded-lg mb-3"
+                            :class="{ 'border-red-400 ring-red-400 ring-1': passwordError }" type="password"
+                            name="password" id="password" placeholder="Password">
+                        <div class=" -mt-2">
+                            <span class=" text-sm text-red-500 italic">{{ passwordError }}</span>
+                        </div>
+                    </label>
+
+                    <div class="my-4">
+                        <nuxt-link to="/password/request">
+                            <h1 class="underline">Having trouble signing in?</h1>
+                        </nuxt-link>
+                    </div>
+
+
+                    <button :disabled="formIsInvalid" type="submit"
+                        class="bg-primary rounded-lg w-full text-white font-bold py-2 px-4 disabled:bg-white disabled:border disabled:text-gray-700">
+                        Sign in
+                    </button>
+                </form>
+
+                <div class=" mt-8 text-center">
+                    <nuxt-link to="/register">
+                        <h1 class="underline">Don't have an account? Create one</h1>
                     </nuxt-link>
                 </div>
-
-
-                <button :disabled="formIsInvalid" type="submit"
-                    class="bg-primary rounded-lg w-full text-white font-bold py-2 px-4 disabled:bg-white disabled:border disabled:text-gray-700">
-                    Sign in
-                </button>
-            </form>
-
-            <div class=" mt-8 text-center">
-                <nuxt-link to="/register">
-                    <h1 class="underline">Don't have an account? Create one</h1>
-                </nuxt-link>
             </div>
         </div>
     </section>
@@ -62,6 +66,7 @@ useHead({
 
 definePageMeta({
     middleware: ["guest"],
+    layout: "auth"
 })
 
 onMounted(() => {
@@ -102,21 +107,25 @@ const formIsInvalid = computed(() => {
 })
 
 const errorMessage = ref('')
-const { $axios } = useNuxtApp()
 const $router = useRouter()
 const attemptLogin = async () => {
     try {
-        const { data } = await $events254Api.loginUser({email: username.value, password: password.value}, {
+        const { data: { user } } = await $events254Api.loginUser({ email: username.value, password: password.value }, {
             headers: {
                 'x-requested-with': 'mobile'
             }
         })
-        localStorage.setItem('auth.token', data.user.token)
-        localStorage.setItem('auth.name', data.user.name)
-        localStorage.setItem('auth.email', data.user.email)
-        localStorage.setItem('auth.username', data.user.username)
+        localStorage.setItem('auth.id', user.id.toString())
+        localStorage.setItem('auth.token', user.token)
+        localStorage.setItem('auth.name', user.name)
+        localStorage.setItem('auth.email', user.email)
+        localStorage.setItem('auth.username', user.username)
 
-        $router.push(localStorage.getItem('lastPath') || '/')
+        let lastPath: string
+        if(localStorage.getItem('lastPath') === '/login') {
+            lastPath = '/'
+        } 
+        $router.push(lastPath ? lastPath : '/')
     } catch (error) {
         errorMessage.value = error
         setTimeout(() => {

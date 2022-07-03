@@ -1,11 +1,15 @@
 <template>
-    <section class="p-3">
-        <div class="text-center mt-4">
-            <h1 class="text-2xl font-bold">Sign Up</h1>
-            <p>Create your free Events254 account today</p>
+    <section class="p-3 text-white">
+        <div class="mt-4">
+            <h1 class="text-4xl font-bold mb-3">Sign Up</h1>
+            <p>
+                Create your free Events254 account today. With an account, you will be able to create events and
+                register
+                for events.
+            </p>
         </div>
 
-        <div>
+        <div class="border bg-white/50 backdrop-blur-md text-black mt-4 rounded-xl px-3 pb-5">
             <div class="text-red-500  rounded-lg py-2 text-center">
                 <p class="font-bold">{{ errorMessage }}</p>
             </div>
@@ -30,8 +34,8 @@
 
                 <label for="password">
                     <h1 class="mt-3">Choose a strong password<span class="text-red-400">*</span></h1>
-                    <input v-model="password" class="w-full rounded-lg mb-2" type="password" name="password" id="password"
-                        placeholder="At least 8 characters">
+                    <input v-model="password" class="w-full rounded-lg mb-2" type="password" name="password"
+                        id="password" placeholder="At least 8 characters">
                     <div class="-mt-2">
                         <span class=" text-sm text-red-500 italic">{{ passwordError }}</span>
                     </div>
@@ -39,7 +43,7 @@
 
                 <div class="px-2">
                     <button :disabled="formIsInvalid"
-                        class="w-full bg-primary text-white rounded-lg mt-5 py-2 disabled:bg-white disabled:border disabled:text-gray-700">Create
+                        class="bg-primary text-white rounded-lg mt-5 py-2 px-2 disabled:bg-white disabled:border disabled:text-gray-700">Create
                         account</button>
                 </div>
             </form>
@@ -52,16 +56,20 @@
         </div>
     </section>
 </template>
-<script setup>
+<script lang="ts" setup>
 import { useField, useForm } from 'vee-validate';
 
 useHead({
     title: 'Create a free account',
 })
 
+definePageMeta({
+    layout: "auth"
+})
+
 onMounted(() => {
-    const auth = localStorage.getItem('auth');
-    if (auth === 'true') {
+    const auth = localStorage.getItem('auth.token');
+    if (auth) {
         window.location.href = '/'
     }
 })
@@ -106,9 +114,9 @@ const validationSchema = {
         if (!/[0-9]/.test(value)) {
             return 'The password must contain at least one number'
         }
-        if (!/[^A-Za-z0-9]/.test(value)) {
-            return 'The password must contain at least one special character'
-        }
+        // if (!/[^A-Za-z0-9]/.test(value)) {
+        //     return 'The password must contain at least one special character'
+        // }
         return true
     },
 }
@@ -117,37 +125,45 @@ useForm({
     validationSchema
 })
 
-const { value: name, errorMessage: nameError, meta: nameMeta } = useField('name');
-const { value: email, errorMessage: emailError, meta: emailMeta } = useField('email');
-const { value: password, errorMessage: passwordError, meta: passwordMeta } = useField('password')
+const { value: name, errorMessage: nameError, meta: nameMeta } = useField<string>('name');
+const { value: email, errorMessage: emailError, meta: emailMeta } = useField<string>('email');
+const { value: password, errorMessage: passwordError, meta: passwordMeta } = useField<string>('password')
 
 const formIsInvalid = computed(() => {
     return !nameMeta.valid || !emailMeta.valid || !passwordMeta.valid
 })
 
 const errorMessage = ref('')
-const { $axios } = useNuxtApp()
+const { $events254Api } = useNuxtApp()
 const $router = useRouter()
 
 const registerUser = async () => {
     try {
-        const { data } = await $axios.post('/auth/register', {
+        const { data } = await $events254Api.registerUser({
             name: name.value,
             email: email.value,
             password: password.value
         })
-        
-        const { data: user } = await $axios.post('/auth/login', {
+
+        const { data: { user } } = await $events254Api.loginUser({
             email: data.email,
             password: password.value
+        }, {
+            headers: {
+                'x-requested-with': 'mobile'
+            }
         })
-        localStorage.setItem('auth', true)
-        localStorage.setItem('name', user.name)
-        localStorage.setItem('email', user.email)
-        localStorage.setItem('username', user.username)
+        localStorage.setItem('auth.id', user.id.toString())
+        localStorage.setItem('auth.token', user.token)
+        localStorage.setItem('auth.name', user.name)
+        localStorage.setItem('auth.email', user.email)
+        localStorage.setItem('auth.username', user.username)
 
-        location.reload() // TODO: Auth logic
-        $router.push(localStorage.getItem('lastPath') || '/')
+        let lastPath: string
+        if (localStorage.getItem('lastPath') === '/login') {
+            lastPath = '/'
+        }
+        $router.push(lastPath ? lastPath : '/')
     } catch (error) {
         if (error.response.status === 422) {
             errorMessage.value = 'This email is already in use'
