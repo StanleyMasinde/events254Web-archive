@@ -68,11 +68,9 @@
 <script setup>
 import moment from 'moment-timezone'
 
-const config = useRuntimeConfig()
-const { data, pending, error, refresh } = await useFetch(`${config.public.apiUrl}/feed`, {
-  headers: {
-    'Content-Type': 'application/json',
-    'X-API-KEY': config.public.apiKey
-  }
+const { $events254Api } = useNuxtApp()
+const { data, pending, refresh, error } = await useAsyncData('feed', async () => {
+    const res = await $events254Api.newsfeed()
+    return res.data
 })
 </script>

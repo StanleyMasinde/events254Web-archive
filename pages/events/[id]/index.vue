@@ -99,13 +99,15 @@
     </section>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { Ref } from 'vue';
+
 const config = useRuntimeConfig()
 const route = useRoute()
 const eventId = ref(route.params.id)
-const { $axios } = useNuxtApp()
+const { $events254Api } = useNuxtApp()
 const { data, pending, refresh, error } = await useAsyncData('event', async () => {
-    const res = await $axios.get(`/events/${eventId.value}`)
+    const res = await $events254Api.getEventById(+eventId.value)
     return res.data
 })
 
@@ -119,7 +121,7 @@ useHead({
     title: data.value.about
 })
 
-function getInnitials(name) {
+function getInnitials(name: string) {
     const names = name.split(' ')
     const initials = names.map(name => name[0].toUpperCase())
     return initials[0] + initials[1]
