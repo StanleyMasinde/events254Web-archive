@@ -501,7 +501,7 @@ const createEvent = async () => {
   newEventData.append("online_link", event.online_link);
 
   try {
-    const res = await $events254Api.createEvent(
+    const { data } = await $events254Api.createEvent(
       event.about,
       event.description,
       event.startTime,

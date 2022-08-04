@@ -13,30 +13,33 @@
  */
 
 
- import { DefaultApi } from "./api";
+import { DefaultApi } from "./api";
 
- declare module '#app' {
-     interface NuxtApp {
-         $events254Api: DefaultApi
-     }
- }
+declare module '#app' {
+    interface NuxtApp {
+        $events254Api: DefaultApi
+    }
+}
 
- 
- 
- 
- export default defineNuxtPlugin((nuxtApp) => {
-     const { apiUrl, apiKey } = useRuntimeConfig().public
-     const authToken: string = localStorage.getItem('auth.token')
-     class YouthAgentApi extends DefaultApi {
-         constructor() {
-             super();
-             this.basePath = apiUrl
-             this.axios.defaults.headers.common['x-api-key'] = apiKey,
-             this.axios.defaults.headers.common['x-requested-with'] = 'mobile'
-             this.axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`
-         }
-     }
- 
-     const api = new YouthAgentApi()
-     nuxtApp.provide('events254Api', api)
- })
+
+
+
+export default defineNuxtPlugin((nuxtApp) => {
+    const { apiUrl, apiKey } = useRuntimeConfig().public
+    let authToken: string
+    if (process.client) {
+        authToken = localStorage.getItem('auth.token')
+    }
+    class YouthAgentApi extends DefaultApi {
+        constructor() {
+            super();
+            this.basePath = apiUrl
+            this.axios.defaults.headers.common['x-api-key'] = apiKey,
+                this.axios.defaults.headers.common['x-requested-with'] = 'mobile'
+            this.axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`
+        }
+    }
+
+    const api = new YouthAgentApi()
+    nuxtApp.provide('events254Api', api)
+})
