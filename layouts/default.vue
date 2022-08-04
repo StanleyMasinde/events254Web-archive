@@ -118,7 +118,7 @@
         <slot></slot>
         <div class="mt-32 sm:mt-0"></div>
         <!--Bottom navigation for mobile-->
-        <div class="px-2 sm:hidden py-1 fixed inset-x-2 bottom-0 rounded-lg shadow-2xl drop-shadow-2xl bg-gray-200">
+        <div class="px-2 sm:hidden py-3 fixed inset-x-2 bottom-0 rounded-lg shadow-2xl drop-shadow-2xl bg-gray-200">
             <ul class="flex justify-around">
                 <nuxt-link class="self-center" v-slot="{ isExactActive }" to="/">
                     <button :class="{ 'bg-primary text-white rounded-full': isExactActive }"
