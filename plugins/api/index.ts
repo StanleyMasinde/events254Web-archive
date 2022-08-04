@@ -26,11 +26,14 @@
  
  export default defineNuxtPlugin((nuxtApp) => {
      const { apiUrl, apiKey } = useRuntimeConfig().public
+     const authToken: string = localStorage.getItem('auth.token')
      class YouthAgentApi extends DefaultApi {
          constructor() {
              super();
              this.basePath = apiUrl
-             this.axios.defaults.headers.common['x-api-key'] = apiKey
+             this.axios.defaults.headers.common['x-api-key'] = apiKey,
+             this.axios.defaults.headers.common['x-requested-with'] = 'mobile'
+             this.axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`
          }
      }
  
