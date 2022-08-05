@@ -118,7 +118,7 @@
         <slot></slot>
         <div class="mt-32 sm:mt-0"></div>
         <!--Bottom navigation for mobile-->
-        <div class="px-2 sm:hidden py-3 fixed inset-x-2 bottom-0 rounded-lg shadow-2xl drop-shadow-2xl bg-gray-200">
+        <div class="px-1 sm:hidden py-2 fixed inset-x-2 bottom-0 rounded-lg shadow-2xl drop-shadow-2xl bg-gray-200">
             <ul class="flex justify-around">
                 <nuxt-link class="self-center" v-slot="{ isExactActive }" to="/">
                     <button :class="{ 'bg-primary text-white rounded-full': isExactActive }"
@@ -141,10 +141,10 @@
                         <span v-show="isExactActive">Explore</span>
                     </button>
                 </nuxt-link>
-                <nuxt-link class=" self-center" to="/events/create" v-slot="{ isExactActive }">
+                <nuxt-link class="absolute -top-14 right-1 bg-primary text-white shadow-md rounded-full aspect-square flex" to="/events/create" v-slot="{ isExactActive }">
                     <button :class="{ 'bg-primary text-white rounded-full': isExactActive }"
-                        class="transition-all duration-500 flex gap-1 px-3 py-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class=" h-6 w-full" fill="none" viewBox="0 0 24 24"
+                        class="transition-all duration-500 self-center flex gap-1 px-2 py-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-full" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -152,17 +152,7 @@
                         <span v-show="isExactActive">Create</span>
                     </button>
                 </nuxt-link>
-                <nuxt-link class="self-center" v-slot="{ isExactActive }" to="/saved">
-                    <button :class="{ 'bg-primary text-white rounded-full': isExactActive }"
-                        class="transition-all duration-500 flex gap-1 px-3 py-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-full" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                        </svg>
-                        <span v-show="isExactActive">Saved</span>
-                    </button>
-                </nuxt-link>
+                
                 <nuxt-link class="self-center" v-slot="{ isExactActive }" to="/tickets">
                     <button :class="{ 'bg-primary text-white rounded-full': isExactActive }"
                         class="transition-all duration-500 flex gap-1 px-3 py-2">
