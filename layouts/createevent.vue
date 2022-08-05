@@ -1,24 +1,24 @@
 <template>
     <main>
-        <nav class="py-2 w-screen px-1 sm:px-16 flex justify-between items-center fixed shadow">
+        <nav class="py-3 w-screen px-1 sm:px-16 flex justify-between items-center fixed">
             <div>
-                <nuxt-link to="/">
-                    <button class=" rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-7" fill="none" viewBox="0 0 24 24"
+                <router-link to="/">
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
                     </button>
-                </nuxt-link>
+                </router-link>
             </div>
 
             <div class="text-center">
-                <h1 class=" font-bold text-xl">Create event</h1>
+                <h1 class=" font-bold text-lg">Create event</h1>
             </div>
 
             <div>
                 <button>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-9" fill="none" viewBox="0 0 24 24"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
