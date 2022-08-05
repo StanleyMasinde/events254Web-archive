@@ -26,7 +26,7 @@ declare module '#app' {
 
 export default defineNuxtPlugin((nuxtApp) => {
     const { apiUrl, apiKey } = useRuntimeConfig().public
-    let authToken: string
+    let authToken: string = 'token'
     if (process.client) {
         authToken = localStorage.getItem('auth.token')
     }
@@ -35,7 +35,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             super();
             this.basePath = apiUrl
             this.axios.defaults.headers.common['x-api-key'] = apiKey,
-                this.axios.defaults.headers.common['x-requested-with'] = 'mobile'
+            this.axios.defaults.headers.common['x-requested-with'] = 'mobile'
             this.axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`
         }
     }

@@ -4,14 +4,14 @@
         <div class="m-2 rounded-xl  relative">
             <div class=" bg-white border-2 absolute top-2 left-2 rounded-xl p-2">
                 <!--if physical-->
-                <div class="flex" v-if="data.location !== 'N/A'">
+                <div class="flex" v-if="data?.location !== 'N/A'">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <h1>{{ data.location }}</h1>
+                    <h1>{{ data?.location }}</h1>
                 </div>
                 <!--/ If physical-->
                 <!--if virtual-->
@@ -26,11 +26,11 @@
                 <!--/ If virtual-->
             </div>
             <div class="border-2 rounded-xl">
-                <img class="rounded-xl w-full" :src="data.image || '/hero.svg'" />
+                <img class="rounded-xl w-full" :src="data?.image || '/hero.svg'" />
             </div>
             <div class="absolute w-full bottom-0 px-24 sm:px-64 text-center">
                 <div class="bg-primary border-2 text-white line-clamp-1 rounded-xl p-1 -mb-5">
-                    <h1>{{ new Date(data.startDate).toDateString() }}</h1>
+                    <h1>{{ new Date(data?.startDate).toDateString() }}</h1>
                 </div>
             </div>
         </div>
@@ -38,8 +38,8 @@
 
         <!--Event info-->
         <div class="mx-2 my-5">
-            <h1 class=" text-2xl font-semibold line-clamp-1">{{ data.about }}</h1>
-            <h1 class=" text-lg">By: {{ data.organiser?.name ?? 'Events254' }}</h1>
+            <h1 class=" text-2xl font-semibold line-clamp-1">{{ data?.about }}</h1>
+            <h1 class=" text-lg">By: {{ data?.organiser?.name ?? 'Events254' }}</h1>
         </div>
         <!--/ Event info-->
 
@@ -47,7 +47,7 @@
         <div class="mx-2 my-5">
             <h1 class="text-lg font-semibold">Attendees</h1>
             <div class="flex flex-wrap">
-                <div v-for="(attendee, index) in data.attendees" :key="index"
+                <div v-for="(attendee, index) in data?.attendees" :key="index"
                     class="bg-blue-400 h-10 w-10 flex justify-center items-center rounded-full border-2  -ml-5 first:ml-0 text-center">
                     <div>
                         <h1 class=" font-bold">{{ getInnitials(attendee.name) }}</h1>
@@ -60,13 +60,13 @@
         <!--Event About-->
         <div class="mx-2 my-5">
             <h1 class=" text-lg font-semibold line-clamp-1">About</h1>
-            <div class="prose prose-a:text-primary prose-li:list-disc px-3" v-html="data.description"></div>
+            <div class="prose prose-a:text-primary prose-li:list-disc px-3" v-html="data?.description"></div>
         </div>
 
         <div class=" mb-20"></div>
 
         <!--Admin Button-->
-        <div v-if="data.can_edit" class=" fixed left-0 bottom-1 w-screen px-1 sm:px-20">
+        <div v-if="data?.can_edit" class=" fixed left-0 bottom-1 w-screen px-1 sm:px-20">
             <nuxt-link :to="`/events/${data.id}/manage`">
                 <button class="rounded-xl text-white bg-primary py-3 w-full flex gap-1 justify-center content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
@@ -84,7 +84,8 @@
 
         <!--Ticket Button-->
         <div v-else class=" fixed left-2 right-2 bottom-1 px-1 sm:px-20">
-            <button class="rounded-xl text-white bg-primary py-3 w-full flex gap-1 justify-center content-center">
+            <button @click.prevent="showdialogForBuyingTicket"
+                class="rounded-xl text-white bg-primary py-3 w-full flex gap-1 justify-center content-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -96,34 +97,83 @@
             </button>
         </div>
         <!--/Ticket Button-->
+
+
+        <!--Dialog for ticket creation-->
+        <div v-if="showTicketDialog"
+            class="flex flex-col gap-2 border bottom-0 bg-slate-200 backdrop-blur-lg rounded-lg p-2 shadow-2xl z-50 fixed inset-x-2">
+            <h1 class="font-bold text-lg">Choose a ticket</h1>
+            <div @click="selectedTicket = t.id" :class="{ 'border-l-8 border-l-primary mx-2': selectedTicket == t.id }"
+                class="transition-all duration-500 border border-primary rounded-lg p-2"
+                v-for="(t, i) in data?.tickets">
+                <div>
+                    <h1 class="font-semibold">{{ t.type }}</h1>
+                    <h1 class=" font-mono">{{ formatCurrency(t?.price) }}</h1>
+                </div>
+                <div></div>
+            </div>
+
+            <button @click.prevent="buyTicket" class="bg-primary rounded-lg text-white py-2">Confirm choice</button>
+            <button @click="hidedialogForBuyingTicket"
+                class="border border-green-800 text-green-800 rounded-lg py-2">Cancel</button>
+        </div>
+        <!--/Dialog for ticket creation-->
     </section>
 </template>
 
 <script lang="ts" setup>
 import { Ref } from 'vue';
-
-const config = useRuntimeConfig()
 const route = useRoute()
+const router = useRouter()
 const eventId = ref(route.params.id)
+const selectedTicket: Ref<number> = ref(null)
 const { $events254Api } = useNuxtApp()
+const showTicketDialog: Ref<boolean> = ref(false)
 const { data, pending, refresh, error } = await useAsyncData('event', async () => {
     const res = await $events254Api.getEventById(+eventId.value)
     return res.data
 }, { initialCache: false })
 
-// onBeforeMount(async () => {
-//     await refresh()
-// })
+
 definePageMeta({
     layout: 'event',
 })
 useHead({
-    title: data.value.about
+    title: data.value?.about
 })
 
 function getInnitials(name: string) {
     const names = name.split(' ')
     const initials = names.map(name => name[0].toUpperCase())
     return initials[0] + initials[1]
+}
+
+const showdialogForBuyingTicket = () => {
+    showTicketDialog.value = true
+}
+const hidedialogForBuyingTicket = () => {
+    showTicketDialog.value = false
+}
+
+const formatCurrency = (number: number): string => {
+    return new Intl.NumberFormat('en-UK', {
+        style: 'currency',
+        currency: 'kes'
+    }).format(number)
+}
+
+/**
+ * Buy event ticket
+ */
+const buyTicket = async () => {
+    try {
+        const { data } = await $events254Api.orderTicket(+eventId.value, {
+            ticket_id: selectedTicket.value,
+            rsvp_count: 1
+        })
+        router.push(`/tickets/${data.ticketId}`)
+    } catch (error) {
+        throw new Error(error)
+    }
 }
 </script>
