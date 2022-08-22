@@ -28,7 +28,7 @@
           </div>
           <div :class="{
             'bg-primary text-white border-primary border-2':
-              eventTypeMeta.attendanceMode === 'virtual',
+              eventTypeMeta?.attendanceMode === 'virtual',
           }" @click="eventTypeMeta.attendanceMode = 'virtual'" class="
               transition-all
               delay-150
@@ -45,7 +45,7 @@
           </div>
 
           <!--Button to go to the next step-->
-          <button @click="currentStep = 2" v-show="eventTypeMeta.attendanceMode !== ''"
+          <button @click="currentStep = 2" v-show="eventTypeMeta?.attendanceMode !== ''"
             class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
             Next step
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1" fill="none" viewBox="0 0 24 24"
@@ -95,7 +95,7 @@
               </select>
             </label>
 
-            <label v-if="eventTypeMeta.attendanceMode === 'inPerson'" for="location">
+            <label v-if="eventTypeMeta?.attendanceMode === 'inPerson'" for="location">
               <h1>
                 Enter the event's location<span class="mt-4 text-red-600">*</span>
               </h1>
@@ -103,7 +103,7 @@
                   w-full
                   rounded-lg
                   focus:ring-primary focus:border-primary
-                " type="text" name="location" id="location" placeholder="Kicc grounds" />
+                " type="text" name="location" id="locationInput" placeholder="Kicc grounds" />
             </label>
 
             <label v-else for="location">
@@ -126,7 +126,7 @@
         <div class="flex justify-between">
           <div>
             <!--Button to go to the next step-->
-            <button @click="currentStep = 1" v-show="eventTypeMeta.attendanceMode !== ''" class="
+            <button @click="currentStep = 1" v-show="eventTypeMeta?.attendanceMode !== ''" class="
                 flex
                 mt-5
                 border border-gray-700
@@ -145,7 +145,7 @@
           </div>
 
           <!--Button to go to the next step-->
-          <button @click="currentStep = 3" v-show="eventTypeMeta.attendanceMode !== ''"
+          <button @click="currentStep = 3" v-show="eventTypeMeta?.attendanceMode !== ''"
             class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
             Add dates
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -425,7 +425,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, watch, ref } from "vue";
 
 definePageMeta({
   layout: "createevent",
@@ -446,6 +446,36 @@ const {
     "X-API-KEY": config.public.apiKey,
   },
 });
+
+const isMounted = ref(false)
+/** Options for location bias */
+const locationBias = {
+  north: -1.103724,
+  south: -1.242376,
+  east: 37.019862,
+  west: 36.678699,
+}
+/** Initialize the places object */
+const initPlacesApi = () => {
+  if (!isMounted) { return }
+  const GmapsAutoComplete = window.google.maps.places.Autocomplete
+  const locationInput = document.querySelector('#locationInput')
+  const address = new GmapsAutoComplete(locationInput)
+  address.setFields(['geometry', 'name'])
+  address.setOptions({
+    country: 'ke',
+    fields: ['name', 'formatted_address', 'url']
+  })
+  address.setBounds(locationBias)
+
+  address.changed = () => {
+    const place = address.getPlace()
+    event.address.address = place.formatted_address,
+    event.address.name = place.name,
+    event.address.url = place.url
+    event.location = place.formatted_address
+  }
+}
 
 const eventTypeMeta = reactive({
   attendanceMode: "",
@@ -472,6 +502,11 @@ const event = reactive({
   endTime: "",
   location: "",
   online_link: "",
+  address: {
+    name: null,
+    address: null,
+    url: null
+  }
 });
 
 const triggerPosterPicker = () => {
@@ -484,7 +519,13 @@ const onPosterChange = (e) => {
   posterUrl.value = url;
 };
 
-const { $axios } = useNuxtApp();
+watch(currentStep, (val) => {
+  if (!isMounted) { return }
+  if (val == 2 && eventTypeMeta.attendanceMode == 'inPerson') {
+    initPlacesApi()
+  }
+})
+
 const $router = useRouter();
 const createEvent = async () => {
   const formElement = document.querySelector("#imageForm");
@@ -508,7 +549,7 @@ const createEvent = async () => {
       event.startDate,
       event.category_id,
       newEventData.get("image"),
-      event.location,
+      event.address.address,
       event.online_link,
       event.endTime,
       event.endDate
@@ -518,4 +559,8 @@ const createEvent = async () => {
     console.log(error);
   }
 };
+
+onMounted(() => {
+  isMounted.value = true
+})
 </script>

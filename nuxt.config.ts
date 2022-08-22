@@ -14,6 +14,9 @@ export default defineNuxtConfig({
             link: [
                 { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
                 { rel: 'manifest', href: '/manifest.json'}
+            ],
+            script: [
+                { src: `https://maps.googleapis.com/maps/api/js?key=${process.env.MAPS_API_KEY}&libraries=places` }
             ]
         }
     },
@@ -21,7 +24,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiUrl: process.env.API_URL,
-            apiKey: process.env.API_KEY
+            apiKey: process.env.API_KEY,
         }
     },
 
