@@ -1,6 +1,6 @@
 <template>
   <section class="px-3">
-    <div class="h-[94vh] flex flex-col justify-center">
+    <div class=" min-h-[94vh] flex flex-col justify-center">
       <!--Step one-->
       <div v-show="currentStep == 1" class="text-center">
         <div class="mb-4">
@@ -45,14 +45,14 @@
           </div>
 
           <!--Button to go to the next step-->
-          <button @click="currentStep = 2" v-show="eventTypeMeta?.attendanceMode !== ''"
-            class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
-            Next step
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </button>
+            <button @click="currentStep = 2" v-show="eventTypeMeta?.attendanceMode !== ''"
+              class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
+              Next step
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </button>
           <!--/Button to go to the next step-->
         </div>
       </div>
@@ -117,8 +117,7 @@
 
             <label for="desc">
               <h1 class="mt-4">Add details about your event</h1>
-              <textarea v-model="event.description" placeholder="Give as much info as possible" name="description"
-                id="desc" class="w-full rounded-lg"></textarea>
+              <RichEditor v-model="event.description" />
             </label>
           </form>
         </div>
@@ -371,7 +370,7 @@
         <!--Event About-->
         <div class="mx-2 my-5">
           <h1 class="text-lg font-semibold line-clamp-1">About</h1>
-          <p class="">{{ event.description }}</p>
+          <p class="prose" v-html="event.description"></p>
         </div>
 
         <div>
@@ -471,9 +470,9 @@ const initPlacesApi = () => {
   address.changed = () => {
     const place = address.getPlace()
     event.address.address = place.formatted_address,
-    event.address.name = place.name,
-    event.address.url = place.url
-    event.location = place.formatted_address
+      event.address.name = place.name,
+      event.address.url = place.url
+    event.location = place.name
   }
 }
 

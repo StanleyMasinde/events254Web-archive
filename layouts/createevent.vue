@@ -1,6 +1,6 @@
 <template>
     <main>
-        <nav class="py-3 w-screen px-1 sm:px-16 flex justify-between items-center fixed">
+        <nav class="py-3 w-screen px-1 sm:px-16 flex justify-between items-center bg-white sticky top-0">
             <div>
                 <router-link to="/">
                     <button>
