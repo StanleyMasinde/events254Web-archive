@@ -8,6 +8,7 @@
         <div v-else>
             <div class=" my-4">
                 <h1 class=" text-xl"> <span class=" font-bold">Managing:</span> {{ currentEvent.about }}</h1>
+                <nuxt-link class=" underline text-primary" :to="`/events/${eventId}`">View event</nuxt-link>
             </div>
 
             <div>

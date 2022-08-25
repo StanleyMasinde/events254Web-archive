@@ -577,12 +577,6 @@
       * @memberof TicketOrderRequest
       */
      'ticket_id': number;
-     /**
-      * 
-      * @type {number}
-      * @memberof TicketOrderRequest
-      */
-     'rsvp_count': number;
  }
  /**
   * 
@@ -658,6 +652,104 @@
       * @memberof User
       */
      'bio'?: string;
+ }
+ /**
+  * 
+  * @export
+  * @interface UserTicket
+  */
+ export interface UserTicket {
+     /**
+      * The image url for the event of this ticket
+      * @type {string}
+      * @memberof UserTicket
+      */
+     'image': string;
+     /**
+      * The name of the event
+      * @type {string}
+      * @memberof UserTicket
+      */
+     'eventName': string;
+     /**
+      * When the event is starting
+      * @type {string}
+      * @memberof UserTicket
+      */
+     'eventDate': string;
+     /**
+      * Where the event will take place can be blank
+      * @type {string}
+      * @memberof UserTicket
+      */
+     'eventLocation'?: string;
+     /**
+      * The unique ID of the current ticket
+      * @type {number}
+      * @memberof UserTicket
+      */
+     'ticketId': number;
+     /**
+      * The unique id of the user that owns the ticket
+      * @type {number}
+      * @memberof UserTicket
+      */
+     'userId': number;
+     /**
+      * The number of tickets/slots purchased
+      * @type {number}
+      * @memberof UserTicket
+      */
+     'tikcetCount': number;
+     /**
+      * The class of the ticket e.g early bird,
+      * @type {string}
+      * @memberof UserTicket
+      */
+     'ticketType': string;
+     /**
+      * The amount paid for the ticket
+      * @type {number}
+      * @memberof UserTicket
+      */
+     'ticketPrice': number;
+     /**
+      * the currency that was used to purchase the ticket
+      * @type {string}
+      * @memberof UserTicket
+      */
+     'currency': string;
+     /**
+      * 
+      * @type {UserTicketOrganiser}
+      * @memberof UserTicket
+      */
+     'organiser': UserTicketOrganiser;
+ }
+ /**
+  * The person/group that owns the event
+  * @export
+  * @interface UserTicketOrganiser
+  */
+ export interface UserTicketOrganiser {
+     /**
+      * The unique id of the organiser
+      * @type {number}
+      * @memberof UserTicketOrganiser
+      */
+     'id': number;
+     /**
+      * the name of the organiser
+      * @type {string}
+      * @memberof UserTicketOrganiser
+      */
+     'name': string;
+     /**
+      * The URL slug of the organiser if the organiser is a group
+      * @type {string}
+      * @memberof UserTicketOrganiser
+      */
+     'slug'?: string;
  }
  /**
   * 
@@ -913,6 +1005,39 @@
              }
  
              const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+             const localVarHeaderParameter = {} as any;
+             const localVarQueryParameter = {} as any;
+ 
+ 
+     
+             setSearchParams(localVarUrlObj, localVarQueryParameter);
+             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+ 
+             return {
+                 url: toPathString(localVarUrlObj),
+                 options: localVarRequestOptions,
+             };
+         },
+         /**
+          * Get a ticket by ID
+          * @param {number} ticketId The ticket Id
+          * @param {*} [options] Override http request option.
+          * @throws {RequiredError}
+          */
+         getASingleTicket: async (ticketId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+             // verify required parameter 'ticketId' is not null or undefined
+             assertParamExists('getASingleTicket', 'ticketId', ticketId)
+             const localVarPath = `/tickets/{ticketId}`
+                 .replace(`{${"ticketId"}}`, encodeURIComponent(String(ticketId)));
+             // use dummy base URL string because the URL constructor only accepts absolute URLs.
+             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+             let baseOptions;
+             if (configuration) {
+                 baseOptions = configuration.baseOptions;
+             }
+ 
+             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
              const localVarHeaderParameter = {} as any;
              const localVarQueryParameter = {} as any;
  
@@ -1672,6 +1797,16 @@
              return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
          },
          /**
+          * Get a ticket by ID
+          * @param {number} ticketId The ticket Id
+          * @param {*} [options] Override http request option.
+          * @throws {RequiredError}
+          */
+         async getASingleTicket(ticketId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserTicket>> {
+             const localVarAxiosArgs = await localVarAxiosParamCreator.getASingleTicket(ticketId, options);
+             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+         },
+         /**
           * Get the tickets for the current user
           * @param {*} [options] Override http request option.
           * @throws {RequiredError}
@@ -1927,6 +2062,15 @@
              return localVarFp.deleteTicket(eventId, ticketId, options).then((request) => request(axios, basePath));
          },
          /**
+          * Get a ticket by ID
+          * @param {number} ticketId The ticket Id
+          * @param {*} [options] Override http request option.
+          * @throws {RequiredError}
+          */
+         getASingleTicket(ticketId: number, options?: any): AxiosPromise<UserTicket> {
+             return localVarFp.getASingleTicket(ticketId, options).then((request) => request(axios, basePath));
+         },
+         /**
           * Get the tickets for the current user
           * @param {*} [options] Override http request option.
           * @throws {RequiredError}
@@ -2170,6 +2314,17 @@
       */
      public deleteTicket(eventId: number, ticketId: number, options?: AxiosRequestConfig) {
          return DefaultApiFp(this.configuration).deleteTicket(eventId, ticketId, options).then((request) => request(this.axios, this.basePath));
+     }
+ 
+     /**
+      * Get a ticket by ID
+      * @param {number} ticketId The ticket Id
+      * @param {*} [options] Override http request option.
+      * @throws {RequiredError}
+      * @memberof DefaultApi
+      */
+     public getASingleTicket(ticketId: number, options?: AxiosRequestConfig) {
+         return DefaultApiFp(this.configuration).getASingleTicket(ticketId, options).then((request) => request(this.axios, this.basePath));
      }
  
      /**
