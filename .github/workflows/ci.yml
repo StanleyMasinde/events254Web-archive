@@ -2,25 +2,99 @@ name: Test and deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - master
   pull_request:
-    branches: [ "main" ]
-jobs:
-  build:
+    branches:
+      - main
+      - master
 
-    runs-on: ubuntu-latest
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        node-version: [16.x]
+        os: [ubuntu-latest]
+        node: [16]
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm ci
-    - name: Build for production
-      run: npm run build
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+
+      - name: Cache node_modules 📦
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci --prefer-offline --no-audit
+  staging:
+    needs: ci
+    if: github.ref == 'refs/heads/feat/next'
+    runs-on: "ubuntu-latest"
+    environment:
+      name: staging
+      url: https://beta.events254.co.ke
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Add maps API key
+        run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> .env
+
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Build 🏗
+        run: npm run build
+
+      - name: Deploy 🚀
+        uses: Burnett01/rsync-deployments@5.2
+        with:
+          remote_host: 64.225.23.199
+          remote_user: stanley
+          remote_path: /var/www/events254.co.ke
+          remote_key: ${{ secrets.SSH_KEY }}
+          switches: -azP
+          path: dist/
+  production:
+    needs: ci
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://events254.co.ke
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Add maps API key
+        run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> .env
+
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Build static 🏗
+        run: npm run generate
+
+      - name: Deploy 🚀
+        uses: Burnett01/rsync-deployments@5.2
+        with:
+          remote_host: 64.225.23.199
+          remote_user: stanley
+          remote_path: /var/www/events254.co.ke
+          remote_key: ${{ secrets.SSH_KEY }}
+          switches: -azP
+          path: dist/
