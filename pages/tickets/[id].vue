@@ -37,6 +37,11 @@ const getTicket = async () => {
   ticket.value = data
 }
 
+definePageMeta({
+  middleware: "auth",
+  layout: "ticket"
+})
+
 onMounted(() => {
   getTicket()
 })
