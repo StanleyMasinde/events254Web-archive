@@ -54,7 +54,7 @@
     "@tiptap/extension-text": "^2.0.0-beta.13",
     "@tiptap/vue-2": "^2.0.0-beta.68",
     "eslint": "^8.19.0",
-    "moment-timezone": "^0.5.33",
+    "moment-timezone": "^0.5.35",
     "nuxt": "^2.15.3",
     "sass-loader": "^10.0",
     "vee-validate": "^3.4.13"
