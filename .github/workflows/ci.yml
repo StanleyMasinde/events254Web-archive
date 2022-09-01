@@ -59,14 +59,7 @@ jobs:
         run: npm run build
 
       - name: Deploy 🚀
-        uses: Burnett01/rsync-deployments@5.2
-        with:
-          remote_host: 64.225.23.199
-          remote_user: stanley
-          remote_path: /var/www/events254.co.ke
-          remote_key: ${{ secrets.SSH_KEY }}
-          switches: -azP
-          path: dist/
+        run: Deploy script here
   production:
     needs: ci
     if: github.ref == 'refs/heads/main'
@@ -89,11 +82,4 @@ jobs:
         run: npm run generate
 
       - name: Deploy 🚀
-        uses: Burnett01/rsync-deployments@5.2
-        with:
-          remote_host: 64.225.23.199
-          remote_user: stanley
-          remote_path: /var/www/events254.co.ke
-          remote_key: ${{ secrets.SSH_KEY }}
-          switches: -azP
-          path: dist/
+        run: echo deploy logic here
