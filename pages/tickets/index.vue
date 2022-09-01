@@ -18,9 +18,10 @@
                     </div>
 
                     <div class=" mt-2">
-                        <h2>Ticket price: <span class=" font-mono">{{ formatCurrency(ticket.ticketPrice) }}</span> {{
-                                ticket.tikcetCount
-                        }}</h2>
+                        <h2>Ticket price:
+                            <span class=" font-mono">{{ formatCurrency(ticket.ticketPrice) }}</span> x
+                            {{ ticket.ticketCount }}
+                        </h2>
                     </div>
                 </div>
             </router-link>

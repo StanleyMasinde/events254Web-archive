@@ -678,6 +678,12 @@ export interface UserTicket {
      */
     'eventDate': string;
     /**
+     * The end date of the event
+     * @type {string}
+     * @memberof UserTicket
+     */
+    'endDate': string;
+    /**
      * Where the event will take place can be blank
      * @type {string}
      * @memberof UserTicket
@@ -700,7 +706,7 @@ export interface UserTicket {
      * @type {number}
      * @memberof UserTicket
      */
-    'tikcetCount': number;
+    'ticketCount': number;
     /**
      * The class of the ticket e.g early bird,
      * @type {string}
