@@ -10,8 +10,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if (authToken) {
         return;
     }
-    if (to.path === '/login' || to.path === '/register') {
+    if (to.path === '/login?next=' || to.path === '/register') {
         return;
     }
-    return navigateTo('/login');
+    return navigateTo(`/login/?next=${to.path}`);
 })
