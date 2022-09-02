@@ -30,7 +30,7 @@
             </div>
             <div class="absolute w-full bottom-0 px-24 sm:px-64 text-center">
                 <div class="bg-primary border-2 text-white line-clamp-1 rounded-xl p-1 -mb-5">
-                    <h1>{{ new Date(event?.startDate).toDateString() }}</h1>
+                    <h1>{{ moment(event?.startDate).format('MMM Do YYYY') }}</h1>
                 </div>
             </div>
         </div>
@@ -123,6 +123,7 @@
 
 <script lang="ts" setup>
 import { Ref } from 'vue';
+import moment from 'moment';
 const route = useRoute()
 const router = useRouter()
 const eventId = ref(route.params.id)
