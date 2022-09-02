@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex gap-2 flex-col">
+        <div v-if="tickets.length > 0" class="flex gap-2 flex-col">
             <router-link :to="`/tickets/${ticket.ticketId}`" v-for="(ticket, index) in tickets">
                 <div class=" border rounded-2xl px-2 py-3 mx-1">
                     <h1 class="font-semibold text-xl truncate">{{ ticket.eventName }}</h1>
@@ -25,6 +25,12 @@
                     </div>
                 </div>
             </router-link>
+        </div>
+
+        <div v-else class="m-2 text-center h-64 grid place-items-center">
+            <div>
+                <h1 class="font-extrabold text-2xl">You have not bought any tickets</h1>
+            </div>
         </div>
     </div>
 </template>
