@@ -162,6 +162,8 @@ const attemptLogin = async () => {
     localStorage.setItem("auth.name", user.name);
     localStorage.setItem("auth.email", user.email);
     localStorage.setItem("auth.username", user.username);
+    const cookie = useCookie('Authorization')
+    cookie.value = `Bearer ${user.token}`
     
     if ($route.query.next) {
       $router.push($route.query.next.toString());
