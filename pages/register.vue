@@ -136,6 +136,7 @@ const formIsInvalid = computed(() => {
 const errorMessage = ref('')
 const { $events254Api } = useNuxtApp()
 const $router = useRouter()
+const $route = useRoute()
 
 const registerUser = async () => {
     try {
@@ -154,16 +155,18 @@ const registerUser = async () => {
             }
         })
         localStorage.setItem('auth.id', user.id.toString())
-        localStorage.setItem('auth.token', user.token)
         localStorage.setItem('auth.name', user.name)
         localStorage.setItem('auth.email', user.email)
         localStorage.setItem('auth.username', user.username)
 
-        let lastPath: string
-        if (localStorage.getItem('lastPath') === '/login') {
-            lastPath = '/'
+        const cookie = useCookie('Authorization', { maxAge: 365 * 24 * 60 * 60 * 1000 })
+        cookie.value = `Bearer ${user.token}`
+
+        if ($route.query.next) {
+            $router.push($route.query.next.toString());
+        } else {
+            $router.push('/')
         }
-        $router.push(lastPath ? lastPath : '/')
     } catch (error) {
         if (error.response.status === 422) {
             errorMessage.value = 'This email is already in use'
