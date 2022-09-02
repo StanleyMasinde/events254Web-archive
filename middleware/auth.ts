@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     const authState = useAuth()
     localStorage.setItem('lastPath', to.path);
-    const token = useCookie('Authorization').value.split(' ')[1]
+    const token = useCookie('Authorization').value
     const authToken = token
     if (authToken) {
         return;

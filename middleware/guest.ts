@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
 
     localStorage.setItem('lastPath', to.path);
-    const token = useCookie('Authorization').value.split(' ')[1]
+    const token = useCookie('Authorization').value
     if (token) {
         navigateTo('/');
     }
