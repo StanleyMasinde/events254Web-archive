@@ -253,6 +253,12 @@ export interface Event {
     'online_link': string;
     /**
      * 
+     * @type {EventCurrentUserTicket}
+     * @memberof Event
+     */
+    'currentUserTicket'?: EventCurrentUserTicket;
+    /**
+     * 
      * @type {string}
      * @memberof Event
      */
@@ -263,6 +269,37 @@ export interface Event {
      * @memberof Event
      */
     'updated_at': string;
+}
+/**
+ * The ticket of the current user if they\'ve purchased one
+ * @export
+ * @interface EventCurrentUserTicket
+ */
+export interface EventCurrentUserTicket {
+    /**
+     * The unique identifier of the pass/ticket
+     * @type {number}
+     * @memberof EventCurrentUserTicket
+     */
+    'id': number;
+    /**
+     * The amount they paid for the tikcet
+     * @type {number}
+     * @memberof EventCurrentUserTicket
+     */
+    'price': number;
+    /**
+     * The number of tickets owned
+     * @type {number}
+     * @memberof EventCurrentUserTicket
+     */
+    'rsvp_count': number;
+    /**
+     * The ticket class e.g VIP
+     * @type {string}
+     * @memberof EventCurrentUserTicket
+     */
+    'type': string;
 }
 /**
  * 
