@@ -23,8 +23,7 @@
       </div>
 
       <div v-if="ticket" class="m-5 rounded-lg bg-primary text-white flex justify-center p-5">
-        <img
-          class=" rounded-lg border-2 aspect-square"
+        <img class=" rounded-lg border-2 aspect-square"
           :src="`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://events254.co.ke/tickets/${ticket?.ticketId}`"
           alt="QR Code">
       </div>
@@ -42,8 +41,12 @@ const route = useRoute()
 const { $events254Api } = useNuxtApp()
 const ticket: Ref<UserTicket> = ref();
 const getTicket = async () => {
-  const { data } = await $events254Api.getASingleTicket(+route.params.id)
-  ticket.value = data
+  try {
+    const { data } = await $events254Api.getASingleTicket(+route.params.id)
+    ticket.value = data
+  } catch (err) {
+    showError({ statusCode: 404, statusMessage: err.message })
+  }
 }
 
 definePageMeta({
