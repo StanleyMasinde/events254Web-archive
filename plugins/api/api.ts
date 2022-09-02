@@ -577,6 +577,12 @@ export interface TicketOrderRequest {
      * @memberof TicketOrderRequest
      */
     'ticket_id': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TicketOrderRequest
+     */
+    'rsvp_count': number;
 }
 /**
  * 

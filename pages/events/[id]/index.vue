@@ -4,14 +4,14 @@
         <div class="m-2 rounded-xl  relative">
             <div class=" bg-white border-2 absolute top-2 left-2 rounded-xl p-2">
                 <!--if physical-->
-                <div class="flex" v-if="data?.location !== 'N/A'">
+                <div class="flex" v-if="event?.location !== 'N/A'">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <h1>{{ data?.location }}</h1>
+                    <h1>{{ event?.location }}</h1>
                 </div>
                 <!--/ If physical-->
                 <!--if virtual-->
@@ -26,11 +26,11 @@
                 <!--/ If virtual-->
             </div>
             <div class="border-2 rounded-xl">
-                <img class="rounded-xl w-full" :src="data?.image || '/hero.svg'" />
+                <img class="rounded-xl w-full" :src="event?.image || '/hero.svg'" />
             </div>
             <div class="absolute w-full bottom-0 px-24 sm:px-64 text-center">
                 <div class="bg-primary border-2 text-white line-clamp-1 rounded-xl p-1 -mb-5">
-                    <h1>{{ new Date(data?.startDate).toDateString() }}</h1>
+                    <h1>{{ new Date(event?.startDate).toDateString() }}</h1>
                 </div>
             </div>
         </div>
@@ -38,8 +38,8 @@
 
         <!--Event info-->
         <div class="mx-2 my-5">
-            <h1 class=" text-2xl font-semibold line-clamp-1">{{ data?.about }}</h1>
-            <h1 class=" text-lg">By: {{ data?.organiser?.name ?? 'Events254' }}</h1>
+            <h1 class=" text-2xl font-semibold line-clamp-1">{{ event?.about }}</h1>
+            <h1 class=" text-lg">By: {{ event?.organiser?.name ?? 'Events254' }}</h1>
         </div>
         <!--/ Event info-->
 
@@ -47,7 +47,7 @@
         <div class="mx-2 my-5">
             <h1 class="text-lg font-semibold">Attendees</h1>
             <div class="flex flex-wrap">
-                <div v-for="(attendee, index) in data?.attendees" :key="index"
+                <div v-for="(attendee, index) in event?.attendees" :key="index"
                     class="bg-blue-400 h-10 w-10 flex justify-center items-center rounded-full border-2  -ml-5 first:ml-0 text-center">
                     <div>
                         <h1 class=" font-bold">{{ getInnitials(attendee.name) }}</h1>
@@ -60,14 +60,14 @@
         <!--Event About-->
         <div class="mx-2 my-5">
             <h1 class=" text-lg font-semibold line-clamp-1">About</h1>
-            <div class="prose prose-a:text-primary prose-li:list-disc px-3" v-html="data?.description"></div>
+            <div class="prose prose-a:text-primary prose-li:list-disc px-3" v-html="event?.description"></div>
         </div>
 
         <div class=" mb-20"></div>
 
         <!--Admin Button-->
-        <div v-if="data?.can_edit" class=" fixed left-0 bottom-1 w-screen px-1 sm:px-20">
-            <nuxt-link :to="`/events/${data.id}/manage`">
+        <div v-if="event?.can_edit" class=" fixed left-0 bottom-1 w-screen px-1 sm:px-20">
+            <nuxt-link :to="`/events/${event.id}/manage`">
                 <button class="rounded-xl text-white bg-primary py-3 w-full flex gap-1 justify-center content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
@@ -105,7 +105,7 @@
             <h1 class="font-bold text-lg">Choose a ticket</h1>
             <div @click="selectedTicket = t.id" :class="{ 'border-l-8 border-l-primary mx-2': selectedTicket == t.id }"
                 class="transition-all duration-500 border border-primary rounded-lg p-2"
-                v-for="(t, i) in data?.tickets">
+                v-for="(t, i) in event?.tickets">
                 <div>
                     <h1 class="font-semibold">{{ t.type }}</h1>
                     <h1 class=" font-mono">{{ formatCurrency(t?.price) }}</h1>
@@ -129,7 +129,7 @@ const eventId = ref(route.params.id)
 const selectedTicket: Ref<number> = ref(null)
 const { $events254Api } = useNuxtApp()
 const showTicketDialog: Ref<boolean> = ref(false)
-const { data, pending, refresh, error } = await useAsyncData('event', async () => {
+const { data: event, pending, refresh, error } = await useAsyncData('event', async () => {
     const res = await $events254Api.getEventById(+eventId.value)
     return res.data
 }, { initialCache: false })
@@ -139,7 +139,7 @@ definePageMeta({
     layout: 'event',
 })
 useHead({
-    title: data.value?.about
+    title: event.value?.about
 })
 
 function getInnitials(name: string) {
