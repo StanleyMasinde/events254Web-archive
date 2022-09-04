@@ -560,16 +560,53 @@ export interface RequestPassword {
 export interface SearchResults {
     /**
      * 
-     * @type {Array<Event>}
+     * @type {Array<SearchResultsEventsInner>}
      * @memberof SearchResults
      */
-    'events': Array<Event>;
+    'events': Array<SearchResultsEventsInner>;
     /**
      * 
      * @type {Array<User>}
      * @memberof SearchResults
      */
-    'people': Array<User>;
+    'users': Array<User>;
+}
+/**
+ * 
+ * @export
+ * @interface SearchResultsEventsInner
+ */
+export interface SearchResultsEventsInner {
+    /**
+     * The unique event id
+     * @type {number}
+     * @memberof SearchResultsEventsInner
+     */
+    'id': number;
+    /**
+     * The title of the event
+     * @type {string}
+     * @memberof SearchResultsEventsInner
+     */
+    'about': string;
+    /**
+     * The event poster url
+     * @type {string}
+     * @memberof SearchResultsEventsInner
+     */
+    'image'?: string;
+    /**
+     * The event location
+     * @type {string}
+     * @memberof SearchResultsEventsInner
+     */
+    'location'?: string;
+    /**
+     * Then event start date
+     * @type {string}
+     * @memberof SearchResultsEventsInner
+     */
+    'startDate'?: string;
 }
 /**
  * 
@@ -671,6 +708,7 @@ export interface UpdatePasswordRequest {
  * @interface User
  */
 export interface User {
+    'id': number
     /**
      * The name of the user
      * @type {string}
