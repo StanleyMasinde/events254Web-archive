@@ -195,7 +195,7 @@ const buyTicket = async () => {
         })
         router.push(`/tickets/${data.ticketId}`)
     } catch (error) {
-        throw new Error(error)
+        showError(error)
     }
 }
 </script>

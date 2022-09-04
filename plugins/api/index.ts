@@ -34,7 +34,10 @@ export default defineNuxtPlugin((nuxtApp) => {
             this.basePath = apiUrl
             this.axios.defaults.headers.common['x-api-key'] = apiKey,
                 this.axios.defaults.headers.common['x-requested-with'] = 'mobile'
-            this.axios.defaults.headers.common['Authorization'] = authToken
+
+            if (authToken) {
+                this.axios.defaults.headers.common['Authorization'] = authToken
+            }
         }
     }
 
