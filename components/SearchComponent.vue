@@ -111,7 +111,7 @@ const searchQuery: Ref<string> = ref()
 const { $events254Api } = useNuxtApp()
 const search = async (query: string): Promise<void> => {
     try {
-        if(!q || q.length < 3) {
+        if(!query || query.length < 3) {
           return
         }
         isSearching.value = true
