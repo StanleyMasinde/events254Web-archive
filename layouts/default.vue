@@ -2,21 +2,23 @@
     <main>
         <nav class="bg-white static py-3 sm:py-5 px-1 sm:px-16">
             <div class="flex flex-row-reverse justify-between px-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-9" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
                 <div class="sm:flex">
                     <button @click="toggleMenu" class="block sm:hidden">
-                        <svg v-if="layout.mobileMenuToggle" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h8m-8 6h16" />
-                        </svg>
+                        <transition enter-active-class="">
+                            <svg v-if="layout.mobileMenuToggle" xmlns="http://www.w3.org/2000/svg" class="h-9"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-9" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h8m-8 6h16" />
+                            </svg>
+                        </transition>
                     </button>
 
                     <ul class="hidden sm:flex">
@@ -47,36 +49,36 @@
         <!-- Mobile menu -->
         <div @click="toggleMenu" :class="{
             'hidden': !layout.mobileMenuToggle,
-            'relative': layout.mobileMenuToggle
-        }" class="shadow z-10 sm:hidden">
+            'fixed': layout.mobileMenuToggle
+        }" class="shadow z-10 sm:hidden inset-x-0 bg-white px-2 rounded-b-lg">
             <ul class="pb-2 rounded-md">
                 <li class="rounded px-1 py-1">
-                    <nuxt-link class=" font-semibold" to="/">
+                    <nuxt-link class=" font-semibold text-lg" to="/">
                         Home
                     </nuxt-link>
                 </li>
                 <hr>
                 <li class="rounded px-1 py-1">
-                    <nuxt-link class=" font-semibold" to="/events/create">
+                    <nuxt-link class=" font-semibold text-lg" to="/events/create">
                         Create Event
                     </nuxt-link>
                 </li>
                 <hr>
                 <li class="rounded px-1 py-1">
-                    <nuxt-link class=" font-semibold" to="/explore">
+                    <nuxt-link class=" font-semibold text-lg" to="/explore">
                         Explore
                     </nuxt-link>
                 </li>
                 <hr>
                 <div v-if="!user.isAuthenticated">
                     <li class="px-1 py-1 mt-1 flex justify-between">
-                        <nuxt-link class="font-semibold" to="/login">
+                        <nuxt-link class="font-semibold text-lg" to="/login">
                             Login
                         </nuxt-link>
                     </li>
                     <hr>
                     <li class="rounded-md px-1 py-1 mt-1">
-                        <nuxt-link class="font-semibold" to="/register">
+                        <nuxt-link class="font-semibold text-lg" to="/register">
                             Register
                         </nuxt-link>
                     </li>
@@ -92,7 +94,7 @@
                             </svg>
                         </div>
                         <div>
-                            <nuxt-link class=" font-semibold" to="/profile">
+                            <nuxt-link class=" font-semibold text-lg" to="/profile">
                                 {{ user.name }}
                             </nuxt-link>
                         </div>
@@ -104,11 +106,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        <p class=" font-semibold">
+                        <p class=" font-semibold text-lg">
                             Logout
                         </p>
                     </li>
-                    <hr>
                 </div>
             </ul>
         </div>
@@ -141,7 +142,9 @@
                         <span v-show="isExactActive">Explore</span>
                     </button>
                 </nuxt-link>
-                <nuxt-link class="absolute -top-14 right-1 bg-primary text-white shadow-md rounded-full aspect-square flex" to="/events/create" v-slot="{ isExactActive }">
+                <nuxt-link
+                    class="absolute -top-14 right-1 bg-primary text-white shadow-md rounded-full aspect-square flex"
+                    to="/events/create" v-slot="{ isExactActive }">
                     <button :class="{ 'bg-primary text-white rounded-full': isExactActive }"
                         class="transition-all duration-500 self-center flex gap-1 px-2 py-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-full" fill="none" viewBox="0 0 24 24"
@@ -152,7 +155,7 @@
                         <span v-show="isExactActive">Create</span>
                     </button>
                 </nuxt-link>
-                
+
                 <nuxt-link class="self-center" v-slot="{ isExactActive }" to="/tickets">
                     <button :class="{ 'bg-primary text-white rounded-full': isExactActive }"
                         class="transition-all duration-500 flex gap-1 px-3 py-2">
