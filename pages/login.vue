@@ -166,9 +166,9 @@ const attemptLogin = async () => {
     cookie.value = `Bearer ${user.token}`
     
     if ($route.query.next) {
-      $router.push($route.query.next.toString());
+      location.href = $route.query.next.toString();
     } else {
-        $router.push('/')
+        location.href = '/'
     }
   } catch (error) {
     errorMessage.value = error;
