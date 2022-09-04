@@ -36,7 +36,7 @@ export const useAuth = () => {
 export const useLogout = () => {
     return () => {
         if (process.client) {
-            localStorage.removeItem('auth.token')
+            useCookie('Authorization').value = null
             localStorage.removeItem('auth.name')
             localStorage.removeItem('auth.email')
             localStorage.removeItem('auth.username')
