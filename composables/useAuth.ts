@@ -16,7 +16,7 @@ export const useAuth = () => {
                 name: localStorage.getItem('auth.name'),
                 email: localStorage.getItem('auth.email'),
                 username: localStorage.getItem('auth.username'),
-                token: localStorage.getItem('auth.token'),
+                token: useCookie('Authorization').value || null,
                 bio: localStorage.getItem('auth.bio')
             }
 

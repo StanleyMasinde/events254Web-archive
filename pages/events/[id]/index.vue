@@ -134,9 +134,18 @@
                 <div></div>
             </div>
 
-            <button @click.prevent="buyTicket" class="bg-primary rounded-lg text-white py-2">Confirm choice</button>
+            <button v-if="useAuth().value.token" @click.prevent="buyTicket"
+                class="bg-primary rounded-lg text-white py-2">Confirm choice</button>
+
+            <button class="bg-primary rounded-lg text-white py-2" v-else>
+                <router-link :to="`/login/?next=/events/${event.id}`">
+                    Login/Register to buy
+                </router-link>
+            </button>
+
             <button @click="hidedialogForBuyingTicket"
-                class="border border-green-800 text-green-800 rounded-lg py-2">Cancel</button>
+                class="border border-green-800 text-green-800 rounded-lg py-2">Cancel
+            </button>
         </div>
         <!--/Dialog for ticket creation-->
     </section>
