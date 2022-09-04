@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div v-if="tickets.length > 0" class="flex gap-2 flex-col">
+        <div v-if="pending">
+            <h1>Loading</h1>
+        </div>
+        <div v-else class="flex gap-2 flex-col">
             <router-link :to="`/tickets/${ticket.ticketId}`" v-for="(ticket, index) in tickets">
                 <div class=" border rounded-2xl px-2 py-3 mx-1">
                     <h1 class="font-semibold text-xl truncate">{{ ticket.eventName }}</h1>
