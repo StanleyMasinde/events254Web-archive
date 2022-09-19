@@ -20,7 +20,7 @@
     "moment-timezone": "^0.5.37",
     "vee-validate": "^4.5.11"
   },
-  "name": "events-254-client",
+  "name": "events254",
   "description": "Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.",
   "version": "2.0.0-rc.1",
   "main": "tailwind.config.js",
@@ -33,5 +33,8 @@
   "bugs": {
     "url": "https://github.com/opensource254/events254Web/issues"
   },
-  "homepage": "https://github.com/opensource254/events254Web#readme"
+  "homepage": "https://github.com/opensource254/events254Web#readme",
+  "keywords": [
+    "Events254"
+  ]
 }
