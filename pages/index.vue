@@ -1,396 +1,80 @@
 <template>
   <div>
-    <v-app-bar rounded="0" flat app hide-on-scroll>
-      <v-toolbar-items>
-        <nuxt-link to="/">
-          <v-img height="70" width="70" src="/icon.png" />
-        </nuxt-link>
-      </v-toolbar-items>
-      <v-spacer />
-      <v-toolbar-items>
-        <client-only>
-          <v-menu
-            v-if="$auth.loggedIn"
-            bottom
-            nudge-top
-            min-width="200px"
-            rounded
-            offset-y
-          >
-            <template #activator="{ on }">
-              <v-btn
-                data-profile-menu
-                icon
-                x-large
-                v-on="on"
-              >
-                <v-avatar
-                  color="brown"
-                  size="48"
-                >
-                  <span class="white--text headline">{{ $store.getters.initials }}</span>
-                </v-avatar>
-              </v-btn>
-            </template>
-            <v-card>
-              <v-list-item-content class="justify-center">
-                <div class="mx-auto text-center">
-                  <v-avatar
-                    color="brown"
-                  >
-                    <span class="white--text headline">{{ $store.getters.initials }}</span>
-                  </v-avatar>
-                  <h3>{{ $auth.user.name }}</h3>
-                  <p class="caption mt-1">
-                    {{ $auth.user.email }}
-                  </p>
-                  <v-divider class="my-3" />
-                  <v-btn
-                    to="/"
-                    depressed
-                    rounded
-                    text
-                  >
-                    Home
-                  </v-btn>
-                  <v-divider class="my-3" />
-                  <v-btn
-                    to="/home"
-                    depressed
-                    rounded
-                    text
-                  >
-                    My account
-                  </v-btn>
-                  <v-divider class="my-3" />
-                  <v-btn
-                    data-start-your-group
-                    to="/groups/create"
-                    depressed
-                    rounded
-                    text
-                  >
-                    Start your group
-                  </v-btn>
-                  <v-divider class="my-3" />
+    <!-- header/Hero -->
+    <section class="bg-slate-500 h-64 mb-7 relative border-b-2">
+      <img src="/hero.svg" alt="Hero" class="absolute w-full h-full object-top object-cover" />
+      <div class="absolute w-full bottom-0 px-4 sm:px-16 -mb-6">
+        <search-component />
+      </div>
+    </section>
+    <!-- Header/hero -->
 
-                  <v-btn
-                    to="/events/create"
-                    depressed
-                    rounded
-                    text
-                  >
-                    Create event
-                  </v-btn>
-                  <v-divider class="my-3" />
-                  <v-btn
-                    color="error"
-                    depressed
-                    rounded
-                    text
-                    @click="$auth.logout()"
-                  >
-                    Logout
-                  </v-btn>
-                </div>
-              </v-list-item-content>
-            </v-card>
-          </v-menu>
-          <template v-else>
-            <v-btn text link to="/login">
-              Login
-            </v-btn>
-          </template>
-        </client-only>
-      </v-toolbar-items>
-    </v-app-bar>
-    <v-container fluid>
-      <v-row justify="center">
-        <v-col cols="12" sm="6" md="4">
-          <v-img
-            contain
-            src="https://res.cloudinary.com/streetcoder/image/upload/v1626949280/events254/undraw_events_2p66_sx7tl4.svg"
-          />
-        </v-col>
 
-        <v-col cols="12" sm="6" md="4" class="pt-5">
-          <h3 class="display-1">
-            Events254
-          </h3>
-          <p class="body-1">
-            Find activities, meetups, and more in your city. Sell your tickets, or
-            buy them for free. Find a local event, or create a new one. Find
-            people, or create a new event. The possibilities are endless!
-          </p>
-        </v-col>
-      </v-row>
+    <!--Categories-->
+    <!--/Categories---->
 
-      <v-row justify="center">
-        <v-col cols="12" md="10">
-          <v-row cols="12">
-            <v-col>
-              <h3>Browse by category</h3>
-            </v-col>
-            <v-col class="text-right">
-              <v-btn text rounded color="primary" to="/categories">
-                See more
-              </v-btn>
-            </v-col>
-          </v-row>
+    <!-- Events -->
+    <section class="mt-16 sm:px-16">
+      <!-- Event types -->
+      <div v-for="(s, i) in data" :key="i" class="mb-5">
+        <div v-if="s.data.length > 0" class="flex justify-between px-2">
+          <h1 class="font-bold text-xl">{{ s.name }}</h1>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </div>
 
-          <v-row>
-            <v-col
-              v-for="(e, i) in eventCategories"
-              :key="i"
-              sm="6"
-              md="4"
-              cols="6"
-            >
-              <v-card flat>
-                <v-img
-                  contain
-                  gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-                  height="100"
-                  :src="e.image"
-                >
-                  <v-row
-                    no-gutters
-                    justify="center"
-                    align="center"
-                    style="height: 100%"
-                  >
-                    <v-col class="text-center white--text">
-                      <h1 class="title">
-                        {{ e.name }}
-                      </h1>
-                    </v-col>
-                  </v-row>
-                </v-img>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-
-      <client-only>
-        <FetchLoading v-if="$fetchState.pending" landing-page />
-        <FetchError v-else-if="$fetchState.error" />
-
-        <v-row v-else justify="center">
-          <v-col cols="12" md="10">
-            <div v-if="eventsObject.events.length === 0" class="text-center">
-              <h3>Nothing here</h3>
+        <div v-if="s.data.length > 0"
+          class="flex overflow-y-hidden ml-2 first:ml-0 sm:ml-0 rounded-lg snap-mandatory snap-x">
+          <div class="mr-2 last:mr-0 rounded-lg snap-center" v-for="(e, i) in s.data" :key="i">
+            <div class="min-w-[79vw] md:min-w-[35vw] rounded-lg border-2 border-gray-100">
+              <nuxt-link :to="`/${e.linkPrefix}/${e.id}`">
+                <img class="h-44 w-full rounded-lg" :src="e.image || '/hero.svg'" alt="Event" />
+              </nuxt-link>
             </div>
-            <v-row v-else>
-              <v-col cols="12">
-                <h3>Events near Nairobi</h3>
-              </v-col>
 
-              <v-col
-                v-for="(e, i) in eventsObject.events"
-                :key="i"
-                cols="12"
-                sm="6"
-                md="4"
-              >
-                <v-card
-                  height="300"
-                  outlined
-                  :to="`/events/${e.id}`"
-                  class="ma-2 no-overflow"
-                  rounded
-                >
-                  <v-img height="200" class="pa-3" :src="e.image">
-                    <v-row>
-                      <v-col>
-                        <div class="text-left">
-                          <h3 class="error--text custom-shadow display-1">
-                            {{ new Date(e.startDate).getDate() }}
-                          </h3>
-                          <span class="error--text custom-shadow">{{
-                            months[$moment(e.startDate).month()]
-                          }}</span>
-                        </div>
-                      </v-col>
-                      <v-col
-                        v-if="e.isFree"
-                        class="teal--text title text-right custom-shadow"
-                      >
-                        <h3>Free</h3>
-                      </v-col>
-                      <v-col
-                        v-else
-                        class="text-right title white--text custom-shadow"
-                      >
-                        <h3>{{ formatCurrency(e.lowestPrice) }}</h3>
-                      </v-col>
-                    </v-row>
-                  </v-img>
-                  <v-list-item>
-                    <v-list-item-content class="body-1">
-                      <v-list-item-title :title="e.about">
-                        {{ e.about }}
-                      </v-list-item-title>
-                      <v-list-item-subtitle class="red--text">
-                        <v-icon>mdi-calendar-outline</v-icon>
-                        {{
-                          $moment(e.startDate).format("MMMM Do YYYY [at] h:mm a")
-                        }}
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle>
-                        <v-icon>mdi-map-marker-outline</v-icon>
-                        {{ e.isOnline ? "Online" : e.location }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <!-- <v-card-text class="body-2">
-                  <p class="red--text">
-                    When: {{ $moment(e.startDate).format("MMMM Do YYYY [at] h:mm a") }} <br>
-                    <span :title="e.about" class="black--text">
-                      About: {{ e.about }}
-                    </span> <br>
-                    <span>
-                      <v-icon>mdi-map-marker</v-icon>
-                    </span>
-                  </p>
-                </v-card-text> -->
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </client-only>
+            <div class="flex justify-end -mt-5 mr-2">
+              <div>
+                <button class="bg-primary text-white rounded-full p-2 border-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                </button>
+              </div>
 
-      <v-row justify="center">
-        <v-col cols="12" md="4">
-          <v-btn
-            v-if="eventsObject.nextPageUrl != null"
-            large
-            color="primary"
-            block
-            rounded
-            depressed
-            @click="loadMore"
-          >
-            Load more
-          </v-btn>
-        </v-col>
-      </v-row>
+              <div>
+                <button class="bg-primary text-white rounded-full p-2 border-2 border-gray-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
 
-      <v-col cols="12">
-        <v-btn
-          v-if="!$vuetify.breakpoint.smAndDown"
-          to="/events/create"
-          color="accent"
-          fab
-          fixed
-          right
-        >
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
-      </v-col>
-    </v-container>
+            <div>
+              <h1 class=" font-bold">{{ moment(e.startDate).format('dddd Do MMMM') }}</h1>
+              <h1 class=" text-xl font-bold">{{ e.name }}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Event Types -->
+    </section>
+    <!-- Events -->
   </div>
 </template>
-<script>
-export default {
-  data () {
-    return {
-      searchQuery: null,
-      noMoreEvents: false,
-      eventCategories: [
-        {
-          id: 1,
-          name: 'General',
-          image: 'https://res.cloudinary.com/streetcoder/image/upload/v1628589266/events254/undraw_special_event_4aj8_mfr8rp.svg'
-        },
-        {
-          id: 2,
-          name: 'Music',
-          image: 'https://res.cloudinary.com/streetcoder/image/upload/v1628589266/events254/undraw_Music_re_a2jk_ixnbvy.svg'
-        },
-        {
-          id: 3,
-          name: 'Dance',
-          image: 'https://res.cloudinary.com/streetcoder/image/upload/v1628589266/events254/undraw_workout_gcgu_meujil.svg'
-        },
-        {
-          id: 4,
-          name: 'Art',
-          image: 'https://res.cloudinary.com/streetcoder/image/upload/v1628589266/events254/undraw_art_museum_8or4_pd70rr.svg'
-        },
-        {
-          id: 5,
-          name: 'Online',
-          image: 'https://res.cloudinary.com/streetcoder/image/upload/v1628589831/events254/undraw_Online_page_re_lhgx_l5xr01.svg'
-        },
-        {
-          id: 6,
-          name: 'Literature',
-          image: 'https://res.cloudinary.com/streetcoder/image/upload/v1628589266/events254/undraw_Books_l33t_sdmi6k.svg'
-        }
-      ],
-      months: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ],
-      filter: {
-        category: []
-      },
-      eventsObject: {}
-    }
-  },
-  async fetch () {
-    if (process.client) {
-      this.$http.setBaseURL(process.env.API_URL)
-    }
-    try {
-      const data = await this.$http.get('/events?paginate=6')
-      this.eventsObject = await data.json()
-    } catch (error) {
-      this.$sentry.captureException(error)
-      throw new Error(error)
-    }
-  },
-  auth: false,
-  methods: {
-    formatCurrency (value = 0) {
-      return Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'kes'
-      }).format(value)
-    },
-    search () {
-      this.$router.push(`/search?q=${this.searchQuery}`)
-    },
-    async loadMore () {
-      const { data } = await this.$axios.get(this.eventsObject.nextPageUrl)
-      if (data.events.length === 0) {
-        this.noMoreEvents = true
-        return
-      }
-      this.eventsObject.nextPageUrl = data.nextPageUrl
-      data.events.forEach((ev) => {
-        this.eventsObject.events.push(ev)
-      })
-    }
-  }
-}
-</script>
 
-<style lang="scss" scoped>
-.one-line {
-  white-space: nowrap;
-  overflow: hidden;
-}
-</style>
+<script lang="ts" setup>
+import moment from 'moment-timezone'
+
+const { $events254Api } = useNuxtApp()
+const { data, pending, refresh, error } = await useAsyncData('feed', async () => {
+  const res = await $events254Api.newsfeed()
+  return res.data
+}, { initialCache: false })
+</script>

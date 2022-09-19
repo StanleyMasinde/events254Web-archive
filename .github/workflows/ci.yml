@@ -1,0 +1,85 @@
+name: Test and deploy
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [16]
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+
+      - name: Cache node_modules 📦
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci --prefer-offline --no-audit
+  staging:
+    needs: ci
+    runs-on: "ubuntu-latest"
+    environment:
+      name: staging
+      url: https://beta.events254.co.ke
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Add maps API key
+        run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> .env
+
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Build 🏗
+        run: npm run build
+
+      - name: Deploy 🚀
+        run: echo "Deploy script here"
+  production:
+    needs: ci
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://events254.co.ke
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Add maps API key
+        run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> .env
+
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Build static 🏗
+        run: npm run generate
+
+      - name: Deploy 🚀
+        run: echo "deploy logic here"

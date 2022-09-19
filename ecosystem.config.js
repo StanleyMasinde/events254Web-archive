@@ -1,11 +1,11 @@
 module.exports = {
   apps: [{
-    name: 'Events254 client',
+    name: 'events254.co.ke',
     script: 'npm',
-    args: '-- run start',
+    args: '-- run preview',
     watch: false,
     exec_mode: 'cluster',
-    instances: 1
+    instances: 1,
   }
   ]
 }

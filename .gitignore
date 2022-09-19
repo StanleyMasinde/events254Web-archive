@@ -1,9 +1,10 @@
 node_modules
+*.log*
 .nuxt
+.nitro
+.cache
+.output
 .env
-yarn-error.log
-error.log
-dist
 .DS_Store
-sw.js
-.eslintcache
+static
+dist
