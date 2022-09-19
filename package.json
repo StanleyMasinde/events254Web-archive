@@ -1,74 +1,35 @@
 {
-  "name": "events254",
-  "version": "1.1.6",
-  "description": "Find activities, meetups, and more in your city. Sell your tickets, or buy them for free. Find a local event, or create a new one. Find people, or create a new event. The possibilities are endless!",
-  "main": "index.js",
-  "author": {
-    "name": "Stanley Masinde",
-    "email": "stanmasinde@gmail.com"
-  },
-  "contributors": [
-    {
-      "name": "Stanley Masinde",
-      "email": "stanmasinde@gmail.com"
-    }
-  ],
-  "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "start": "nuxt start",
     "build": "nuxt build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nuxt",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "generate": "nuxt generate"
-  },
-  "keywords": [
-    "Events254",
-    "eventsKe"
-  ],
-  "dependencies": {
-    "@babel/eslint-parser": "^7.16.3",
-    "@nuxtjs/auth-next": "^5.0.0-1624817847.21691f1",
-    "@nuxtjs/axios": "^5.13.6",
-    "@nuxtjs/dotenv": "^1.4.1",
-    "@nuxtjs/eslint-config": "^10.0.0",
-    "@nuxtjs/eslint-module": "^3.1.0",
-    "@nuxtjs/pwa": "^3.3.5",
-    "@nuxtjs/sentry": "^6.0.0",
-    "@nuxtjs/sitemap": "^2.4.0",
-    "@nuxtjs/stylelint-module": "^4.1.0",
-    "@nuxtjs/vuetify": "^1.12.1",
-    "@tiptap/core": "^2.0.0-beta.182",
-    "@tiptap/extension-blockquote": "^2.0.0-beta.29",
-    "@tiptap/extension-bold": "^2.0.0-beta.28",
-    "@tiptap/extension-bullet-list": "^2.0.0-beta.29",
-    "@tiptap/extension-document": "^2.0.0-beta.17",
-    "@tiptap/extension-heading": "^2.0.0-beta.18",
-    "@tiptap/extension-italic": "^2.0.0-beta.28",
-    "@tiptap/extension-link": "^2.0.0-beta.23",
-    "@tiptap/extension-list-item": "^2.0.0-beta.23",
-    "@tiptap/extension-ordered-list": "^2.0.0-beta.19",
-    "@tiptap/extension-paragraph": "^2.0.0-beta.17",
-    "@tiptap/extension-strike": "^2.0.0-beta.21",
-    "@tiptap/extension-text": "^2.0.0-beta.13",
-    "@tiptap/vue-2": "^2.0.0-beta.68",
-    "eslint": "^8.19.0",
-    "moment-timezone": "^0.5.35",
-    "nuxt": "^2.15.3",
-    "sass-loader": "^10.0",
-    "vee-validate": "^3.4.13"
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@nuxtjs/google-analytics": "^2.4.0",
-    "babel-eslint": "^10.1.0",
-    "eslint-plugin-nuxt": "^3.2.0",
-    "stylelint": "^14.9.1"
+    "@nuxtjs/tailwindcss": "^5.3.2",
+    "@tailwindcss/forms": "^0.5.0",
+    "@tailwindcss/line-clamp": "^0.4.0",
+    "@tailwindcss/typography": "^0.5.6",
+    "nuxt": "^3.0.0-rc.8"
   },
+  "dependencies": {
+    "@tiptap/starter-kit": "^2.0.0-beta.191",
+    "@tiptap/vue-3": "^2.0.0-beta.96",
+    "axios": "^0.27.2",
+    "moment-timezone": "^0.5.37",
+    "vee-validate": "^4.5.11"
+  },
+  "name": "events-254-client",
+  "description": "Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.",
+  "version": "2.0.0-rc.1",
+  "main": "tailwind.config.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/opensource254/events254Web.git"
+    "url": "git+https://github.com/opensource254/events254Web.git"
   },
+  "author": "Stanley Masinde",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/opensource254/events254Web/issues"
   },

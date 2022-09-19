@@ -1,0 +1,56 @@
+{
+    "name": "Events254",
+    "short_name": "Events254",
+    "start_url": "/",
+    "display": "standalone",
+    "description": "We help users find events and venues in their area.",
+    "lang": "en",
+    "dir": "rtl",
+    "theme_color": "#FF6601",
+    "background_color": "#ffffff",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "/icons/icon_512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/icons/icon_192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/screenshots/shot1.png",
+            "sizes": "1170x2532",
+            "type": "image/png",
+            "description": "A screenshot of the home page"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Create an Event",
+            "url": "/events/create",
+            "description": "Create an event and share it with your friends"
+        },
+        {
+            "name": "Search Events",
+            "url": "/search",
+            "description": "Search for events in your area"
+        },
+        {
+            "name": "My Events",
+            "url": "/events/my",
+            "description": "View your events"
+        },
+        {
+            "name": "My Profile",
+            "url": "/profile",
+            "description": "View your profile"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .router-link-exact-active {
+       @apply text-primary;
+    }
+    .custom--nav-tab {
+        @apply transition-all duration-500 py-2
+    }
+    .router-link-exact-active > .custom--nav-tab {
+        @apply font-extrabold bg-primary text-white rounded-full;
+    }
+}
