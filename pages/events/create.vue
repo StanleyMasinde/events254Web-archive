@@ -45,14 +45,14 @@
           </div>
 
           <!--Button to go to the next step-->
-            <button @click="currentStep = 2" v-show="eventTypeMeta?.attendanceMode !== ''"
-              class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
-              Next step
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </button>
+          <button @click="currentStep = 2" v-show="eventTypeMeta?.attendanceMode !== ''"
+            class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
+            Next step
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </button>
           <!--/Button to go to the next step-->
         </div>
       </div>
@@ -548,7 +548,9 @@ const createEvent = async () => {
       event.startDate,
       event.category_id,
       newEventData.get("image"),
+      event.address.name,
       event.address.address,
+      "0,0",
       event.online_link,
       event.endTime,
       event.endDate
