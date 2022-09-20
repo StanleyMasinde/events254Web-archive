@@ -29,10 +29,10 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 export interface CreateEventResponse {
     /**
      * 
-     * @type {any}
+     * @type {File}
      * @memberof CreateEventResponse
      */
-    'image': any;
+    'image': File;
     /**
      * 
      * @type {string}
@@ -240,11 +240,18 @@ export interface Event {
      */
     'can_edit': boolean;
     /**
-     * The physical Location of the event
+     * The physical Location of the event. Use address
      * @type {string}
      * @memberof Event
+     * @deprecated
      */
     'location': string;
+    /**
+     * 
+     * @type {EventAddress}
+     * @memberof Event
+     */
+    'address'?: EventAddress;
     /**
      * The link to the event if the event is virtual
      * @type {string}
@@ -269,6 +276,25 @@ export interface Event {
      * @memberof Event
      */
     'updated_at': string;
+}
+/**
+ * The address of the event
+ * @export
+ * @interface EventAddress
+ */
+export interface EventAddress {
+    /**
+     * The name of the venue
+     * @type {string}
+     * @memberof EventAddress
+     */
+    'name': string;
+    /**
+     * The formatted address
+     * @type {string}
+     * @memberof EventAddress
+     */
+    'formatted_address': string;
 }
 /**
  * The ticket of the current user if they\'ve purchased one
@@ -708,7 +734,6 @@ export interface UpdatePasswordRequest {
  * @interface User
  */
 export interface User {
-    'id': number
     /**
      * The name of the user
      * @type {string}
@@ -865,15 +890,17 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} startTime The time the event is starting in 2hrs e.g 09:00, 23:00
          * @param {string} startDate The date of the event e.g 12/03/2021
          * @param {number} categoryId The category the event belogngs to
-         * @param {any} [image] The event poster image.
-         * @param {string} [location] The event address if the event is an in-person event
+         * @param {File} [image] The event poster image.
+         * @param {string} [locationName] The name of the location
+         * @param {string} [formattedAddress] The formatted address you get from google places api
+         * @param {string} [locationCoordinates] The coordinates separated by a comma
          * @param {string} [onlineLink] The online event link if the event is a virtual event
          * @param {string} [endTime] The time the event is ending ins 24hrs format e.g 23:00
          * @param {string} [endDate] The date the event is ending
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createEvent: async (about: string, description: string, startTime: string, startDate: string, categoryId: number, image?: any, location?: string, onlineLink?: string, endTime?: string, endDate?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createEvent: async (about: string, description: string, startTime: string, startDate: string, categoryId: number, image?: File, locationName?: string, formattedAddress?: string, locationCoordinates?: string, onlineLink?: string, endTime?: string, endDate?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'about' is not null or undefined
             assertParamExists('createEvent', 'about', about)
             // verify required parameter 'description' is not null or undefined
@@ -906,8 +933,16 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 localVarFormParams.append('image', image as any);
             }
 
-            if (location !== undefined) {
-                localVarFormParams.append('location', location as any);
+            if (locationName !== undefined) {
+                localVarFormParams.append('location_name', locationName as any);
+            }
+
+            if (formattedAddress !== undefined) {
+                localVarFormParams.append('formatted_address', formattedAddress as any);
+            }
+
+            if (locationCoordinates !== undefined) {
+                localVarFormParams.append('location_coordinates', locationCoordinates as any);
             }
 
             if (onlineLink !== undefined) {
@@ -1829,16 +1864,18 @@ export const DefaultApiFp = function (configuration?: Configuration) {
          * @param {string} startTime The time the event is starting in 2hrs e.g 09:00, 23:00
          * @param {string} startDate The date of the event e.g 12/03/2021
          * @param {number} categoryId The category the event belogngs to
-         * @param {any} [image] The event poster image.
-         * @param {string} [location] The event address if the event is an in-person event
+         * @param {File} [image] The event poster image.
+         * @param {string} [locationName] The name of the location
+         * @param {string} [formattedAddress] The formatted address you get from google places api
+         * @param {string} [locationCoordinates] The coordinates separated by a comma
          * @param {string} [onlineLink] The online event link if the event is a virtual event
          * @param {string} [endTime] The time the event is ending ins 24hrs format e.g 23:00
          * @param {string} [endDate] The date the event is ending
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createEvent(about: string, description: string, startTime: string, startDate: string, categoryId: number, image?: any, location?: string, onlineLink?: string, endTime?: string, endDate?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateEventResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createEvent(about, description, startTime, startDate, categoryId, image, location, onlineLink, endTime, endDate, options);
+        async createEvent(about: string, description: string, startTime: string, startDate: string, categoryId: number, image?: File, locationName?: string, formattedAddress?: string, locationCoordinates?: string, onlineLink?: string, endTime?: string, endDate?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateEventResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createEvent(about, description, startTime, startDate, categoryId, image, locationName, formattedAddress, locationCoordinates, onlineLink, endTime, endDate, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2099,16 +2136,18 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {string} startTime The time the event is starting in 2hrs e.g 09:00, 23:00
          * @param {string} startDate The date of the event e.g 12/03/2021
          * @param {number} categoryId The category the event belogngs to
-         * @param {any} [image] The event poster image.
-         * @param {string} [location] The event address if the event is an in-person event
+         * @param {File} [image] The event poster image.
+         * @param {string} [locationName] The name of the location
+         * @param {string} [formattedAddress] The formatted address you get from google places api
+         * @param {string} [locationCoordinates] The coordinates separated by a comma
          * @param {string} [onlineLink] The online event link if the event is a virtual event
          * @param {string} [endTime] The time the event is ending ins 24hrs format e.g 23:00
          * @param {string} [endDate] The date the event is ending
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createEvent(about: string, description: string, startTime: string, startDate: string, categoryId: number, image?: any, location?: string, onlineLink?: string, endTime?: string, endDate?: string, options?: any): AxiosPromise<CreateEventResponse> {
-            return localVarFp.createEvent(about, description, startTime, startDate, categoryId, image, location, onlineLink, endTime, endDate, options).then((request) => request(axios, basePath));
+        createEvent(about: string, description: string, startTime: string, startDate: string, categoryId: number, image?: File, locationName?: string, formattedAddress?: string, locationCoordinates?: string, onlineLink?: string, endTime?: string, endDate?: string, options?: any): AxiosPromise<CreateEventResponse> {
+            return localVarFp.createEvent(about, description, startTime, startDate, categoryId, image, locationName, formattedAddress, locationCoordinates, onlineLink, endTime, endDate, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2344,8 +2383,10 @@ export class DefaultApi extends BaseAPI {
      * @param {string} startTime The time the event is starting in 2hrs e.g 09:00, 23:00
      * @param {string} startDate The date of the event e.g 12/03/2021
      * @param {number} categoryId The category the event belogngs to
-     * @param {any} [image] The event poster image.
-     * @param {string} [location] The event address if the event is an in-person event
+     * @param {File} [image] The event poster image.
+     * @param {string} [locationName] The name of the location
+     * @param {string} [formattedAddress] The formatted address you get from google places api
+     * @param {string} [locationCoordinates] The coordinates separated by a comma
      * @param {string} [onlineLink] The online event link if the event is a virtual event
      * @param {string} [endTime] The time the event is ending ins 24hrs format e.g 23:00
      * @param {string} [endDate] The date the event is ending
@@ -2353,8 +2394,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public createEvent(about: string, description: string, startTime: string, startDate: string, categoryId: number, image?: any, location?: string, onlineLink?: string, endTime?: string, endDate?: string, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).createEvent(about, description, startTime, startDate, categoryId, image, location, onlineLink, endTime, endDate, options).then((request) => request(this.axios, this.basePath));
+    public createEvent(about: string, description: string, startTime: string, startDate: string, categoryId: number, image?: File, locationName?: string, formattedAddress?: string, locationCoordinates?: string, onlineLink?: string, endTime?: string, endDate?: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).createEvent(about, description, startTime, startDate, categoryId, image, locationName, formattedAddress, locationCoordinates, onlineLink, endTime, endDate, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
