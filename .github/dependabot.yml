@@ -4,7 +4,6 @@ updates:
   directory: '/'
   schedule:
     interval: monthly
-  target-branch: "feat/next"
   open-pull-requests-limit: 10
   reviewers:
     - stanleymasinde
