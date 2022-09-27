@@ -95,7 +95,7 @@
         <div v-else>
             <!--Ticket Button-->
             <div v-if="!event?.currentUserTicket" class=" fixed left-2 right-2 bottom-1 px-1 sm:px-20">
-                <button @click.prevent="showdialogForBuyingTicket"
+                <button v-if="event.tickets.length !== 0" @click.prevent="showdialogForBuyingTicket"
                     class="rounded-xl text-white bg-primary py-3 w-full flex gap-1 justify-center content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
