@@ -726,7 +726,7 @@ export interface UpdatePasswordRequest {
      * @type {string}
      * @memberof UpdatePasswordRequest
      */
-    'passoword': string;
+    'password': string;
 }
 /**
  * 
