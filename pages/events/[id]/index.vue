@@ -179,7 +179,31 @@ definePageMeta({
     layout: 'event',
 })
 useHead({
-    title: event.value?.about
+    title: event.value?.about,
+    meta: [
+        {
+            name: 'description',
+            content: `Checkout this Event by ${event.value?.organiser.name}. Starts on ${moment(event.value?.startDate).calendar()}`
+        },
+        // open graph
+        {
+            name: 'og:image',
+            content: event.value?.image
+        },
+        // Twitter
+        {
+            name: 'twitter:card',
+            content: 'summary_large_image'
+        },
+        {
+            name: 'twitter:title',
+            content: event.value?.about
+        },
+        {
+            name: 'twitter:site',
+            content: '@events254Ke'
+        }
+    ]
 })
 
 function getInnitials(name: string) {
