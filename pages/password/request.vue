@@ -95,17 +95,23 @@ const formIsInvalid = computed(() => {
 
 const errorMessage = ref('')
 const successMessage = ref('')
-const { $axios } = useNuxtApp()
+const { $events254Api } = useNuxtApp()
 const $router = useRouter()
 const requestPassword = async () => {
     try {
-        await $axios.post('/auth/password', {
-            email: email.value
-        })
+        await $events254Api.resetPassword({ email: email.value })
         successMessage.value = `An email has been sent to ${email.value} with instructions on how to reset your password.`
         document.getElementById('resetForm').reset()
     } catch (error) {
-        errorMessage.value = error.response
+        if (error.response) {
+            if(error.response.status == 500) {
+                showError(error.response.data)
+                return
+            }
+            errorMessage.value = error.response.data
+            return
+        }
+        showError(error)
     }
 }
 </script>

@@ -2,9 +2,9 @@
     <section class="px-3 sm:px-64">
         <div>
             <div class="mb-4 mt-2 text-center">
-                <h1 class="text-xl font-bold">Request a new password</h1>
+                <h1 class="text-xl font-bold">Update your password</h1>
                 <p class="mt-2 mb-7">
-                    Just enter your email address below and we'll send you a link to reset your password.
+                    Enter your new password below
                 </p>
             </div>
             <div v-if="errorMessage" class="text-red-500 border border-red-500  rounded-lg py-2 text-center">
@@ -43,7 +43,7 @@
     </section>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useForm, useField } from 'vee-validate';
 
@@ -64,8 +64,8 @@ onMounted(() => {
 
 const $route = useRoute()
 
-let email = $route.query.email
-const token = $route.query.token
+let email: string = $route.query.email.toString()
+const token: string = $route.query.token.toString()
 
 
 
@@ -91,42 +91,50 @@ useForm({
     validationSchema
 })
 
-const { value: password, errorMessage: passwordError, meta: passwordMeta } = useField('password')
+const { value: password, errorMessage: passwordError, meta: passwordMeta } = useField<string>('password')
 
 const formIsInvalid = computed(() => {
     return !passwordMeta.valid
 })
 
 const errorMessage = ref('')
-const { $axios } = useNuxtApp()
+const { $events254Api } = useNuxtApp()
 const $router = useRouter()
 const updatePassword = async () => {
     try {
-        await $axios.post('/auth/password/update', {
+        await $events254Api.updatePassword({
             email,
             token,
             password: password.value
         })
-        
-        const {data} = await $axios.post('/auth/login', {
-            email: email,
-            password: password.value
-        })
 
-        localStorage.setItem('auth', true)
-        localStorage.setItem('name', data.name)
-        localStorage.setItem('email', data.email)
-        localStorage.setItem('username', data.username)
+        const { data: { user } } = await $events254Api.loginUser({ email: email, password: password.value },
+            {
+                headers: {
+                    "x-requested-with": "mobile",
+                },
+            }
+        )
 
-        location.reload() // TODO: Auth logic
-        $router.push(localStorage.getItem('lastPath') || '/')
+        localStorage.setItem("auth.id", user.id.toString());
+        localStorage.setItem("auth.token", user.token);
+        localStorage.setItem("auth.name", user.name);
+        localStorage.setItem("auth.email", user.email);
+        localStorage.setItem("auth.username", user.username);
+        const cookie = useCookie('Authorization', { maxAge: 365 * 24 * 60 * 60 * 1000 })
+        cookie.value = `Bearer ${user.token}`
+
+        if ($route.query.next) {
+            location.href = $route.query.next.toString();
+        } else {
+            location.href = '/'
+        }
     } catch (error) {
-        console.log(error);
         if (error.response.status === 422) {
             errorMessage.value = error.response.data
             return
         }
-        errorMessage.value = error.response.data.error
+        showError(error)
     }
 }
 </script>
