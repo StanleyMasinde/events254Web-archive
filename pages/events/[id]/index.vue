@@ -157,18 +157,25 @@
             </button>
         </div>
         <!--/Dialog for ticket creation-->
+
+        <Script type="application/ld+json" :children="JSON.stringify(schema)">
+        </Script>
     </section>
 </template>
 
 <script lang="ts" setup>
 import { Ref } from 'vue';
 import moment from 'moment';
+
+
+
 const route = useRoute()
 const router = useRouter()
 const eventId = ref(route.params.id)
 const selectedTicket: Ref<number> = ref(null)
 const { $events254Api } = useNuxtApp()
 const showTicketDialog: Ref<boolean> = ref(false)
+const attendanceMode: Ref<string> = ref('OfflineEventAttendanceMode')
 const { data: event, pending, refresh, error } = await useAsyncData('event', async () => {
     const res = await $events254Api.getEventById(+eventId.value)
     return res.data
@@ -203,8 +210,24 @@ useHead({
             name: 'twitter:site',
             content: '@events254Ke'
         }
-    ]
+    ],
 })
+
+const schema = {
+	"@context": "http://schema.org/",
+	"@type": "Event",
+	"name": event.value?.about,
+	"eventAttendanceMode": `https://schema.org/${attendanceMode?.value}`,
+	"eventStatus": "https://schema.org/EventScheduled",
+	"startDate": event.value?.startDate,
+    "endDate": event.value?.endDate,
+	"location": [
+		{
+			"@type": "VirtualLocation",
+			"url": "https://events254.co.ke"
+		}
+	]
+}
 
 function getInnitials(name: string) {
     const names = name.split(' ')
