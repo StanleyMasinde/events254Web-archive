@@ -5,7 +5,6 @@
     "display": "standalone",
     "description": "We help users find events and venues in their area.",
     "lang": "en",
-    "dir": "rtl",
     "theme_color": "#FF6601",
     "background_color": "#ffffff",
     "orientation": "any",
