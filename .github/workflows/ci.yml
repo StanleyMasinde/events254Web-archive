@@ -59,7 +59,7 @@ jobs:
         run: npm run build
 
       - name: upload artifact
-      - uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3
         with:
           name: staging-build
           path: .output/
@@ -85,7 +85,7 @@ jobs:
         run: npm run generate
 
       - name: Upload artifact
-      - uses: actions/upload-artifact@v3
-      - with:
+        uses: actions/upload-artifact@v3
+        with:
          name: prod-build
          path: .output
