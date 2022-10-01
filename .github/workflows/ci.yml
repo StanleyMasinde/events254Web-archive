@@ -58,10 +58,8 @@ jobs:
       - name: Build 🏗
         run: npm run build
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: staging-build
-          path: .output/
+      - name: Deploy 🚀
+        run: echo "Deploy script here"
   production:
     needs: ci
     if: github.ref == 'refs/heads/main'
@@ -83,7 +81,5 @@ jobs:
       - name: Build static 🏗
         run: npm run generate
 
-      - uses: actions/upload-artifact@v3
-      - with:
-         name: prod-build
-         path: .output
+      - name: Deploy 🚀
+        run: echo "deploy logic here"
