@@ -58,6 +58,7 @@ jobs:
       - name: Build 🏗
         run: npm run build
 
+      - name: upload artifact
       - uses: actions/upload-artifact@v3
         with:
           name: staging-build
@@ -83,6 +84,7 @@ jobs:
       - name: Build static 🏗
         run: npm run generate
 
+      - name: Upload artifact
       - uses: actions/upload-artifact@v3
       - with:
          name: prod-build
