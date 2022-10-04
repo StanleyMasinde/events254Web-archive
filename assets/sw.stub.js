@@ -33,17 +33,18 @@ const deleteOldCaches = async () => {
 
 const handleResponse = async (event) => {
     try {
-        const { method, url } = event.request
-        if (method !== 'GET') return await fetch(event.request);
-        const responseFromCache = await caches.match(event.request);
-        if (responseFromCache) {
-            return responseFromCache;
-        }
-        const getFromServer = await fetch(event.request)
-        const cache = await caches.open(cacheName)
-        const clone = getFromServer.clone()
-        await cache.put(event.request, getFromServer)
-        return clone
+        // const { method, url } = event.request
+        // if (method !== 'GET') return await fetch(event.request);
+        // const responseFromCache = await caches.match(event.request);
+        // if (responseFromCache) {
+        //     return responseFromCache;
+        // }
+        // const getFromServer = await fetch(event.request)
+        // const cache = await caches.open(cacheName)
+        // const clone = getFromServer.clone()
+        // await cache.put(event.request, getFromServer)
+        // return clone
+        return await fetch(event.request)
     } catch (e) {
         console.log(e);
         return await caches.match(new Request('/fallback.html'));
