@@ -16,36 +16,24 @@
         <form method="POST" @submit.prevent="attemptLogin">
           <label for="username">
             <h1>Email, phone or username</h1>
-            <input
-              v-model="username"
-              class="w-full rounded-lg mb-2"
-              :class="{ 'border-red-400 ring-red-400 ring-1': userNameError }"
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Username, email or phone"
-            />
+            <input v-model="username" class="w-full rounded-lg mb-2"
+              :class="{ 'border-red-400 ring-red-400 ring-1': userNameError }" type="text" name="username" id="username"
+              placeholder="Username, email or phone" />
             <div class="-mt-2">
               <span class="text-sm text-red-500 italic">{{
-                userNameError
+              userNameError
               }}</span>
             </div>
           </label>
 
           <label for="password">
             <h1>Password</h1>
-            <input
-              v-model="password"
-              class="w-full rounded-lg mb-3"
-              :class="{ 'border-red-400 ring-red-400 ring-1': passwordError }"
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Password"
-            />
+            <input v-model="password" class="w-full rounded-lg mb-3"
+              :class="{ 'border-red-400 ring-red-400 ring-1': passwordError }" type="password" name="password"
+              id="password" placeholder="Password" />
             <div class="-mt-2">
               <span class="text-sm text-red-500 italic">{{
-                passwordError
+              passwordError
               }}</span>
             </div>
           </label>
@@ -56,10 +44,7 @@
             </nuxt-link>
           </div>
 
-          <button
-            :disabled="formIsInvalid"
-            type="submit"
-            class="
+          <button :disabled="formIsInvalid" type="submit" class="
               bg-primary
               rounded-lg
               w-full
@@ -68,10 +53,16 @@
               py-2
               px-4
               disabled:bg-white disabled:border disabled:text-gray-700
-            "
-          >
+            ">
             Sign in
           </button>
+          <div>
+            <router-link to="/" tag="button">
+              <button class="border border-primary rounded-lg text-primary font-bold py-2 px-4 w-full mt-2">
+                Cancel
+              </button>
+            </router-link>
+          </div>
         </form>
 
         <div class="mt-8 text-center">
@@ -162,13 +153,13 @@ const attemptLogin = async () => {
     localStorage.setItem("auth.name", user.name);
     localStorage.setItem("auth.email", user.email);
     localStorage.setItem("auth.username", user.username);
-    const cookie = useCookie('Authorization', {maxAge: 365 * 24 * 60 * 60 * 1000})
+    const cookie = useCookie('Authorization', { maxAge: 365 * 24 * 60 * 60 * 1000 })
     cookie.value = `Bearer ${user.token}`
-    
+
     if ($route.query.next) {
       location.href = $route.query.next.toString();
     } else {
-        location.href = '/'
+      location.href = '/'
     }
   } catch (error) {
     errorMessage.value = error;
