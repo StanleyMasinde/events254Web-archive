@@ -1,7 +1,7 @@
 <template>
     <div>
         <form v-if="showAddTicketForm" class="mt-5 flex flex-col gap-4 shadow-sm border p-3 rounded-lg"
-            @submit.prevent="addNewTicket">
+            @submit.prevent="(ev: SubmitEvent) => addNewTicket(ev)">
             <label for="type">
                 <h1>Ticket class<span class=" text-red-500">*</span> </h1>
                 <input placeholder="E.g VIP" class=" w-full rounded-lg" type="text" v-model="newTicket.type">
@@ -20,7 +20,8 @@
             <button class=" bg-primary text-white rounded-lg py-2" type="submit">
                 Add ticket
             </button>
-            <button @click="showAddTicketForm = false" class="border border-primary rounded-lg py-2" type="submit">
+            <button @click.prevent="(ev: MouseEvent) => {showAddTicketForm = false; return ev}"
+                class="border border-primary rounded-lg py-2" type="submit">
                 Cancel
             </button>
         </form>
@@ -32,7 +33,7 @@
 
                 <hr>
                 <div class="mt-2 flex flex-col">
-                    <button @click.prevent="deleteTicket(t.id)"
+                    <button @click.prevent="(ev: MouseEvent) => deleteTicket(t.id, ev)"
                         class=" border bg-primary text-white rounded-lg py-1 px-2">Delete ticket</button>
                 </div>
             </div>
@@ -44,7 +45,7 @@
         </div>
 
         <div v-if="showAddTicketForm == false" class="flex flex-col gap-2 m-5 text-center">
-            <button class=" bg-primary text-white rounded-lg py-1 px-3" @click.prevent="showAddTicketForm = true">Add
+            <button class=" bg-primary text-white rounded-lg py-1 px-3" @click.prevent="(ev: MouseEvent) => {showAddTicketForm = true; return ev}">Add
                 ticket</button>
         </div>
     </div>
@@ -52,7 +53,7 @@
 
 <script lang="ts" setup>
 import { Ref, reactive } from 'vue';
-import { Ticket, CreateTicketRequest } from '~~/plugins/api/api.js';
+import { CreateTicketRequest } from '~~/plugins/api/api.js';
 const route = useRoute()
 const eventId = ref(route.params.id)
 const { $events254Api } = useNuxtApp()
@@ -69,20 +70,26 @@ const { data: tickets, pending, refresh, error } = await useAsyncData('tickets',
 }, { initialCache: false })
 
 
-const addNewTicket = async () => {
+const addNewTicket = (ev: SubmitEvent) => {
     try {
-        await $events254Api.createTicket(+eventId.value, newTicket)
-        showAddTicketForm.value = false
-        await refresh()
+        (async function () {
+            await $events254Api.createTicket(+eventId.value, newTicket)
+            await refresh()
+            showAddTicketForm.value = false
+        })()
+        return ev
     } catch (error) {
         showError(error)
     }
 }
 
-const deleteTicket = async (ticketId: number, ev) => {
+const deleteTicket = (ticketId: number, ev: MouseEvent) => {
     try {
-        await $events254Api.deleteTicket(+eventId, ticketId)
-        await refresh()
+        (async function () {
+            await $events254Api.deleteTicket(+eventId, ticketId)
+            await refresh()
+        })()
+        return ev
     } catch (error) {
         showError(error)
     }
