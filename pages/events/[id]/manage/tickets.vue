@@ -12,9 +12,23 @@
                 <input placeholder="E.g VIP" class="w-full rounded-lg" type="number" min="0" v-model="newTicket.price">
             </label>
 
-            <label for="type">
-                <h1>Ticket Limit<span class=" text-red-500">*</span> </h1>
-                <input placeholder="E.g VIP" class=" w-full rounded-lg" type="number" v-model="newTicket.limit">
+            <label v-if="newTicket.price > 0" for="url">
+                <h1>Ticket URL<span class=" text-red-500">*</span> </h1>
+                <input placeholder="https://myticketwebsite.com" class="w-full rounded-lg" type="url"
+                    v-model="newTicket.url">
+                <small class="italics font-bold">Events254 does not support ticket sales yet. Please add the link to
+                    your tickets here</small>
+            </label>
+
+            <label for="slots">
+                <h1>Availble slots<span class=" text-red-500">*</span> </h1>
+                <input placeholder="50" class=" w-full rounded-lg" type="number" v-model="newTicket.limit">
+            </label>
+
+            <label for="availability">
+                <h1>Last booking date<span class=" text-red-500">*</span> </h1>
+                <input placeholder="50" class=" w-full rounded-lg"  type="date" v-model="newTicket.availability">
+                <small class="italics font-bold">The last date for ticket sales</small>
             </label>
 
             <button class=" bg-primary text-white rounded-lg py-2" type="submit">
@@ -29,8 +43,8 @@
         <div class="flex flex-col gap-2 m-1" v-if="tickets.length > 0">
             <div class="border-2 border-black rounded-lg p-2" v-for="(t, i) in tickets">
                 <h1 class="font-bold text-lg">{{ t.type }}</h1>
-                <h1 class=" font-semibold">Price: {{ t.price }}</h1>
-
+                <h1 class="font-semibold">Price: {{ t.price }}</h1>
+                <h1 v-if="t.availability" class=" font-semibold">Sales end in: {{ moment(t?.availability).fromNow() }}</h1>
                 <hr>
                 <div class="mt-2 flex flex-col">
                     <button @click.prevent="(ev: MouseEvent) => deleteTicket(t.id, ev)"
@@ -45,7 +59,8 @@
         </div>
 
         <div v-if="showAddTicketForm == false" class="flex flex-col gap-2 m-5 text-center">
-            <button class=" bg-primary text-white rounded-lg py-1 px-3" @click.prevent="(ev: MouseEvent) => {showAddTicketForm = true; return ev}">Add
+            <button class=" bg-primary text-white rounded-lg py-1 px-3"
+                @click.prevent="(ev: MouseEvent) => {showAddTicketForm = true; return ev}">Add
                 ticket</button>
         </div>
     </div>
@@ -53,15 +68,18 @@
 
 <script lang="ts" setup>
 import { Ref, reactive } from 'vue';
+import moment from 'moment';
 import { CreateTicketRequest } from '~~/plugins/api/api.js';
 const route = useRoute()
 const eventId = ref(route.params.id)
 const { $events254Api } = useNuxtApp()
 const showAddTicketForm: Ref<Boolean> = ref(false)
 const newTicket: CreateTicketRequest = reactive({
-    type: 'General admission',
+    type: 'Early Bird',
     price: 0,
-    limit: 0
+    limit: 0,
+    availability: null,
+    url: null
 })
 
 const { data: tickets, pending, refresh, error } = await useAsyncData('tickets', async () => {
