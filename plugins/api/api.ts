@@ -595,7 +595,7 @@ export interface SearchResults {
      * @type {Array<User>}
      * @memberof SearchResults
      */
-    'users': Array<User>;
+    'users': Array<SearchUser>;
 }
 /**
  * 
@@ -758,6 +758,9 @@ export interface User {
      * @memberof User
      */
     'bio'?: string;
+}
+interface SearchUser extends User {
+    'id': number
 }
 /**
  * The object you get when getting user by Id

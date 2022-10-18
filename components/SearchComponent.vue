@@ -1,19 +1,7 @@
 <template>
-    <div class="relative" v-if="!showWidget">
-        <input @click.prevent="showWidget = true"
-            class="transition-all duration-200 form-input w-full border-2 h-12 rounded-lg focus:ring-primary focus:ring-2 focus:border-none"
-            placeholder="Search for events, locations dates etc" />
-        <button class="absolute bg-primary text-white p-2 rounded-lg right-1 top-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-        </button>
-    </div>
-
-    <div v-if="showWidget" class=" border rounded-lg fixed max-h-80 overflow-y-scroll bg-white inset-x-4 px-2 py-4 shadow-2xl">
+    <div class="rounded-lg bg-white px-2 py-4">
         <div class="relative">
-            <input @keyup="search(searchQuery)" autofocus v-model="searchQuery"
+            <input @keyup="(ev: KeyboardEvent) => {search(searchQuery);return ev}" autofocus v-model="searchQuery"
                 class="transition-all duration-200 form-input w-full border-2 h-12 rounded-lg focus:ring-primary focus:ring-2 focus:border-none"
                 placeholder="Search for events, locations dates etc" />
             <button class="absolute bg-primary text-white p-2 rounded-lg right-1 top-1">
@@ -25,12 +13,13 @@
             </button>
         </div>
 
-        <ul class="flex mt-4 gap-2 px-1">
-            <li @click="tabItems = 0" class="font-semibold">Events <span class=" bg-gray-200 rounded-lg p-1">
-                    {{ sResults?.events.length }}</span></li>
-            <li @click="tabItems = 1" class="font-semibold">People
+        <ul class="flex mt-4 gap-2 px-1 justify-center">
+            <li @click.prevent="(ev: MouseEvent) => {tabItems = 0; return ev}" class="font-semibold">Events <span
+                    class=" bg-gray-200 rounded-lg p-1">
+                    {{ sResults?.events.length | 0 }}</span></li>
+            <li @click.prevent="(ev: MouseEvent) => {tabItems = 1; return ev}" class="font-semibold">People
                 <span class=" bg-gray-200 rounded-lg p-1">
-                    {{ sResults?.users?.length }}</span>
+                    {{ sResults?.users?.length | 0 }}</span>
             </li>
         </ul>
         <hr>
@@ -105,14 +94,13 @@ enum tabOptions {
 }
 const tabItems: Ref<tabOptions> = ref(0)
 const sResults: Ref<SearchResults> = ref()
-const showWidget: Ref<boolean> = ref(false)
 const isSearching: Ref<boolean> = ref(false)
 const searchQuery: Ref<string> = ref()
 const { $events254Api } = useNuxtApp()
 const search = async (query: string): Promise<void> => {
     try {
-        if(!query || query.length < 3) {
-          return
+        if (!query || query.length < 3) {
+            return
         }
         isSearching.value = true
         const { data: results } = await $events254Api.search(query)
@@ -123,6 +111,6 @@ const search = async (query: string): Promise<void> => {
     }
 }
 const isActiveTab = (tab: number): boolean => {
-   return tabItems.value == tab
+    return tabItems.value == tab
 }
 </script>
