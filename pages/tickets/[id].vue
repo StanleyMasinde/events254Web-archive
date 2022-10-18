@@ -32,29 +32,27 @@
 </template>
 
 <script lang="ts" setup>
-import { UserTicket } from '~~/plugins/api/api';
-import { Ref } from 'vue';
 import moment from 'moment-timezone'
 
 const route = useRoute()
-
 const { $events254Api } = useNuxtApp()
-const ticket: Ref<UserTicket> = ref();
-const getTicket = async () => {
-  try {
-    const { data } = await $events254Api.getASingleTicket(+route.params.id)
-    ticket.value = data
-  } catch (err) {
-    showError({ statusCode: 404, statusMessage: err.message })
-  }
-}
+const { data: ticket, pending, refresh, error } = await useAsyncData('tickets', async () => {
+    const res = await $events254Api.getASingleTicket(+route.params.id)
+    return res.data
+}, { initialCache: false })
 
 definePageMeta({
   middleware: "auth",
-  layout: "ticket"
+  layout: "ticket",
+})
+useHead({
+  title: ticket.value.eventName,
+  meta: [
+    {
+      name: 'description',
+      content: 'Ticket for user'
+    }
+  ]
 })
 
-onMounted(() => {
-  getTicket()
-})
 </script>
