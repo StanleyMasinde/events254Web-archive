@@ -56,7 +56,6 @@ import { Ticket, CreateTicketRequest } from '~~/plugins/api/api.js';
 const route = useRoute()
 const eventId = ref(route.params.id)
 const { $events254Api } = useNuxtApp()
-const tickets: Ref<Array<Ticket>> = ref([])
 const showAddTicketForm: Ref<Boolean> = ref(false)
 const newTicket: CreateTicketRequest = reactive({
     type: 'General admission',
@@ -64,23 +63,28 @@ const newTicket: CreateTicketRequest = reactive({
     limit: 0
 })
 
-const fetchTickets = async () => {
-    const { data } = await $events254Api.getEventTickets(+eventId.value)
-    tickets.value = data
-}
+const { data: tickets, pending, refresh, error } = await useAsyncData('tickets', async () => {
+    const res = await $events254Api.getEventTickets(+eventId.value)
+    return res.data
+}, { initialCache: false })
+
 
 const addNewTicket = async () => {
-    const { data } = await $events254Api.createTicket(+eventId.value, newTicket)
-    showAddTicketForm.value = false
-    await fetchTickets()
+    try {
+        await $events254Api.createTicket(+eventId.value, newTicket)
+        showAddTicketForm.value = false
+        await refresh()
+    } catch (error) {
+        showError(error)
+    }
 }
 
-const deleteTicket = async (ticketId: number) => {
-    const { data } = await $events254Api.deleteTicket(+eventId, ticketId)
-    await fetchTickets()
+const deleteTicket = async (ticketId: number, ev) => {
+    try {
+        await $events254Api.deleteTicket(+eventId, ticketId)
+        await refresh()
+    } catch (error) {
+        showError(error)
+    }
 }
-
-onMounted(async () => {
-    await fetchTickets()
-})
 </script>
