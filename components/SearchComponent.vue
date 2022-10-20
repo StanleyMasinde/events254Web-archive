@@ -88,7 +88,7 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
 import moment from 'moment';
-import { debounce } from 'lodash'
+import lodash from 'lodash'
 
 enum tabOptions {
     events,
@@ -109,7 +109,7 @@ function search() {
 }
 
 watch(input, function () {
-    const ff = debounce(search, 1000);
+    const ff = lodash.debounce(search, 1000);
     ff()
 })
 
