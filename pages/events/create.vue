@@ -11,7 +11,7 @@
           <div :class="{
             'bg-primary text-white border-primary border-2':
               eventTypeMeta.attendanceMode === 'inPerson',
-          }" @click="eventTypeMeta.attendanceMode = 'inPerson'" class="
+          }" @click="(ev: MouseEvent ) => {eventTypeMeta.attendanceMode = 'inPerson'; return ev}" class="
               transition-all
               delay-150
               duration-300
@@ -29,7 +29,7 @@
           <div :class="{
             'bg-primary text-white border-primary border-2':
               eventTypeMeta?.attendanceMode === 'virtual',
-          }" @click="eventTypeMeta.attendanceMode = 'virtual'" class="
+          }" @click="(ev: MouseEvent) => {eventTypeMeta.attendanceMode = 'virtual'; return ev}" class="
               transition-all
               delay-150
               duration-300
@@ -45,8 +45,8 @@
           </div>
 
           <!--Button to go to the next step-->
-          <button @click="currentStep = 2" v-show="eventTypeMeta?.attendanceMode !== ''"
-            class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
+          <button @click="(ev: MouseEvent) => {currentStep = 2; return ev}"
+            v-show="eventTypeMeta?.attendanceMode !== ''" class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
             Next step
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -70,23 +70,15 @@
               <h1>
                 Give your event a title<span class="text-red-600">*</span>
               </h1>
-              <input v-model="event.about" autofocus class="
+              <input v-model="newEvent.about" autofocus class="
                   w-full
                   rounded-lg
                   focus:ring-primary focus:border-primary
                 " type="text" name="about" id="about" placeholder="Movies and cookies" />
             </label>
 
-            <label for="shortDesc">
-              <h1 class="mt-4">
-                Something short and catchy about your event<span class="text-red-600">*</span>
-              </h1>
-              <textarea v-model="event.shortDesription" maxlength="120" placeholder="Something catchy"
-                name="short_description" id="shortDesc" class="w-full rounded-lg"></textarea>
-            </label>
-
             <label for="categories">
-              <select v-model="event.category_id" name="category_id" class="w-full mt-3 mb-3 rounded-lg"
+              <select v-model="newEvent.category_id" name="category_id" class="w-full mt-3 mb-3 rounded-lg"
                 id="categories">
                 <option value="">Select category</option>
                 <option v-for="(c, i) in categories" :key="i" :value="c.id">
@@ -99,7 +91,7 @@
               <h1>
                 Enter the event's location<span class="mt-4 text-red-600">*</span>
               </h1>
-              <input v-model="event.location" autofocus class="
+              <input v-model="newEvent.location" autofocus class="
                   w-full
                   rounded-lg
                   focus:ring-primary focus:border-primary
@@ -108,7 +100,7 @@
 
             <label v-else for="location">
               <h1>Add the event's url here</h1>
-              <input v-model="event.online_link" autofocus class="
+              <input v-model="newEvent.online_link" autofocus class="
                   w-full
                   rounded-lg
                   focus:ring-primary focus:border-primary
@@ -117,7 +109,7 @@
 
             <label for="desc">
               <h1 class="mt-4">Add details about your event</h1>
-              <RichEditor v-model="event.description" />
+              <RichEditor v-model="newEvent.description" />
             </label>
           </form>
         </div>
@@ -125,7 +117,8 @@
         <div class="flex justify-between">
           <div>
             <!--Button to go to the next step-->
-            <button @click="currentStep = 1" v-show="eventTypeMeta?.attendanceMode !== ''" class="
+            <button @click="(ev: MouseEvent) => {currentStep = 1; return ev}"
+              v-show="eventTypeMeta?.attendanceMode !== ''" class="
                 flex
                 mt-5
                 border border-gray-700
@@ -144,8 +137,8 @@
           </div>
 
           <!--Button to go to the next step-->
-          <button @click="currentStep = 3" v-show="eventTypeMeta?.attendanceMode !== ''"
-            class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
+          <button @click="(ev: MouseEvent) => {currentStep = 3; return ev}"
+            v-show="eventTypeMeta?.attendanceMode !== ''" class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
             Add dates
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-6 w-6" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -165,45 +158,47 @@
         </div>
 
         <form action="#" method="POST">
-          <label for="isAllDay" class="flex justify-between">
-            <div class="flex">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <h1>Is all-day</h1>
-            </div>
-
-            <div>
-              <input type="checkbox" v-model="eventTypeMeta.isAllDay" class="rounded-lg h-5 w-5" name="isAllDay"
-                id="isAllDay" />
-            </div>
-          </label>
-
-          <div class="grid grid-cols-5 grid-rows-3 mt-5">
-            <div class="col-span-2">
-              <input v-model="event.startDate" class="w-full rounded-lg" type="date" />
-            </div>
-            <div :class="{ 'row-span-3': !eventTypeMeta.isAllDay }" class="flex flex-col justify-center align-middle">
-              <div class="flex justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+          <div class="flex gap-2 flex-col">
+            <label for="isAllDay" class="flex justify-between">
+              <div class="flex">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
+                <h1>All day event</h1>
               </div>
+
+              <div>
+                <input type="checkbox" v-model="eventTypeMeta.isAllDay" class="rounded-lg h-5 w-5" name="isAllDay"
+                  id="isAllDay" />
+              </div>
+            </label>
+
+            <label for="isAllDay" class="flex justify-between">
+              <div class="flex">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="h-6 w-6 mr-2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                </svg>
+
+                <h1>Add end date</h1>
+              </div>
+
+              <div>
+                <input type="checkbox" v-model="eventHasEndDate" class="rounded-lg h-5 w-5" name="isAllDay"
+                  id="isAllDay" />
+              </div>
+            </label>
+          </div>
+
+          <div>
+            <div class="mt-5">
+              <DateInput v-if="dateInputEnabled" v-model="selectedDate" :range="eventHasEndDate" />
             </div>
-            <div class="col-span-2">
-              <input v-model="event.endDate" class="w-full rounded-lg" type="date" />
-            </div>
-            <!--Empty rows-->
-            <div class="col-span-2"></div>
-            <div class="col-span-2"></div>
-            <!--/empty rows-->
-            <div v-if="!eventTypeMeta.isAllDay" class="col-span-2">
-              <input v-model="event.startTime" class="w-full rounded-lg" type="time" />
-            </div>
-            <div v-if="!eventTypeMeta.isAllDay" class="col-span-2">
-              <input v-model="event.endTime" class="w-full rounded-lg" type="time" />
+            <div v-if="!eventTypeMeta.isAllDay" class="mt-5">
+              <TimeInput v-model="selectedTime" />
             </div>
           </div>
         </form>
@@ -211,7 +206,7 @@
         <div class="flex justify-between">
           <div>
             <!--Button to go to the next step-->
-            <button @click="currentStep = 2" class="
+            <button @click="(ev: MouseEvent) => {currentStep = 2; return ev}" class="
                 flex
                 mt-5
                 border border-gray-700
@@ -230,7 +225,8 @@
           </div>
 
           <!--Button to go to the next step-->
-          <button @click="currentStep = 4" class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
+          <button @click="(ev: MouseEvent) => {currentStep = 4; return ev}"
+            class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
             Poster
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-6 w-6" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -281,7 +277,7 @@
         <div class="flex justify-between">
           <div>
             <!--Button to go to the next step-->
-            <button @click="currentStep = 3" class="
+            <button @click="(e: MouseEvent) => {currentStep = 3; return e}" class="
                 flex
                 w-full
                 mt-5
@@ -301,7 +297,8 @@
           </div>
 
           <!--Button to go to the next step-->
-          <button @click="currentStep = 5" class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
+          <button @click="(ev: MouseEvent) => {currentStep = 5; return ev}"
+            class="flex mt-5 bg-primary text-white rounded-lg px-4 py-3">
             Preview
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-6 w-6" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -320,14 +317,14 @@
         <div class="m-2 rounded-xl relative">
           <div class="bg-white border-2 absolute top-2 left-2 rounded-xl p-2">
             <!--if physical-->
-            <div class="flex" v-if="event.location !== ''">
+            <div class="flex" v-if="newEvent.location !== ''">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <h1>{{ event.location }}</h1>
+              <h1>{{ newEvent.location }}</h1>
             </div>
             <!--/ If physical-->
             <!--if virtual-->
@@ -354,7 +351,7 @@
                 p-1
                 -mb-5
               ">
-              <h1>{{ new Date(event.startDate).toDateString() }}</h1>
+              <h1>{{ new Date(newEvent.startDate).toDateString() }}</h1>
             </div>
           </div>
         </div>
@@ -362,20 +359,20 @@
 
         <!--Event info-->
         <div class="mx-2 my-5">
-          <h1 class="text-2xl font-semibold line-clamp-1">{{ event.about }}</h1>
-          <h1 class="text-lg">By: {{ event.organiser ?? "Events254" }}</h1>
+          <h1 class="text-2xl font-semibold line-clamp-1">{{ newEvent.about }}</h1>
+          <h1 class="text-lg">By: {{ newEvent.organiser ?? "Events254" }}</h1>
         </div>
         <!--/ Event info-->
 
         <!--Event About-->
         <div class="mx-2 my-5">
           <h1 class="text-lg font-semibold line-clamp-1">About</h1>
-          <p class="prose" v-html="event.description"></p>
+          <p class="prose" v-html="newEvent.description"></p>
         </div>
 
         <div>
           <!--Button to go to the next step-->
-          <button @click="currentStep = 4" class="
+          <button @click="(ev: MouseEvent) => {currentStep = 4; return ev}" class="
               flex
               w-fit
               mt-5
@@ -423,8 +420,31 @@
   </section>
 </template>
 
-<script setup>
-import { reactive, watch, ref } from "vue";
+<script lang="ts" setup>
+import { reactive, watch, ref, Ref } from "vue";
+
+interface Category {
+  'id': number,
+  'name': string
+}
+interface EventLocation {
+  name: string,
+  address: string,
+  url: string
+}
+interface newEvent {
+  about: string | null,
+  description: string,
+  category_id: number | null,
+  startDate: string,
+  startTime: string,
+  endDate: string,
+  endTime: string,
+  location: string,
+  online_link: string,
+  organiser: string,
+  address: EventLocation
+}
 
 definePageMeta({
   layout: "createevent",
@@ -432,13 +452,17 @@ definePageMeta({
 });
 
 const { $events254Api } = useNuxtApp();
+const selectedDate: Ref<Array<string> | string> = ref(null)
+const selectedTime: Ref<Array<string> | string> = ref(null)
+const dateInputEnabled: Ref<boolean> = ref(true)
+const eventHasEndDate: Ref<boolean> = ref(null)
 const config = useRuntimeConfig();
 const {
   data: categories,
   pending,
   error,
   refresh,
-} = await useFetch(`${config.public.apiUrl}/categories`, {
+} = await useFetch<Array<Category>>(`${config.public.apiUrl}/categories`, {
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -457,6 +481,7 @@ const locationBias = {
 /** Initialize the places object */
 const initPlacesApi = () => {
   if (!isMounted) { return }
+  // @ts-expect-error
   const GmapsAutoComplete = window.google.maps.places.Autocomplete
   const locationInput = document.querySelector('#locationInput')
   const address = new GmapsAutoComplete(locationInput)
@@ -469,10 +494,10 @@ const initPlacesApi = () => {
 
   address.changed = () => {
     const place = address.getPlace()
-    event.address.address = place.formatted_address,
-      event.address.name = place.name,
-      event.address.url = place.url
-    event.location = place.name
+    newEvent.address.address = place.formatted_address
+    newEvent.address.name = place.name
+    newEvent.address.url = place.url
+    newEvent.location = place.name
   }
 }
 
@@ -489,13 +514,12 @@ const eventTypeMeta = reactive({
 
 const currentStep = ref(1);
 const posterUrl = ref("/hero.jpg");
-
-const event = reactive({
-  about: "",
+const newEvent: newEvent = reactive({
+  about: null,
   shortDesription: "",
   description: "",
-  category_id: "",
-  startDate: "",
+  category_id: null,
+  startDate: null,
   startTime: "00:00",
   endDate: "",
   endTime: "",
@@ -505,57 +529,70 @@ const event = reactive({
     name: null,
     address: null,
     url: null
-  }
+  },
+  organiser: ''
 });
 
-const triggerPosterPicker = () => {
-  const picker = document.querySelector("#posterInput");
+const triggerPosterPicker = (ev: MouseEvent): MouseEvent => {
+  const picker: HTMLInputElement = document.querySelector("#posterInput");
   picker.click();
+  return ev
 };
-
-const onPosterChange = (e) => {
+const onPosterChange = (e: Event): Event => {
+  // @ts-expect-error
   const url = URL.createObjectURL(e.target.files[0]);
   posterUrl.value = url;
+  return e
 };
 
+// Watchers
 watch(currentStep, (val) => {
   if (!isMounted) { return }
   if (val == 2 && eventTypeMeta.attendanceMode == 'inPerson') {
     initPlacesApi()
   }
 })
+watch(eventHasEndDate, () => {
+  dateInputEnabled.value = false
+  selectedDate.value = null
+  setTimeout(() => {
+    dateInputEnabled.value = true
+  }, 300);
+})
 
 const $router = useRouter();
-const createEvent = async () => {
-  const formElement = document.querySelector("#imageForm");
+const createEvent = (ev: MouseEvent) => {
+  const formElement: HTMLFormElement = document.querySelector("#imageForm");
   const newEventData = new FormData(formElement);
-  newEventData.append("about", event.about);
-  newEventData.append("short_description", event.shortDesription);
-  newEventData.append("description", event.description);
-  newEventData.append("category_id", event.category_id);
-  newEventData.append("startDate", event.startDate);
-  newEventData.append("startTime", event.startTime || "00:00");
-  newEventData.append("endDate", event.endDate);
-  newEventData.append("endTime", event.endTime);
-  newEventData.append("location", event.location);
-  newEventData.append("online_link", event.online_link);
+  newEventData.append("about", newEvent.about);
+  newEventData.append("description", newEvent.description);
+  newEventData.append("category_id", newEvent.category_id.toString());
+  newEventData.append("startDate", newEvent.startDate);
+  newEventData.append("startTime", newEvent.startTime || "00:00");
+  newEventData.append("endDate", newEvent.endDate);
+  newEventData.append("endTime", newEvent.endTime);
+  newEventData.append("location", newEvent.location);
+  newEventData.append("online_link", newEvent.online_link);
 
   try {
-    const { data } = await $events254Api.createEvent(
-      event.about,
-      event.description,
-      event.startTime,
-      event.startDate,
-      event.category_id,
-      newEventData.get("image"),
-      event.address.name,
-      event.address.address,
-      "0,0",
-      event.online_link,
-      event.endTime,
-      event.endDate
-    );
-    $router.push(`/events/${data.id}/manage`);
+    (async function () {
+      const { data } = await $events254Api.createEvent(
+        newEvent.about,
+        newEvent.description,
+        newEvent.startTime,
+        newEvent.startDate,
+        newEvent.category_id,
+        newEventData.get("image") as File,
+        newEvent.address.name,
+        newEvent.address.address,
+        "0,0",
+        newEvent.online_link,
+        newEvent.endTime,
+        newEvent.endDate
+      );
+      $router.push(`/events/${data}/manage`); // TODO: WTF man?
+    })()
+    return ev
   } catch (error) {
     console.log(error);
   }
