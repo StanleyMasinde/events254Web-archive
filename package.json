@@ -11,6 +11,7 @@
     "@tailwindcss/forms": "^0.5.0",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@tailwindcss/typography": "^0.5.6",
+    "@types/lodash": "^4.14.186",
     "nuxt": "^3.0.0-rc.11"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.199",
     "@tiptap/vue-3": "^2.0.0-beta.96",
     "axios": "^0.27.2",
+    "lodash": "^4.17.21",
     "moment-timezone": "^0.5.37",
     "vee-validate": "^4.5.11"
   },
