@@ -1,6 +1,7 @@
 
 <template>
   <div>
+    <nuxt-loading-indicator color="#FF6601"></nuxt-loading-indicator>
     <nav class="flex justify-between py-3 px-2">
       <router-link to="/">
         <button>

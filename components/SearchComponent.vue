@@ -1,7 +1,7 @@
 <template>
     <div class="rounded-lg bg-white px-2 py-4">
         <div class="relative">
-            <input @keyup="(ev: KeyboardEvent) => {search(searchQuery);return ev}" autofocus v-model="searchQuery"
+            <input autofocus v-model="input"
                 class="transition-all duration-200 form-input w-full border-2 h-12 rounded-lg focus:ring-primary focus:ring-2 focus:border-none"
                 placeholder="Search for events, locations dates etc" />
             <button class="absolute bg-primary text-white p-2 rounded-lg right-1 top-1">
@@ -12,6 +12,8 @@
                 </svg>
             </button>
         </div>
+
+        {{ error }}
 
         <ul class="flex mt-4 gap-2 px-1 justify-center">
             <li @click.prevent="(ev: MouseEvent) => {tabItems = 0; return ev}" class="font-semibold">Events <span
@@ -86,31 +88,29 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
 import moment from 'moment';
-import { SearchResults } from '~~/plugins/api/api'
+import lodash from 'lodash'
 
 enum tabOptions {
     events,
     users
 }
+
+const $route = useRoute()
+const $router = useRouter()
+const input = ref(($route.query.q || '').toString())
+const { data: sResults, pending, refresh, error } = await useAsyncData('search', async (c) => {
+  const res = await c.$events254Api.search(input.value)
+  return res.data
+})
 const tabItems: Ref<tabOptions> = ref(0)
-const sResults: Ref<SearchResults> = ref()
-const isSearching: Ref<boolean> = ref(false)
-const searchQuery: Ref<string> = ref()
-const { $events254Api } = useNuxtApp()
-const search = async (query: string): Promise<void> => {
-    try {
-        if (!query || query.length < 3) {
-            return
-        }
-        isSearching.value = true
-        const { data: results } = await $events254Api.search(query)
-        isSearching.value = false
-        sResults.value = results
-    } catch (error) {
-        showError(error)
-    }
+function search() {
+    $router.replace({ query: { q: input.value } });
+    refresh()
 }
-const isActiveTab = (tab: number): boolean => {
-    return tabItems.value == tab
-}
+
+watch(input, function () {
+    const ff = lodash.debounce(search, 1000);
+    ff()
+})
+
 </script>

@@ -1,5 +1,6 @@
 <template>
     <main>
+        <nuxt-loading-indicator color="#FF6601"></nuxt-loading-indicator>
         <nav class="py-4 px-1 sm:px-16 flex justify-between items-center">
             <div>
                 <nuxt-link to="/">
