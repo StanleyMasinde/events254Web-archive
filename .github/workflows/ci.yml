@@ -75,8 +75,8 @@ jobs:
             echo "API_SECRET=${{ secrets.PROD_API_SECRET }}" >> .env
       - name: Install dependencies 👨🏻‍💻
         run: npm i
-      - name: Build static 🏗
-        run: npm run generate
+      - name: Build for production 🏗️
+        run: npm run build
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh/
