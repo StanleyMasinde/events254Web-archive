@@ -42,7 +42,7 @@ jobs:
       - name: Update .env
         run: |
             echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> .env
-            echo "API_SECRET=${{ secrets.PROD_API_SECRET }}"
+            echo "API_SECRET=${{ secrets.PROD_API_SECRET }}" >> .env
       - name: Install dependencies 👨🏻‍💻
         run: npm i
       - name: Build 🏗
@@ -72,7 +72,7 @@ jobs:
       - name: Update .env
         run: |
             echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> .env
-            echo "API_SECRET=${{ secrets.PROD_API_SECRET }}"
+            echo "API_SECRET=${{ secrets.PROD_API_SECRET }}" >> .env
       - name: Install dependencies 👨🏻‍💻
         run: npm i
       - name: Build static 🏗
