@@ -60,7 +60,7 @@ jobs:
           rsync -vrm  .output/* ${{ secrets.USER_IP }}:/var/www/staging.events254.co.ke/
           ssh ${{ secrets.USER_IP }} "pm2 restart ecosystem.config.js"
   production:
-    needs: staging
+    needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
