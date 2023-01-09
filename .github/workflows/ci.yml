@@ -58,7 +58,7 @@ jobs:
       - name: copy builds to server
         run: |
           rsync -vrm  .output/* ${{ secrets.USER_IP }}:/var/www/staging.events254.co.ke/
-          ssh ${{ secrets.USER_IP }} "cd /var/www/staging.events254.co.ke && sh update.sh"
+          ssh ${{ secrets.USER_IP }} "pm2 restart ecosystem.config.js"
   production:
     needs: build
     if: github.ref == 'refs/heads/main'
@@ -88,4 +88,4 @@ jobs:
       - name: copy builds to server
         run: |
           rsync -vrm  .output/* ${{ secrets.USER_IP }}:/var/www/events254.co.ke/
-          ssh ${{ secrets.USER_IP }} "cd /var/www/events254.co.ke && sh update.sh"
+          ssh ${{ secrets.USER_IP }} "pm2 restart ecosystem.config.js""
