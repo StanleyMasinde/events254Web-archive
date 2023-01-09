@@ -26,7 +26,7 @@
   },
   "name": "events254",
   "description": "Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.",
-  "version": "2.0.0-rc.17",
+  "version": "2.0.0-rc.18",
   "main": "tailwind.config.js",
   "repository": {
     "type": "git",
