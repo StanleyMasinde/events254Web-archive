@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiUrl: process.env.API_URL,
-            apiKey: process.env.API_KEY,
+            apiKey: 'GtdY0eknSQ990qkiTo7oZS1tldv+UiG1SlQnsqTCX8g=',
             release: process.env.npm_package_version,
             environment: process.env.NODE_ENV
         }
