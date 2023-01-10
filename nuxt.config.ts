@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiUrl: process.env.API_URL,
-            apiKey: process.env.API_KEY,
+            apiKey: 'GtdY0eknSQ990qkiTo7oZS1tldv+UiG1SlQnsqTCX8g=',
             release: process.env.npm_package_version,
             environment: process.env.NODE_ENV
         }
@@ -34,51 +34,7 @@ export default defineNuxtConfig({
 
     modules: [
         '@nuxtjs/tailwindcss',
+        './modules/pwa'
     ],
 
-
-    // https://v3.nuxtjs.org/api/configuration/nuxt.config#hooks
-    hooks: {
-        "build:done": ((b: { nuxt: { options: { dev?: any; buildDir?: any; rootDir?: any } } }) => {
-            if (b.nuxt.options.dev) {
-                return
-            }
-
-            const { buildDir, rootDir } = b.nuxt.options
-            childProcess.exec(`ls ${buildDir}/dist/client/_nuxt`, (err, stdout, stderr) => {
-                if (err) {
-                    console.error(err);
-                }
-
-                const assetsArry = stdout.split('\n')
-                const unwanted = ['icons', 'images']
-                const filteredAssets = assetsArry.filter((value, index) => {
-                    return !unwanted.includes(value)
-                })
-                const assets = filteredAssets.splice(0, filteredAssets.length - 1)
-
-                fs.readFile(`${rootDir}/assets/sw.stub.js`, (err, data) => {
-                    if (err) {
-                        console.error(err);
-                    }
-
-                    const sw = Buffer.from(data).toString()
-                    const hash = crypto.randomBytes(7).toString("base64url")
-                    const newSW = sw.replace("'<--cacheAssets-->'", assets.map((value) => {
-                        return `"/_nuxt/${value}"`
-                    })
-                        .join())
-                        .replace('cache-v1', hash)
-                        .replace('#{date}', new Date().toString())
-
-                    fs.writeFile(`${rootDir}/public/sw.js`, newSW, (err => {
-                        if (err) {
-                            console.error(err);
-                        }
-                    }))
-                })
-
-            })
-        }),
-    }
 })
