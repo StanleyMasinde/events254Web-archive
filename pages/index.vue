@@ -7,7 +7,7 @@
         <div class="relative">
           <input @click.prevent="() => useNavigateToOnClick('/search')"
             class="transition-all duration-200 form-input w-full border-2 h-12 rounded-lg focus:ring-primary focus:ring-2 focus:border-none"
-            placeholder="Search for events, locations dates etc" />
+            placeholder="What do you want to do?" />
           <button class="absolute bg-primary text-white p-2 rounded-lg right-1 top-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
