@@ -438,7 +438,7 @@ const {
   pending,
   error,
   refresh,
-} = await useFetch(`${config.public.apiUrl}/categories`, {
+} = await useFetch('https://api.events254.co.ke/categories', {
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
