@@ -38,8 +38,8 @@ jobs:
       name: staging
       url: https://beta.events254.co.ke
     env:
-       MAPS_API_KEY: secrets.MAPS_API_KEY
-       API_SECRET: secrets.PROD_API_SECRET
+       MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+       API_SECRET: ${{ secrets.PROD_API_SECRET }}
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
@@ -67,8 +67,8 @@ jobs:
       name: production
       url: https://events254.co.ke
     env:
-       MAPS_API_KEY: secrets.MAPS_API_KEY
-       API_SECRET: secrets.PROD_API_SECRET
+       MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+       API_SECRET: ${{ secrets.PROD_API_SECRET }}
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
