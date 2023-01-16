@@ -37,13 +37,12 @@ jobs:
     environment:
       name: staging
       url: https://beta.events254.co.ke
+    env:
+       MAPS_API_KEY: secrets.MAPS_API_KEY
+       API_SECRET: secrets.PROD_API_SECRET
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
-      - name: Update .env
-        run: |
-            echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> .env
-            echo "API_SECRET=${{ secrets.PROD_API_SECRET }}" >> .env
       - name: Install dependencies 👨🏻‍💻
         run: npm i
       - name: Build 🏗
@@ -67,13 +66,12 @@ jobs:
     environment:
       name: production
       url: https://events254.co.ke
+    env:
+       MAPS_API_KEY: secrets.MAPS_API_KEY
+       API_SECRET: secrets.PROD_API_SECRET
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
-      - name: Update .env
-        run: |
-            echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> .env
-            echo "API_SECRET=${{ secrets.PROD_API_SECRET }}" >> .env
       - name: Install dependencies 👨🏻‍💻
         run: npm i
       - name: Build for production 🏗️
