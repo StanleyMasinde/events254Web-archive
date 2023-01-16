@@ -7,7 +7,7 @@
 
         <div v-else>
             <div class=" my-4">
-                <h1 class=" text-xl"> <span class=" font-bold">Managing:</span> {{ currentEvent.about }}</h1>
+                <h1 class=" text-xl"> <span class=" font-bold">Managing:</span> {{ currentEvent?.about }}</h1>
                 <nuxt-link class=" underline text-primary" :to="`/events/${eventId}`">View event</nuxt-link>
             </div>
 
@@ -29,7 +29,7 @@
             </div>
 
             <div>
-                <nuxt-child :currentEvent="currentEvent"></nuxt-child>
+                <nuxt-page :currentEvent="currentEvent" />
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
 import { Ref } from 'vue';
 import { Event } from '~~/plugins/api/api.js';
 const route = useRoute()
-const currentEvent: Ref<Event> = ref()
+const currentEvent: Ref<Event | undefined> = ref()
 const loading: Ref<Boolean> = ref(true)
 const eventId = ref(route.params.id)
 const { $events254Api } = useNuxtApp()
