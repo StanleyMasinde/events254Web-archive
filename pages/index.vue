@@ -36,7 +36,7 @@
         </div>
 
         <div v-if="s.data.length > 0"
-          class="flex overflow-y-hidden ml-2 first:ml-0 sm:ml-0 rounded-lg snap-mandatory snap-x">
+          class="flex flex-col ml-2 first:ml-0 sm:ml-0 rounded-lg snap-mandatory snap-x">
           <div class="mr-2 last:mr-0 rounded-lg snap-center" v-for="(e, i) in s.data" :key="i">
             <div class="min-w-[79vw] md:min-w-[35vw] rounded-lg border-2 border-gray-100">
               <nuxt-link :to="`/${e.linkPrefix}/${e.id}`">
