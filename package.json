@@ -22,7 +22,7 @@
     "axios": "^1.4.0",
     "lodash": "^4.17.21",
     "moment-timezone": "^0.5.43",
-    "vee-validate": "^4.8.6"
+    "vee-validate": "^4.9.6"
   },
   "name": "events254",
   "description": "Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.",
