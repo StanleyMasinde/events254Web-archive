@@ -47,18 +47,6 @@ jobs:
         run: npm i
       - name: Build 🏗
         run: npm run build
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.SSH_PRIV_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PUB_KEY }}" > ~/.ssh/id_rsa.pub
-          chmod 600 ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa.pub
-          ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
-      - name: copy builds to server
-        run: |
-          rsync -vrm  .output/* ${{ secrets.USER_IP }}:/var/www/staging.events254.co.ke/
-          ssh ${{ secrets.USER_IP }} "pm2 restart ecosystem.config.js"
   production:
     needs: build
     if: github.ref == 'refs/heads/main'
@@ -76,15 +64,3 @@ jobs:
         run: npm i
       - name: Build for production 🏗️
         run: npm run build
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.SSH_PRIV_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PUB_KEY }}" > ~/.ssh/id_rsa.pub
-          chmod 600 ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa.pub
-          ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
-      - name: copy builds to server
-        run: |
-          rsync -vrm  .output/* ${{ secrets.USER_IP }}:/var/www/events254.co.ke/
-          ssh ${{ secrets.USER_IP }} "pm2 restart ecosystem.config.js"
